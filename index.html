@@ -297,7 +297,6 @@
 
     .selection {
       opacity: 1 !important;
-      display: block !important;
       fill-opacity: 1 !important;
     }
   </style>
@@ -396,9 +395,6 @@
     </div>
   </div>
 
-
-
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
@@ -408,7 +404,6 @@
   <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
   <script src="./js/tooltip.js"></script>
   <script>
-
 
     const windowWidth = $(window).width();
     const windowHeight = $(window).height();
@@ -447,8 +442,15 @@
 
     svg.call(texture)
 
+
+
+    //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
+
+    // +30 to show NZ
     const projection = d3.geoPeirceQuincuncial()
-      .fitSize([width, height], { type: "Sphere" })
+      .fitSize([width, height + 30], {
+        type: "Sphere"
+      })
       .precision(0.1)
       .scale((width + 100) / 2 / Math.PI);
 
@@ -469,20 +471,21 @@
     let transformed;
 
     function zoomEnd() {
-
       d3.select(".selection").style("display", "none");
       d3.selectAll(".handle").style("display", "none");
-
-      // d3.selectAll(".brush").remove();
-      // d3.selectAll("brushg.resize").remove();
-      // brush.clear();
     }
 
 
     const zoom = d3.zoom()
       .scaleExtent([1, Infinity])
-      .translateExtent([[0, 0], [width, height]])
-      .extent([[0, 0], [width, height]])
+      .translateExtent([
+        [0, 0],
+        [width, height]
+      ])
+      .extent([
+        [0, 0],
+        [width, height]
+      ])
       .on("zoom", zoomed)
       .on("end", zoomEnd);
 
@@ -497,6 +500,10 @@
 
       svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
+      // d3.select('#' + texture.id())
+      //   .attr('patternTransform', 'scale(' + 1 / k + ')');
+
+      d3.select(`#${texture.id()} path`).attr("transform", "translate(0,0)")
 
       //update brush extent
       brushExtent = e.selection;
@@ -529,6 +536,7 @@
     //brushEnd function
     function brushEnd() {
 
+
       //get the four corner coordinates
       const x0 = brushExtent[0][0];
       const x1 = brushExtent[1][0];
@@ -550,10 +558,6 @@
             .translate(x, y),
         )
 
-        // d3.select('#' + texture.id())
-        //   .attr('patternTransform', 'scale(' + 1 / k + ')');
-
-
 
 
       }
@@ -562,12 +566,13 @@
 
     function zoomed(e) {
 
+      d3.select(".selection").style("display", "none")
+      d3.selectAll(".handle").style("display", "none");
 
-      svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
+      // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
-
-      if (e.transform.k > 10) {  //load more detailed geojson when more zoomed in
+      if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
         d3.selectAll(".land2").style("display", "inherit");
         d3.selectAll(".land").style("display", "none");
       } else {
@@ -576,22 +581,22 @@
       }
 
 
-      if (e.transform.k > 1) { //prevent the brush from showing up when resetZoom is clicked at initial scale
+      // if (e.transform.k > 1) { //prevent the brush from showing up when resetZoom is clicked at initial scale
 
-        d3.select(".selection").style("display", "inherit")
-        d3.selectAll(".handle").style("display", "inherit");
+      //   d3.select(".selection").style("display", "inherit")
+      //   d3.selectAll(".handle").style("display", "inherit");
 
-      }
+      // }
 
       isZoomed = true;
 
-      const transform = e.transform;//k,x,y
+      const transform = e.transform; //k,x,y
       transformed = transform;
 
-      // console.log(e.transform)
       svg.selectAll('path')
         .attr('transform', transform)
         .attr("stroke-width", 1 / transform.k)
+
       svg.selectAll("circle")
         .attr('transform', transform)
         .attr('r', 5 / transform.k)
@@ -602,17 +607,13 @@
         .attr('transform', transform)
         .attr("stroke-width", 1 / transform.k);
 
-
     }
 
     function resetZoom() {
-      // svg.call(brush.clear);
-
       isZoomed = false;
       svg.transition()
         .duration(750)
         .call(zoom.transform, d3.zoomIdentity)
-
     }
 
     const worldmap = d3.json("./data/land3.geojson");
@@ -624,21 +625,37 @@
 
       let data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
 
-      let organization = data.map(function (obj) { return obj.Organization; });
-      organization = organization.filter(function (v, i) { return organization.indexOf(v) == i; });
+      let organization = data.map(function (obj) {
+        return obj.Organization;
+      });
+      organization = organization.filter(function (v, i) {
+        return organization.indexOf(v) == i;
+      });
 
-      let location = data.map(function (obj) { return obj.Location; });
-      location = location.filter(function (v, i) { return location.indexOf(v) == i; });
+      let location = data.map(function (obj) {
+        return obj.Location;
+      });
+      location = location.filter(function (v, i) {
+        return location.indexOf(v) == i;
+      });
 
       const $terms = [...organization, ...location].sort();
       let $return = [];
 
 
-      let focus = data.map(function (obj) { return obj.Focus; });
-      focus = focus.filter(function (v, i) { return focus.indexOf(v) == i; });
+      let focus = data.map(function (obj) {
+        return obj.Focus;
+      });
+      focus = focus.filter(function (v, i) {
+        return focus.indexOf(v) == i;
+      });
 
-      let type = data.map(function (obj) { return obj.Type; });
-      type = type.filter(function (v, i) { return type.indexOf(v) == i; });
+      let type = data.map(function (obj) {
+        return obj.Type;
+      });
+      type = type.filter(function (v, i) {
+        return type.indexOf(v) == i;
+      });
 
       console.log(focus)
       console.log(type)
@@ -706,6 +723,9 @@
         .attr("fill", d => colorScale(d.Focus))
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
+        .on("click", function (e, d) {
+          console.log(d)
+        })
 
 
       $("#resetZoom").click(resetZoom);
