@@ -337,7 +337,7 @@
             <div class="toggle__pointer color1"></div>
           </div>
           <div class="item">
-            <p id="one">Governance</p>
+            <p id="one">Solutions & Politics</p>
           </div>
         </div>
         <div class="itemWrapper">
@@ -347,7 +347,7 @@
             <div class="toggle__pointer color2"></div>
           </div>
           <div class="item">
-            <p id="two">Climate</p>
+            <p id="two">Habitability & Hospitability</p>
           </div>
         </div>
         <div class="itemWrapper">
@@ -357,7 +357,7 @@
             <div class="toggle__pointer color3"></div>
           </div>
           <div class="item">
-            <p id="three">Security</p>
+            <p id="three">Justice & Ethics</p>
           </div>
         </div>
         <div class="itemWrapper">
@@ -367,7 +367,7 @@
             <div class="toggle__pointer color4"></div>
           </div>
           <div class="item">
-            <p id="four">Multi-species</p>
+            <p id="four">Earth System Science</p>
           </div>
         </div>
         <div class="itemWrapper">
@@ -377,7 +377,7 @@
             <div class="toggle__pointer color5"></div>
           </div>
           <div class="item">
-            <p id="five">Public health</p>
+            <p id="five">Solutions & Economics</p>
           </div>
         </div>
         <div class="itemWrapper">
@@ -387,7 +387,7 @@
             <div class="toggle__pointer color6"></div>
           </div>
           <div class="item">
-            <p id="six">Economics</p>
+            <p id="six">Indigenous Knowledge</p>
           </div>
         </div>
       </div>
@@ -457,8 +457,7 @@
     const path = d3.geoPath().projection(projection);
 
     const colorScale = d3.scaleOrdinal()
-      .range(["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]);
-
+      .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
 
 
     let brush = d3.brush()
@@ -469,6 +468,7 @@
     let brushedSufficient = true; //check if dragged area big enough
 
     let transformed;
+    let transformedLevel = 1;
 
     function zoomEnd() {
       d3.select(".selection").style("display", "none");
@@ -498,18 +498,27 @@
 
     function brushMove(e) {
 
-      svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
-      // d3.select('#' + texture.id())
-      //   .attr('patternTransform', 'scale(' + 1 / k + ')');
 
-      d3.select(`#${texture.id()} path`).attr("transform", "translate(0,0)")
+      svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
+
+
+      // if (transformed) {
+      //   svg.selectAll(".selection").attr("stroke-width", 3).attr("stroke", "white").attr("stroke-dasharray", "5,5").attr("fill", "none")
+      // } else {
+      //   svg.selectAll(".selection").attr("stroke-width", 3 / transformed.k).attr("stroke", "white").attr("stroke-dasharray", "5,5").attr("fill", "none")
+      // }
+
+
+      // .attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
+
+      // d3.select(`#${texture.id()} path`).attr("transform", "translate(0,0)")
 
       //update brush extent
       brushExtent = e.selection;
       //update points style within the rect
       svg.selectAll("circle.point")
-        .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Focus))
+        .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Category))
         .raise(); // in order to be able to hover
 
       //check brush extent to see if it's big enough to brush
@@ -550,6 +559,8 @@
         const y = -(y0 + y1) / 2;
         const k = Math.min(40, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height));
 
+        transformedLevel = k;
+
         svg.transition().duration(750).call(
           zoom.transform,
           d3.zoomTransform(30, 30, 1)
@@ -558,18 +569,17 @@
             .translate(x, y),
         )
 
-
-
       }
 
     }
 
     function zoomed(e) {
 
-      d3.select(".selection").style("display", "none")
+
+      d3.selectAll(".selection").style("display", "none");
       d3.selectAll(".handle").style("display", "none");
 
-
+      console.log(e.transform.k)
       // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
       if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
@@ -593,6 +603,8 @@
       const transform = e.transform; //k,x,y
       transformed = transform;
 
+
+
       svg.selectAll('path')
         .attr('transform', transform)
         .attr("stroke-width", 1 / transform.k)
@@ -601,15 +613,16 @@
         .attr('transform', transform)
         .attr('r', 5 / transform.k)
         .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
-        .attr("fill", d => colorScale(d.Focus))
+        .attr("fill", d => colorScale(d.Category))
 
       svg.select('.brush')
         .attr('transform', transform)
-        .attr("stroke-width", 1 / transform.k);
+        .attr("stroke-width", isZoomed ? 1 / transformed.k : 1);
 
     }
 
     function resetZoom() {
+      transformedLevel = 1;
       isZoomed = false;
       svg.transition()
         .duration(750)
@@ -618,7 +631,7 @@
 
     const worldmap = d3.json("./data/land3.geojson");
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
-    const points = d3.csv("./data/mapData2.csv");
+    const points = d3.csv("./data/mapData3.csv");
 
 
     Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
@@ -650,6 +663,13 @@
         return focus.indexOf(v) == i;
       });
 
+      let categories = data.map(function (obj) {
+        return obj.Category;
+      });
+      categories = categories.filter(function (v, i) {
+        return categories.indexOf(v) == i;
+      });
+
       let type = data.map(function (obj) {
         return obj.Type;
       });
@@ -657,10 +677,9 @@
         return type.indexOf(v) == i;
       });
 
-      console.log(focus)
-      console.log(type)
+      console.log(categories)
 
-      colorScale.domain(focus);
+      colorScale.domain(categories);
 
       //this part is to remove the weird artifacts (horizontal lines above and below the map)
       // draw first map just to get the bbox of the land
@@ -720,7 +739,7 @@
         .attr("stroke-width", 1)
         .attr("stroke", "#808080")
         .attr("r", 5)
-        .attr("fill", d => colorScale(d.Focus))
+        .attr("fill", d => colorScale(d.Category))
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
         .on("click", function (e, d) {
@@ -872,7 +891,7 @@
         .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
         .attr("r", isZoomed ? 5 / transformed.k : 5)
         .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
-        .attr("fill", d => colorScale(d.Focus))
+        .attr("fill", d => colorScale(d.Category))
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
 
@@ -887,7 +906,7 @@
         .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
         .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
         .attr("r", 5)
-        .attr("fill", d => colorScale(d.Focus))
+        .attr("fill", d => colorScale(d.Category))
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
 
