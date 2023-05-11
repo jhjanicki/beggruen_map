@@ -10,8 +10,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
     var tt = d3.select('body')
       .append('div')
       .attr('class', 'tooltip')
-      .attr('id', tooltipId)
-      .style('pointer-events', 'none');
+      .attr('id', tooltipId);
 
     // Set a width if it is provided.
     if (width) {
@@ -30,6 +29,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
      */
     function showTooltip(content, event) {
       tt.style('opacity', 1.0)
+        .style('display', 'inherit')
         .html(content);
 
       updatePosition(event);
@@ -40,6 +40,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
      */
     function hideTooltip() {
       tt.style('opacity', 0.0);
+      tt.style('display', 'none');
     }
 
     /*

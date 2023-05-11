@@ -12,6 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
   <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
 
@@ -61,21 +62,6 @@
     .land2 {
       fill: #d9cdc2;
       stroke: #808080;
-    }
-
-    .tooltip {
-      position: absolute;
-      top: 100px;
-      left: 100px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      width: 200px;
-      background: #7ec7d9;
-      opacity: .9;
-      color: black;
-      padding: 10px;
-      font-size: 14px;
-      z-index: 10;
     }
 
     circle:hover {
@@ -287,9 +273,6 @@
       margin-left: 0px;
     }
 
-    .tooltip_title {
-      font-size: 18px;
-    }
 
     #resetZoom:hover {
       cursor: pointer;
@@ -298,6 +281,40 @@
     .selection {
       opacity: 1 !important;
       fill-opacity: 1 !important;
+    }
+
+    #map {
+      width: 280px;
+      height: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 5px 18px 5px 2px;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      width: 300px;
+      background: #7ec7d9;
+      color: black;
+      padding: 10px;
+      font-size: 14px;
+      z-index: 10;
+    }
+
+    .close {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      color: black;
+      opacity: 1;
+    }
+
+    .close:hover {
+      cursor: pointer !important;
     }
   </style>
 </head>
@@ -401,9 +418,12 @@
   <script src="https://d3js.org/d3-array.v1.min.js"></script>
   <script src="https://d3js.org/d3-geo.v1.min.js"></script>
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-  <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js'></script>
   <script src="./js/tooltip.js"></script>
   <script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
+
 
     const windowWidth = $(window).width();
     const windowHeight = $(window).height();
@@ -418,19 +438,19 @@
       }
     });
 
+    // think about search + toggle, what do we want one a category is toggled off but someone searches for an org in that category?
 
     const figure = d3.selectAll(".chartWrapper");
     let width = figure.node().getBoundingClientRect().width;
     let height = figure.node().getBoundingClientRect().height;
 
+    let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
+    let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
+
     let tooltip = floatingTooltip('gates_tooltip', 240, 10);
+    let clicked = false;
     let isZoomed = false;
 
-    let texture = textures
-      .lines()
-      .size(8)
-      .strokeWidth(3)
-      .stroke("#fff");
 
     // Prepare our physical space
     const svg = d3
@@ -439,8 +459,6 @@
       .attr("width", width)
       .attr("height", height)
 
-
-    svg.call(texture)
 
 
 
@@ -503,12 +521,6 @@
       svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
 
 
-      // if (transformed) {
-      //   svg.selectAll(".selection").attr("stroke-width", 3).attr("stroke", "white").attr("stroke-dasharray", "5,5").attr("fill", "none")
-      // } else {
-      //   svg.selectAll(".selection").attr("stroke-width", 3 / transformed.k).attr("stroke", "white").attr("stroke-dasharray", "5,5").attr("fill", "none")
-      // }
-
 
       // .attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
@@ -557,8 +569,8 @@
 
         const x = -(x0 + x1) / 2;
         const y = -(y0 + y1) / 2;
-        const k = Math.min(40, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height));
-
+        let k = 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height);
+        if (k > 130) { k = 130 };
         transformedLevel = k;
 
         svg.transition().duration(750).call(
@@ -583,18 +595,18 @@
       // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
       if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
-        d3.selectAll(".land2").style("display", "inherit");
+        d3.selectAll(".land2").style("display", "block");
         d3.selectAll(".land").style("display", "none");
       } else {
         d3.selectAll(".land2").style("display", "none");
-        d3.selectAll(".land").style("display", "inherit");
+        d3.selectAll(".land").style("display", "block");
       }
 
 
       // if (e.transform.k > 1) { //prevent the brush from showing up when resetZoom is clicked at initial scale
 
-      //   d3.select(".selection").style("display", "inherit")
-      //   d3.selectAll(".handle").style("display", "inherit");
+      //   d3.select(".selection").style("display", "block")
+      //   d3.selectAll(".handle").style("display", "block");
 
       // }
 
@@ -603,17 +615,16 @@
       const transform = e.transform; //k,x,y
       transformed = transform;
 
-
-
       svg.selectAll('path')
         .attr('transform', transform)
         .attr("stroke-width", 1 / transform.k)
 
       svg.selectAll("circle")
         .attr('transform', transform)
-        .attr('r', 5 / transform.k)
+        .attr('r', 6 / transform.k)
         .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
         .attr("fill", d => colorScale(d.Category))
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
 
       svg.select('.brush')
         .attr('transform', transform)
@@ -622,6 +633,8 @@
     }
 
     function resetZoom() {
+      tooltip.hideTooltip();
+      clicked = false;
       transformedLevel = 1;
       isZoomed = false;
       svg.transition()
@@ -633,10 +646,14 @@
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
     const points = d3.csv("./data/mapData3.csv");
 
+    //IPSA & Earth4All are drawn twice, why??
+
 
     Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
 
       let data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
+
+      console.log(data)
 
       let organization = data.map(function (obj) {
         return obj.Organization;
@@ -677,7 +694,6 @@
         return type.indexOf(v) == i;
       });
 
-      console.log(categories)
 
       colorScale.domain(categories);
 
@@ -733,17 +749,19 @@
         .data(data)
         .join("circle")
         .attr("class", "point")
-        .attr("id", d => "id" + d.id)
-        .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
-        .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
+        .attr("id", d => "id" + d.Id)
+        .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
+        .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
         .attr("stroke-width", 1)
         .attr("stroke", "#808080")
-        .attr("r", 5)
+        .attr("r", 6)
         .attr("fill", d => colorScale(d.Category))
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
         .on("click", function (e, d) {
           console.log(d)
+          clicked = true;
         })
 
 
@@ -856,10 +874,57 @@
 
 
 
+    function createFilterStatus(filterName, layerOnName, statusString) {
+      document.getElementById(filterName).addEventListener('change', function (e) {
+        //remove popup
+
+        if (e.target.value === layerOnName) {
+          if (activeCategories.indexOf(statusString) == -1) {
+            activeCategories.push(statusString)
+          }
+
+          console.log(activeCategories)
+
+          // redraw using d3 here
+
+          d3.selectAll("circle.point")
+            .transition().duration(300)
+            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+
+
+        } else {
+          if (activeCategories.indexOf(statusString) !== -1) {
+            var index = activeCategories.indexOf(statusString);
+            activeCategories.splice(index, 1);
+          }
+
+          console.log(activeCategories)
+
+          // redraw using d3 here
+          d3.selectAll("circle.point")
+            .transition().duration(300)
+            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
+            .style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+        }
+      });
+
+    }
+
+    createFilterStatus('filter1', 'layer1On', 'Solutions & Politics')
+    createFilterStatus('filter2', 'layer2On', 'Habitability & Hospitability')
+    createFilterStatus('filter3', 'layer3On', 'Justice & Ethics')
+    createFilterStatus('filter4', 'layer4On', 'Earth System Science')
+    createFilterStatus('filter5', 'layer5On', 'Solutions & Economics')
+    createFilterStatus('filter6', 'layer6On', 'Indigenous Knowledge')
+
+
+
+
 
     function filterPoints(data, term) {
 
-
+      tooltip.hideTooltip();
+      clicked = false;
       const filteredData = data.filter(d => d.Organization === term || d.Location === term)
 
       let lat = filteredData[0].Latitude;
@@ -889,24 +954,30 @@
         .attr('transform', isZoomed ? transformed : "")
         .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
         .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
-        .attr("r", isZoomed ? 5 / transformed.k : 5)
+        .attr("r", isZoomed ? 6 / transformed.k : 6)
         .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
+        .attr("stroke", "#808080")
         .attr("fill", d => colorScale(d.Category))
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
 
     }
 
     function resetPoints(data) {
-
+      tooltip.hideTooltip();
+      clicked = false;
       svg.selectAll("circle.point")
         .data(data)
         .join("circle")
         .attr("class", "point")
         .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
         .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
-        .attr("r", 5)
+        .attr("r", 6)
+        .attr("stroke-width", isZoomed ? 1 / transformedLevel : 1)
+        .attr("stroke", "#808080")
         .attr("fill", d => colorScale(d.Category))
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
 
@@ -914,15 +985,39 @@
 
 
     function showDetail(e, d) {
-      let content = `<h4 class="tooltip_title"> ${d.Organization}  </h4>   ${d.Focus} <br> based in ${d.Location}`;
+      console.log(d)
+      svg.select(`#id${d.Id}`).raise();
+      let content = `<div id="map"></div><h4 class="tooltip_title"> ${d.Organization}  </h4>   ${d.Focus} <br> based in ${d.Location}<span class="close">X</span>`;
 
       tooltip.showTooltip(content, e);
+
+      let map = new mapboxgl.Map({
+        container: 'map', // container element id
+        style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
+        center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
+        zoom: 15
+      });
+
+      var marker = new mapboxgl.Marker()
+        .setLngLat([d.Longitude, d.Latitude])
+        .addTo(map);
+
+      d3.selectAll(".close").on("click", function () {
+        tooltip.hideTooltip();
+        clicked = false;
+      })
 
     }
 
     function hideDetail(d) {
-      tooltip.hideTooltip();
+      if (!clicked) {
+        tooltip.hideTooltip();
+        clicked = false;
+      }
+
     }
+
+
 
   </script>
 </body>
