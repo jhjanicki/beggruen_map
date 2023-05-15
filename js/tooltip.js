@@ -57,6 +57,9 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
       var wscrY = window.scrollY;
       var wscrX = window.scrollX;
 
+      console.log(event.clientX + wscrX)
+      console.log(event.clientY + wscrY)
+
       var curX = (document.all) ? event.clientX + wscrX : event.pageX;
       var curY = (document.all) ? event.clientY + wscrY : event.pageY;
       var ttleft = ((curX - wscrX + xOffset * 2 + ttw) > window.innerWidth) ?
@@ -71,6 +74,14 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
 
       if (tttop < wscrY + yOffset) {
         tttop = curY + yOffset;
+      }
+
+      if(event.clientY + wscrY >450){
+        tttop = tttop-400;
+      }
+
+      if(event.clientX + wscrX >520){
+        ttleft = ttleft-315;
       }
 
       tt

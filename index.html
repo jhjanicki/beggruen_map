@@ -279,8 +279,8 @@
     }
 
     .selection {
-      opacity: 1 !important;
-      fill-opacity: 1 !important;
+      opacity: 1;
+      fill-opacity: 1;
     }
 
     #map {
@@ -303,6 +303,23 @@
       padding: 10px;
       font-size: 14px;
       z-index: 10;
+    }
+
+    .tooltip h4 {
+      font-family: "Albert Sans", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .tooltip p {
+      font-family: "Albert Sans", sans-serif;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .tooltip a {
+      color: #000 !important;
+      text-decoration: underline;
     }
 
     .close {
@@ -422,6 +439,8 @@
   <script src="./js/tooltip.js"></script>
   <script>
 
+    // whenever I filter then reset, I cannot click anymore
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
 
 
@@ -487,6 +506,8 @@
 
     let transformed;
     let transformedLevel = 1;
+
+    let ids;
 
     function zoomEnd() {
       d3.select(".selection").style("display", "none");
@@ -586,12 +607,11 @@
     }
 
     function zoomed(e) {
-
+      tooltip.hideTooltip();
+      clicked = false;
 
       d3.selectAll(".selection").style("display", "none");
       d3.selectAll(".handle").style("display", "none");
-
-      console.log(e.transform.k)
       // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
       if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
@@ -621,10 +641,24 @@
 
       svg.selectAll("circle")
         .attr('transform', transform)
-        .attr('r', 6 / transform.k)
+        .attr('r', 5.5 / transform.k)
         .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
         .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+        .style("opacity", d => function () {
+          if (ids.includes(d.Id)) {
+            if (activeCategories.includes(d.Category)) {
+              return 1
+            } else {
+              return 0
+            }
+          } else {
+            return 0
+          }
+          // activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none"
+        })
+
+
+
 
       svg.select('.brush')
         .attr('transform', transform)
@@ -652,8 +686,6 @@
     Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
 
       let data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
-
-      console.log(data)
 
       let organization = data.map(function (obj) {
         return obj.Organization;
@@ -754,7 +786,7 @@
         .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
         .attr("stroke-width", 1)
         .attr("stroke", "#808080")
-        .attr("r", 6)
+        .attr("r", 5.5)
         .attr("fill", d => colorScale(d.Category))
         .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
         .on("mouseover", (e, d) => showDetail(e, d))
@@ -883,8 +915,6 @@
             activeCategories.push(statusString)
           }
 
-          console.log(activeCategories)
-
           // redraw using d3 here
 
           d3.selectAll("circle.point")
@@ -897,8 +927,6 @@
             var index = activeCategories.indexOf(statusString);
             activeCategories.splice(index, 1);
           }
-
-          console.log(activeCategories)
 
           // redraw using d3 here
           d3.selectAll("circle.point")
@@ -927,6 +955,13 @@
       clicked = false;
       const filteredData = data.filter(d => d.Organization === term || d.Location === term)
 
+      console.log(filteredData)
+
+      ids = filteredData.map(a => a.Id);
+
+      console.log(ids)
+
+
       let lat = filteredData[0].Latitude;
       let lon = filteredData[0].Longitude;
 
@@ -947,23 +982,12 @@
           .translate(-x, -y),
       )
 
-      svg.selectAll("circle.point")
-        .data(filteredData)
-        .join("circle")
-        .attr("class", "point")
-        .attr('transform', isZoomed ? transformed : "")
-        .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
-        .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
-        .attr("r", isZoomed ? 6 / transformed.k : 6)
-        .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
-        .attr("stroke", "#808080")
-        .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
-        .on("mouseover", (e, d) => showDetail(e, d))
-        .on("mouseout", d => hideDetail(d))
+      d3.selectAll("circle.point")
+        .style("opacity", d => ids.includes(d.Id) ? 1 : 0)
 
     }
 
+    // I also need to reset all the filters and set the active categories to all
     function resetPoints(data) {
       tooltip.hideTooltip();
       clicked = false;
@@ -973,7 +997,7 @@
         .attr("class", "point")
         .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
         .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
-        .attr("r", 6)
+        .attr("r", 5.5)
         .attr("stroke-width", isZoomed ? 1 / transformedLevel : 1)
         .attr("stroke", "#808080")
         .attr("fill", d => colorScale(d.Category))
@@ -985,9 +1009,12 @@
 
 
     function showDetail(e, d) {
-      console.log(d)
       svg.select(`#id${d.Id}`).raise();
-      let content = `<div id="map"></div><h4 class="tooltip_title"> ${d.Organization}  </h4>   ${d.Focus} <br> based in ${d.Location}<span class="close">X</span>`;
+      let content = `<div id="map"></div><h4> ${d.Organization}  </h4>
+      <p> ${d.Contact_address} </p>
+      <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
+      <p>  <a href='${d.Contact_site}'>Website →</a></p>
+      <span class="close">X</span>`;
 
       tooltip.showTooltip(content, e);
 
@@ -1011,7 +1038,7 @@
 
     function hideDetail(d) {
       if (!clicked) {
-        tooltip.hideTooltip();
+        tooltip.hideTooltip(); // remove if want tooltip to stay open
         clicked = false;
       }
 
