@@ -7,9 +7,7 @@
 function floatingTooltip(tooltipId, width, xPosOffset) {
     // Local variable to hold tooltip div for
     // manipulation in other functions.
-    var tt = d3.select('body')
-      .append('div')
-      .attr('class', 'tooltip')
+    var tt = d3.select('.tooltip')
       .attr('id', tooltipId);
 
     // Set a width if it is provided.

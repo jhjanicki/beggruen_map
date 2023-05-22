@@ -20,7 +20,8 @@
     body {
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
-      background-color: #e8ddd4;
+      background-color: #CBD0D3;
+      /* #BECAD2; */
     }
 
     .navbar {
@@ -72,17 +73,20 @@
       font-weight: 700;
     }
 
-    #reset {
+    .button {
+      min-width: 110px;
       text-transform: uppercase;
-      padding: 10px;
+      padding: 8px;
       width: auto;
       display: inline-block;
       text-align: center;
       border: 1px solid #000;
       margin-top: 20px;
+      border-radius: 3px;
+      font-weight: 700;
     }
 
-    #reset:hover {
+    .button:hover {
       transition: all 0.5s ease;
       background-color: #000;
       color: #d8cac0;
@@ -129,7 +133,7 @@
     }
 
     #searchform input {
-      background-color: #BECAD2;
+      background-color: #fff;
       color: #000;
       border: 1px solid #808080;
     }
@@ -183,6 +187,10 @@
       color: #000;
     }
 
+    .toggleText {
+      margin-top: 10px;
+      font-size: 16px;
+    }
 
     /* Toggle button related */
     .toggle,
@@ -303,6 +311,7 @@
       padding: 10px;
       font-size: 14px;
       z-index: 10;
+      min-height: 300px;
     }
 
     .tooltip h4 {
@@ -315,6 +324,7 @@
       font-family: "Albert Sans", sans-serif;
       font-size: 16px;
       color: #000;
+      margin-top: 4px;
     }
 
     .tooltip a {
@@ -328,10 +338,39 @@
       top: 2px;
       color: black;
       opacity: 1;
+      font-size: 18px;
     }
 
     .close:hover {
       cursor: pointer !important;
+    }
+
+    .focusarea {
+      color: #fff;
+      padding: 3px;
+      width: 100%;
+      font-family: "Albert Sans", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 3px;
+    }
+
+    .more,
+    .back {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      color: black;
+      opacity: 1;
+      font-family: "Albert Sans", sans-serif;
+      font-size: 16px;
+      z-index: 100;
+    }
+
+    .more:hover,
+    .back:hover {
+      cursor: pointer !important;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -339,7 +378,15 @@
 <body>
 
 
-
+  <div class="tooltip">
+    <span class="close">X</span>
+    <div class="front">
+      <span class="more">More→</span>
+    </div>
+    <div class="back">
+      <span class="back">Back→</span>
+    </div>
+  </div>
   <div class="wrapper">
 
     <div class="navbar">
@@ -348,7 +395,6 @@
     </div>
 
     <div class="row">
-
       <div class="col-md-9">
         <div class="chartWrapper">
           <div id="chart1"></div>
@@ -360,8 +406,8 @@
           <input type="text" id="search-bar" autocomplete="off" placeholder="Type something here" />
           <ul class="output" style="display:none;">
           </ul>
-          <p id="reset">reset</p>
-          <p id="resetZoom">resetZoom</p>
+          <p id="reset" class="button">reset</p>
+          <p id="resetZoom" class="button">reset zoom</p>
         </form>
 
         <div class="itemWrapper">
@@ -370,7 +416,7 @@
             <input id='layer1Off' type="radio" value="layer1Off" name="toggle">
             <div class="toggle__pointer color1"></div>
           </div>
-          <div class="item">
+          <div class="item toggleText">
             <p id="one">Solutions & Politics</p>
           </div>
         </div>
@@ -380,7 +426,7 @@
             <input id='layer2Off' type="radio" value="layer2Off" name="toggle2">
             <div class="toggle__pointer color2"></div>
           </div>
-          <div class="item">
+          <div class="item toggleText">
             <p id="two">Habitability & Hospitability</p>
           </div>
         </div>
@@ -390,7 +436,7 @@
             <input id='layer3Off' type="radio" value="layer3Off" name="toggle3">
             <div class="toggle__pointer color3"></div>
           </div>
-          <div class="item">
+          <div class="item toggleText">
             <p id="three">Justice & Ethics</p>
           </div>
         </div>
@@ -400,7 +446,7 @@
             <input id='layer4Off' type="radio" value="layer4Off" name="toggle4">
             <div class="toggle__pointer color4"></div>
           </div>
-          <div class="item">
+          <div class="item toggleText">
             <p id="four">Earth System Science</p>
           </div>
         </div>
@@ -410,7 +456,7 @@
             <input id='layer5Off' type="radio" value="layer5Off" name="toggle5">
             <div class="toggle__pointer color5"></div>
           </div>
-          <div class="item">
+          <div class="item toggleText">
             <p id="five">Solutions & Economics</p>
           </div>
         </div>
@@ -420,7 +466,7 @@
             <input id='layer6Off' type="radio" value="layer6Off" name="toggle6">
             <div class="toggle__pointer color6"></div>
           </div>
-          <div class="item">
+          <div class="item toggleText">
             <p id="six">Indigenous Knowledge</p>
           </div>
         </div>
@@ -457,6 +503,8 @@
       }
     });
 
+    const searchformWidth = $("#searchform").width();
+    $(".output").css("width", searchformWidth);
     // think about search + toggle, what do we want one a category is toggled off but someone searches for an org in that category?
 
     const figure = d3.selectAll(".chartWrapper");
@@ -479,19 +527,21 @@
       .attr("height", height)
 
 
+    const projection2 = d3.geoNaturalEarth1();
+    const path2 = d3.geoPath(projection2);
 
 
     //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
 
     // +30 to show NZ
-    const projection = d3.geoPeirceQuincuncial()
-      .fitSize([width, height + 30], {
+    let projection = d3.geoPeirceQuincuncial()
+      .fitSize([width, height + 40], {
         type: "Sphere"
       })
       .precision(0.1)
       .scale((width + 100) / 2 / Math.PI);
 
-    const path = d3.geoPath().projection(projection);
+    let path = d3.geoPath().projection(projection);
 
     const colorScale = d3.scaleOrdinal()
       .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
@@ -684,6 +734,11 @@
 
 
     Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
+
+      // projection = d3
+      //   .geoIdentity()
+      //   .fitSize([width, height], values[2]);
+      // path = d3.geoPath().projection(projection);
 
       let data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
 
@@ -955,8 +1010,6 @@
       clicked = false;
       const filteredData = data.filter(d => d.Organization === term || d.Location === term)
 
-      console.log(filteredData)
-
       ids = filteredData.map(a => a.Id);
 
       console.log(ids)
@@ -970,9 +1023,18 @@
         lon = 134.347707;
       } // create a mapping function for the locations
 
+      if (term === "USA") {
+        lat = 41.094497;
+        lon = -99.032502;
+      }
+
       const x = projection([lon, lat])[0];
       const y = projection([lon, lat])[1];
-      const k = 10;
+      let k = 10;
+
+      if (term === "Australia" || term === "USA") {
+        k = 5;
+      }
 
       svg.transition().duration(750).call(
         zoom.transform,
@@ -1008,15 +1070,56 @@
     }
 
 
+    let front = true;
+
     function showDetail(e, d) {
+      let fill = colorScale(d.Category)
+
       svg.select(`#id${d.Id}`).raise();
       let content = `<div id="map"></div><h4> ${d.Organization}  </h4>
       <p> ${d.Contact_address} </p>
       <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
-      <p>  <a href='${d.Contact_site}'>Website →</a></p>
-      <span class="close">X</span>`;
+      <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
+      <span class="close">X</span>
+      <span class="more">More→</span>`;
+
 
       tooltip.showTooltip(content, e);
+
+      d3.selectAll(".more").on("click", function () {
+        content = `<h4> ${d.Organization}  </h4>
+        <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
+        <p> ${d.Mission} </p>
+      <span class="close">X</span>
+      <span class="back">Back→</span>`;
+        tooltip.showTooltip(content, e);
+
+        d3.selectAll(".close").on("click", function () {
+          tooltip.hideTooltip();
+          clicked = false;
+        })
+
+      })
+
+      d3.selectAll(".back").on("click", function () {
+        console.log("back")
+        content = `<div id="map"></div><h4> ${d.Organization}  </h4>
+      <p> ${d.Contact_address} </p>
+      <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
+      <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
+      <span class="close">X</span>
+      <span class="more">More→</span>`;
+
+        tooltip.showTooltip(content, e);
+
+        d3.selectAll(".close").on("click", function () {
+          tooltip.hideTooltip();
+          clicked = false;
+        })
+
+      })
+
+
 
       let map = new mapboxgl.Map({
         container: 'map', // container element id
