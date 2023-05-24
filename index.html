@@ -311,7 +311,9 @@
       padding: 10px;
       font-size: 14px;
       z-index: 10;
-      min-height: 300px;
+      min-height: 200px;
+      max-height: 500px;
+      overflow: auto;
     }
 
     .tooltip h4 {
@@ -334,8 +336,8 @@
 
     .close {
       position: absolute;
-      right: 2px;
-      top: 2px;
+      right: 7px;
+      top: 5px;
       color: black;
       opacity: 1;
       font-size: 18px;
@@ -355,11 +357,19 @@
       border-radius: 3px;
     }
 
-    .more,
-    .back {
+    .more {
       position: absolute;
       right: 2px;
-      bottom: 2px;
+      bottom: 8px;
+      color: black;
+      opacity: 1;
+      font-family: "Albert Sans", sans-serif;
+      font-size: 16px;
+      z-index: 100;
+    }
+
+    .back {
+      margin-left: 230px;
       color: black;
       opacity: 1;
       font-family: "Albert Sans", sans-serif;
@@ -372,6 +382,22 @@
       cursor: pointer !important;
       font-weight: 700;
     }
+
+    .none {
+      display: none;
+    }
+
+    .show {
+      display: inherit;
+    }
+
+    #locator {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 200px;
+      height: 200px;
+    }
   </style>
 </head>
 
@@ -380,10 +406,10 @@
 
   <div class="tooltip">
     <span class="close">X</span>
-    <div class="front">
+    <div class="front show">
       <span class="more">More→</span>
     </div>
-    <div class="back">
+    <div class="back none">
       <span class="back">Back→</span>
     </div>
   </div>
@@ -393,6 +419,8 @@
       <li><a href="#">map</a></li>
       <li><a href="#">individuals</a></li>
     </div>
+
+    <div id="locator"></div>
 
     <div class="row">
       <div class="col-md-9">
@@ -517,6 +545,7 @@
     let tooltip = floatingTooltip('gates_tooltip', 240, 10);
     let clicked = false;
     let isZoomed = false;
+    let brushing = false; // to make sure tooltip won't show up when brushing
 
 
     // Prepare our physical space
@@ -527,8 +556,11 @@
       .attr("height", height)
 
 
-    const projection2 = d3.geoNaturalEarth1();
-    const path2 = d3.geoPath(projection2);
+    const svg2 = d3
+      .select("#locator")
+      .append("svg")
+      .attr("width", 200)
+      .attr("height", 200)
 
 
     //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
@@ -542,6 +574,9 @@
       .scale((width + 100) / 2 / Math.PI);
 
     let path = d3.geoPath().projection(projection);
+
+    const projection2 = d3.geoGilbert();
+    const path2 = d3.geoPath(projection2);
 
     const colorScale = d3.scaleOrdinal()
       .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
@@ -587,6 +622,7 @@
 
     function brushMove(e) {
 
+      brushing = true;
 
 
       svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
@@ -628,6 +664,7 @@
     //brushEnd function
     function brushEnd() {
 
+      brushing = false;
 
       //get the four corner coordinates
       const x0 = brushExtent[0][0];
@@ -706,9 +743,6 @@
           }
           // activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none"
         })
-
-
-
 
       svg.select('.brush')
         .attr('transform', transform)
@@ -793,6 +827,12 @@
         .attr("id", "land")
         .attr("d", path);
 
+      svg2.selectAll("path.main")
+        .data(values[0].features)
+        .join("path")
+        .attr("class", "main")
+        .attr("d", path2)
+
 
       const bbox = d3.select("#land").node().getBBox();
 
@@ -844,10 +884,22 @@
         .attr("r", 5.5)
         .attr("fill", d => colorScale(d.Category))
         .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
-        .on("mouseover", (e, d) => showDetail(e, d))
-        .on("mouseout", d => hideDetail(d))
+        .on("mouseover", function (e, d) {
+          if (!brushing) {
+            d3.selectAll(".point").style("stroke", "#808080")
+            d3.select(this).style("stroke", "black")
+            showDetail(e, d);
+          }
+        })
+        .on("mouseout", function (e, d) {
+          if (clicked == false) {
+            d3.selectAll(".point").style("stroke", "#808080")
+          }
+          hideDetail(d)
+        })
         .on("click", function (e, d) {
-          console.log(d)
+          d3.selectAll(".point").style("stroke", "#808080")
+          d3.select(this).style("stroke", "black")
           clicked = true;
         })
 
@@ -951,9 +1003,25 @@
       });
 
       $("#reset").on("click", function () {
+        activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge'];
+
+        $("#layer1On").prop("checked", true);
+        $("#layer1Off").prop("checked", false);
+        $("#layer2On").prop("checked", true);
+        $("#layer2Off").prop("checked", false);
+        $("#layer3On").prop("checked", true);
+        $("#layer3Off").prop("checked", false);
+        $("#layer4On").prop("checked", true);
+        $("#layer4Off").prop("checked", false);
+        $("#layer5On").prop("checked", true);
+        $("#layer5Off").prop("checked", false);
+        $("#layer6On").prop("checked", true);
+        $("#layer6Off").prop("checked", false);
+
         resetZoom();
         resetPoints(data);
         $("#search-bar").val("");
+
       })
 
 
@@ -1070,9 +1138,8 @@
     }
 
 
-    let front = true;
-
     function showDetail(e, d) {
+
       let fill = colorScale(d.Category)
 
       svg.select(`#id${d.Id}`).raise();
@@ -1090,34 +1157,35 @@
         content = `<h4> ${d.Organization}  </h4>
         <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
         <p> ${d.Mission} </p>
-      <span class="close">X</span>
-      <span class="back">Back→</span>`;
+      <span class="close">X</span>`;  // <span class="back">Back→</span>
         tooltip.showTooltip(content, e);
 
         d3.selectAll(".close").on("click", function () {
           tooltip.hideTooltip();
           clicked = false;
+          d3.selectAll(".point").style("stroke", "#808080")
         })
 
       })
 
-      d3.selectAll(".back").on("click", function () {
-        console.log("back")
-        content = `<div id="map"></div><h4> ${d.Organization}  </h4>
-      <p> ${d.Contact_address} </p>
-      <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
-      <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      <span class="close">X</span>
-      <span class="more">More→</span>`;
+      // d3.selectAll(".back").on("click", function () {
+      //   console.log("back")
+      //   content = `<div id="map"></div><h4> ${d.Organization}  </h4>
+      // <p> ${d.Contact_address} </p>
+      // <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
+      // <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
+      // <span class="close">X</span>
+      // <span class="more">More→</span>`;
 
-        tooltip.showTooltip(content, e);
+      //   tooltip.showTooltip(content, e);
 
-        d3.selectAll(".close").on("click", function () {
-          tooltip.hideTooltip();
-          clicked = false;
-        })
+      //   d3.selectAll(".close").on("click", function () {
+      //     tooltip.hideTooltip();
+      //     clicked = false;
+      //     d3.selectAll(".point").style("stroke", "#808080")
+      //   })
 
-      })
+      // })
 
 
 
@@ -1135,6 +1203,7 @@
       d3.selectAll(".close").on("click", function () {
         tooltip.hideTooltip();
         clicked = false;
+        d3.selectAll(".point").style("stroke", "#808080")
       })
 
     }

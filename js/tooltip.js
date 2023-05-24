@@ -74,12 +74,12 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
         tttop = curY + yOffset;
       }
 
-      if(event.clientY + wscrY >450){
-        tttop = tttop-400;
+      if(event.clientY + wscrY >400){
+        tttop = tttop-390;
       }
 
       if(event.clientX + wscrX >520){
-        ttleft = ttleft-315;
+        ttleft = ttleft-320;
       }
 
       tt
