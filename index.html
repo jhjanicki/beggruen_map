@@ -65,6 +65,22 @@
       stroke: #808080;
     }
 
+    svg {
+      margin-top: -10px;
+    }
+
+    /* svg {
+      margin-top: -100px;
+      transform: rotate(45deg);
+    }
+
+    @media only screen and (max-width: 600px) {
+      svg {
+        margin-top: 0px;
+        transform: rotate(0deg);
+      }
+    } */
+
     circle:hover {
       cursor: pointer !important;
     }
@@ -185,6 +201,12 @@
 
     .prediction-item:hover strong {
       color: #000;
+    }
+
+    #toggleWrapper {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
     }
 
     .toggleText {
@@ -437,69 +459,70 @@
           <p id="reset" class="button">reset</p>
           <p id="resetZoom" class="button">reset zoom</p>
         </form>
+      </div>
+    </div>
 
-        <div class="itemWrapper">
-          <div class='toggle item filters' id="filter1">
-            <input id='layer1On' type="radio" value="layer1On" name="toggle" checked='checked'>
-            <input id='layer1Off' type="radio" value="layer1Off" name="toggle">
-            <div class="toggle__pointer color1"></div>
-          </div>
-          <div class="item toggleText">
-            <p id="one">Solutions & Politics</p>
-          </div>
+    <div id="toggleWrapper">
+      <div class="itemWrapper">
+        <div class='toggle item filters' id="filter1">
+          <input id='layer1On' type="radio" value="layer1On" name="toggle" checked='checked'>
+          <input id='layer1Off' type="radio" value="layer1Off" name="toggle">
+          <div class="toggle__pointer color1"></div>
         </div>
-        <div class="itemWrapper">
-          <div class='row toggle item filters' id="filter2">
-            <input id='layer2On' type="radio" value="layer2On" name="toggle2" checked='checked'>
-            <input id='layer2Off' type="radio" value="layer2Off" name="toggle2">
-            <div class="toggle__pointer color2"></div>
-          </div>
-          <div class="item toggleText">
-            <p id="two">Habitability & Hospitability</p>
-          </div>
-        </div>
-        <div class="itemWrapper">
-          <div class='row toggle3 item filters' id="filter3">
-            <input id='layer3On' type="radio" value="layer3On" name="toggle3" checked='checked'>
-            <input id='layer3Off' type="radio" value="layer3Off" name="toggle3">
-            <div class="toggle__pointer color3"></div>
-          </div>
-          <div class="item toggleText">
-            <p id="three">Justice & Ethics</p>
-          </div>
-        </div>
-        <div class="itemWrapper">
-          <div class='row toggle4 item filters' id="filter4">
-            <input id='layer4On' type="radio" value="layer4On" name="toggle4" checked='checked'>
-            <input id='layer4Off' type="radio" value="layer4Off" name="toggle4">
-            <div class="toggle__pointer color4"></div>
-          </div>
-          <div class="item toggleText">
-            <p id="four">Earth System Science</p>
-          </div>
-        </div>
-        <div class="itemWrapper">
-          <div class='row toggle5 item filters' id="filter5">
-            <input id='layer5On' type="radio" value="layer5On" name="toggle5" checked='checked'>
-            <input id='layer5Off' type="radio" value="layer5Off" name="toggle5">
-            <div class="toggle__pointer color5"></div>
-          </div>
-          <div class="item toggleText">
-            <p id="five">Solutions & Economics</p>
-          </div>
-        </div>
-        <div class="itemWrapper">
-          <div class='row toggle5 item filters' id="filter6">
-            <input id='layer6On' type="radio" value="layer6On" name="toggle6" checked='checked'>
-            <input id='layer6Off' type="radio" value="layer6Off" name="toggle6">
-            <div class="toggle__pointer color6"></div>
-          </div>
-          <div class="item toggleText">
-            <p id="six">Indigenous Knowledge</p>
-          </div>
+        <div class="item toggleText">
+          <p id="one">Solutions & Politics</p>
         </div>
       </div>
-
+      <div class="itemWrapper">
+        <div class='row toggle item filters' id="filter2">
+          <input id='layer2On' type="radio" value="layer2On" name="toggle2" checked='checked'>
+          <input id='layer2Off' type="radio" value="layer2Off" name="toggle2">
+          <div class="toggle__pointer color2"></div>
+        </div>
+        <div class="item toggleText">
+          <p id="two">Habitability & Hospitability</p>
+        </div>
+      </div>
+      <div class="itemWrapper">
+        <div class='row toggle3 item filters' id="filter3">
+          <input id='layer3On' type="radio" value="layer3On" name="toggle3" checked='checked'>
+          <input id='layer3Off' type="radio" value="layer3Off" name="toggle3">
+          <div class="toggle__pointer color3"></div>
+        </div>
+        <div class="item toggleText">
+          <p id="three">Justice & Ethics</p>
+        </div>
+      </div>
+      <div class="itemWrapper">
+        <div class='row toggle4 item filters' id="filter4">
+          <input id='layer4On' type="radio" value="layer4On" name="toggle4" checked='checked'>
+          <input id='layer4Off' type="radio" value="layer4Off" name="toggle4">
+          <div class="toggle__pointer color4"></div>
+        </div>
+        <div class="item toggleText">
+          <p id="four">Earth System Science</p>
+        </div>
+      </div>
+      <div class="itemWrapper">
+        <div class='row toggle5 item filters' id="filter5">
+          <input id='layer5On' type="radio" value="layer5On" name="toggle5" checked='checked'>
+          <input id='layer5Off' type="radio" value="layer5Off" name="toggle5">
+          <div class="toggle__pointer color5"></div>
+        </div>
+        <div class="item toggleText">
+          <p id="five">Solutions & Economics</p>
+        </div>
+      </div>
+      <div class="itemWrapper">
+        <div class='row toggle5 item filters' id="filter6">
+          <input id='layer6On' type="radio" value="layer6On" name="toggle6" checked='checked'>
+          <input id='layer6Off' type="radio" value="layer6Off" name="toggle6">
+          <div class="toggle__pointer color6"></div>
+        </div>
+        <div class="item toggleText">
+          <p id="six">Indigenous Knowledge</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -560,23 +583,21 @@
       .select("#locator")
       .append("svg")
       .attr("width", 200)
-      .attr("height", 200)
+      .attr("height", 200);
 
 
     //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
 
     // +30 to show NZ
     let projection = d3.geoPeirceQuincuncial()
-      .fitSize([width, height + 40], {
+      .fitSize([width, height + 50], {
         type: "Sphere"
       })
       .precision(0.1)
-      .scale((width + 100) / 2 / Math.PI);
+      .scale((width + 100) / 2 / Math.PI)
+    // .rotate([-100, 0])
 
     let path = d3.geoPath().projection(projection);
-
-    const projection2 = d3.geoGilbert();
-    const path2 = d3.geoPath(projection2);
 
     const colorScale = d3.scaleOrdinal()
       .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
@@ -623,6 +644,7 @@
     function brushMove(e) {
 
       brushing = true;
+      tooltip.hideTooltip();
 
 
       svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
@@ -769,6 +791,13 @@
 
     Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
 
+      // const projection2 = d3.geoGilbert()
+      //   .fitSize([200, 200], values[0])
+
+      // const path2 = d3.geoPath(projection2);
+
+
+
       // projection = d3
       //   .geoIdentity()
       //   .fitSize([width, height], values[2]);
@@ -827,11 +856,11 @@
         .attr("id", "land")
         .attr("d", path);
 
-      svg2.selectAll("path.main")
-        .data(values[0].features)
-        .join("path")
-        .attr("class", "main")
-        .attr("d", path2)
+      // svg2.selectAll("path.main")
+      //   .data(values[0].features)
+      //   .join("path")
+      //   .attr("class", "main")
+      //   .attr("d", path2)
 
 
       const bbox = d3.select("#land").node().getBBox();
@@ -968,9 +997,11 @@
             }
 
             $(".prediction-item").on("click", function () {
+
               $text = $(this).find("span").text();
-              //filter map with selected text here
+              resetFilters();
               filterPoints(values[1], $text)
+
               $(".output").slideUp(function () {
                 $(this).html("");
               });
@@ -1003,21 +1034,6 @@
       });
 
       $("#reset").on("click", function () {
-        activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge'];
-
-        $("#layer1On").prop("checked", true);
-        $("#layer1Off").prop("checked", false);
-        $("#layer2On").prop("checked", true);
-        $("#layer2Off").prop("checked", false);
-        $("#layer3On").prop("checked", true);
-        $("#layer3Off").prop("checked", false);
-        $("#layer4On").prop("checked", true);
-        $("#layer4Off").prop("checked", false);
-        $("#layer5On").prop("checked", true);
-        $("#layer5Off").prop("checked", false);
-        $("#layer6On").prop("checked", true);
-        $("#layer6Off").prop("checked", false);
-
         resetZoom();
         resetPoints(data);
         $("#search-bar").val("");
@@ -1032,6 +1048,9 @@
     function createFilterStatus(filterName, layerOnName, statusString) {
       document.getElementById(filterName).addEventListener('change', function (e) {
         //remove popup
+        clicked = false;
+        d3.selectAll(".point").style("stroke", "#808080");
+        tooltip.hideTooltip();
 
         if (e.target.value === layerOnName) {
           if (activeCategories.indexOf(statusString) == -1) {
@@ -1080,8 +1099,6 @@
 
       ids = filteredData.map(a => a.Id);
 
-      console.log(ids)
-
 
       let lat = filteredData[0].Latitude;
       let lon = filteredData[0].Longitude;
@@ -1114,13 +1131,14 @@
 
       d3.selectAll("circle.point")
         .style("opacity", d => ids.includes(d.Id) ? 1 : 0)
+        .style("display", d => ids.includes(d.Id) ? "inherit" : "none")
 
     }
 
-    // I also need to reset all the filters and set the active categories to all
     function resetPoints(data) {
       tooltip.hideTooltip();
       clicked = false;
+      resetFilters();
       svg.selectAll("circle.point")
         .data(data)
         .join("circle")
@@ -1135,6 +1153,25 @@
         .on("mouseover", (e, d) => showDetail(e, d))
         .on("mouseout", d => hideDetail(d))
 
+    }
+
+
+    function resetFilters() {
+      console.log("reset filters")
+      activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge'];
+
+      $("#layer1On").prop("checked", true);
+      $("#layer1Off").prop("checked", false);
+      $("#layer2On").prop("checked", true);
+      $("#layer2Off").prop("checked", false);
+      $("#layer3On").prop("checked", true);
+      $("#layer3Off").prop("checked", false);
+      $("#layer4On").prop("checked", true);
+      $("#layer4Off").prop("checked", false);
+      $("#layer5On").prop("checked", true);
+      $("#layer5Off").prop("checked", false);
+      $("#layer6On").prop("checked", true);
+      $("#layer6Off").prop("checked", false);
     }
 
 
