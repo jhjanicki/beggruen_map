@@ -21,7 +21,7 @@
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
       background-color: #CBD0D3;
-      /* #BECAD2; */
+      overflow-x: hidden;
     }
 
     .navbar {
@@ -42,7 +42,7 @@
 
     .navbar li a {
       color: #000;
-      font-size: 16px;
+      font-size: 20px;
     }
 
     .navbar li a:hover {
@@ -203,11 +203,11 @@
       color: #000;
     }
 
-    #toggleWrapper {
+    /* #toggleWrapper {
       position: absolute;
       bottom: 10px;
       right: 20px;
-    }
+    } */
 
     .toggleText {
       margin-top: 10px;
@@ -413,18 +413,27 @@
       display: inherit;
     }
 
+    #logo {
+      width: 200px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
     #locator {
+      width: 150px;
       position: absolute;
       bottom: 20px;
-      left: 20px;
-      width: 200px;
-      height: 200px;
+      left: 10px;
     }
   </style>
 </head>
 
 <body>
 
+
+  <img id="logo" src="./img/logo.svg" />
+  <img id="locator" src="./img/globe.svg" />
 
   <div class="tooltip">
     <span class="close">X</span>
@@ -438,8 +447,8 @@
   <div class="wrapper">
 
     <div class="navbar">
-      <li><a href="#">map</a></li>
-      <li><a href="#">individuals</a></li>
+      <li><a href="index.html">map</a></li>
+      <li><a href="individuals.html">individuals</a></li>
     </div>
 
     <div id="locator"></div>
@@ -459,71 +468,72 @@
           <p id="reset" class="button">reset</p>
           <p id="resetZoom" class="button">reset zoom</p>
         </form>
+        <div id="toggleWrapper">
+          <div class="itemWrapper">
+            <div class='toggle item filters' id="filter1">
+              <input id='layer1On' type="radio" value="layer1On" name="toggle" checked='checked'>
+              <input id='layer1Off' type="radio" value="layer1Off" name="toggle">
+              <div class="toggle__pointer color1"></div>
+            </div>
+            <div class="item toggleText">
+              <p id="one">Solutions & Politics</p>
+            </div>
+          </div>
+          <div class="itemWrapper">
+            <div class='row toggle item filters' id="filter2">
+              <input id='layer2On' type="radio" value="layer2On" name="toggle2" checked='checked'>
+              <input id='layer2Off' type="radio" value="layer2Off" name="toggle2">
+              <div class="toggle__pointer color2"></div>
+            </div>
+            <div class="item toggleText">
+              <p id="two">Habitability & Hospitability</p>
+            </div>
+          </div>
+          <div class="itemWrapper">
+            <div class='row toggle3 item filters' id="filter3">
+              <input id='layer3On' type="radio" value="layer3On" name="toggle3" checked='checked'>
+              <input id='layer3Off' type="radio" value="layer3Off" name="toggle3">
+              <div class="toggle__pointer color3"></div>
+            </div>
+            <div class="item toggleText">
+              <p id="three">Justice & Ethics</p>
+            </div>
+          </div>
+          <div class="itemWrapper">
+            <div class='row toggle4 item filters' id="filter4">
+              <input id='layer4On' type="radio" value="layer4On" name="toggle4" checked='checked'>
+              <input id='layer4Off' type="radio" value="layer4Off" name="toggle4">
+              <div class="toggle__pointer color4"></div>
+            </div>
+            <div class="item toggleText">
+              <p id="four">Earth System Science</p>
+            </div>
+          </div>
+          <div class="itemWrapper">
+            <div class='row toggle5 item filters' id="filter5">
+              <input id='layer5On' type="radio" value="layer5On" name="toggle5" checked='checked'>
+              <input id='layer5Off' type="radio" value="layer5Off" name="toggle5">
+              <div class="toggle__pointer color5"></div>
+            </div>
+            <div class="item toggleText">
+              <p id="five">Solutions & Economics</p>
+            </div>
+          </div>
+          <div class="itemWrapper">
+            <div class='row toggle5 item filters' id="filter6">
+              <input id='layer6On' type="radio" value="layer6On" name="toggle6" checked='checked'>
+              <input id='layer6Off' type="radio" value="layer6Off" name="toggle6">
+              <div class="toggle__pointer color6"></div>
+            </div>
+            <div class="item toggleText">
+              <p id="six">Indigenous Knowledge</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div id="toggleWrapper">
-      <div class="itemWrapper">
-        <div class='toggle item filters' id="filter1">
-          <input id='layer1On' type="radio" value="layer1On" name="toggle" checked='checked'>
-          <input id='layer1Off' type="radio" value="layer1Off" name="toggle">
-          <div class="toggle__pointer color1"></div>
-        </div>
-        <div class="item toggleText">
-          <p id="one">Solutions & Politics</p>
-        </div>
-      </div>
-      <div class="itemWrapper">
-        <div class='row toggle item filters' id="filter2">
-          <input id='layer2On' type="radio" value="layer2On" name="toggle2" checked='checked'>
-          <input id='layer2Off' type="radio" value="layer2Off" name="toggle2">
-          <div class="toggle__pointer color2"></div>
-        </div>
-        <div class="item toggleText">
-          <p id="two">Habitability & Hospitability</p>
-        </div>
-      </div>
-      <div class="itemWrapper">
-        <div class='row toggle3 item filters' id="filter3">
-          <input id='layer3On' type="radio" value="layer3On" name="toggle3" checked='checked'>
-          <input id='layer3Off' type="radio" value="layer3Off" name="toggle3">
-          <div class="toggle__pointer color3"></div>
-        </div>
-        <div class="item toggleText">
-          <p id="three">Justice & Ethics</p>
-        </div>
-      </div>
-      <div class="itemWrapper">
-        <div class='row toggle4 item filters' id="filter4">
-          <input id='layer4On' type="radio" value="layer4On" name="toggle4" checked='checked'>
-          <input id='layer4Off' type="radio" value="layer4Off" name="toggle4">
-          <div class="toggle__pointer color4"></div>
-        </div>
-        <div class="item toggleText">
-          <p id="four">Earth System Science</p>
-        </div>
-      </div>
-      <div class="itemWrapper">
-        <div class='row toggle5 item filters' id="filter5">
-          <input id='layer5On' type="radio" value="layer5On" name="toggle5" checked='checked'>
-          <input id='layer5Off' type="radio" value="layer5Off" name="toggle5">
-          <div class="toggle__pointer color5"></div>
-        </div>
-        <div class="item toggleText">
-          <p id="five">Solutions & Economics</p>
-        </div>
-      </div>
-      <div class="itemWrapper">
-        <div class='row toggle5 item filters' id="filter6">
-          <input id='layer6On' type="radio" value="layer6On" name="toggle6" checked='checked'>
-          <input id='layer6Off' type="radio" value="layer6Off" name="toggle6">
-          <div class="toggle__pointer color6"></div>
-        </div>
-        <div class="item toggleText">
-          <p id="six">Indigenous Knowledge</p>
-        </div>
-      </div>
-    </div>
+
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
@@ -844,8 +854,8 @@
         return type.indexOf(v) == i;
       });
 
-
       colorScale.domain(categories);
+
 
       //this part is to remove the weird artifacts (horizontal lines above and below the map)
       // draw first map just to get the bbox of the land
