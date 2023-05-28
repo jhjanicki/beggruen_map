@@ -76,12 +76,100 @@
             }
         }
 
-        #chartWrapper {
-            width: 80%;
-            height: 90vh;
-            margin-left: auto;
-            margin-right: auto;
+        .toggleText {
+            margin-top: 10px;
+            font-size: 16px;
         }
+
+        /* Toggle button related */
+        .toggle,
+        .toggle2,
+        .toggle3,
+        .toggle4,
+        .toggle5 {
+            position: relative;
+            height: 14px;
+            width: 35px;
+            border-radius: 15px;
+            background: #b7b2ab;
+            margin-right: 5px;
+        }
+
+        .toggle input,
+        .toggle2 input,
+        .toggle3 input,
+        .toggle4 input,
+        .toggle5 input {
+            opacity: 0;
+            width: 100%;
+            height: 200%;
+            position: absolute;
+            top: -7px;
+            left: 0;
+            z-index: 2;
+            margin: 0
+        }
+
+        .toggle__pointer {
+            position: absolute;
+            top: -2px;
+            left: 18px;
+            width: 20px;
+            height: 20px;
+            border-radius: 15px;
+            background-color: #007979;
+            -webkit-transition: left .15s ease-out;
+            transition: left .15s ease-out;
+        }
+
+        .toggle input:nth-child(2):checked+.toggle__pointer,
+        .toggle2 input:nth-child(2):checked+.toggle__pointer,
+        .toggle3 input:nth-child(2):checked+.toggle__pointer,
+        .toggle4 input:nth-child(2):checked+.toggle__pointer,
+        .toggle5 input:nth-child(2):checked+.toggle__pointer {
+            left: 0px;
+            background-color: #777777;
+        }
+
+        .toggle__pointer.color1 {
+            background-color: #d69a07;
+        }
+
+        .toggle__pointer.color2 {
+            background-color: #db311b;
+        }
+
+        .toggle__pointer.color3 {
+            background-color: #71918a;
+        }
+
+        .toggle__pointer.color4 {
+            background-color: #c9bc11;
+        }
+
+        .toggle__pointer.color5 {
+            background-color: #39603d;
+        }
+
+        .toggle__pointer.color6 {
+            background-color: #305d77;
+        }
+
+        .toggle input:nth-child(2):checked,
+        .toggle2 input:nth-child(2):checked,
+        .toggle3 input:nth-child(2):checked,
+        .toggle4 input:nth-child(2):checked,
+        .toggle5 input:nth-child(2):checked {
+            z-index: 1;
+        }
+
+        .item {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+            margin-left: 0px;
+        }
+
 
         #logo {
             width: 200px;
@@ -95,6 +183,7 @@
             position: absolute;
             bottom: 20px;
             left: 10px;
+            z-index: 200;
         }
     </style>
 </head>
@@ -109,7 +198,80 @@
             <li><a href="individuals.html">individuals</a></li>
         </div>
 
-        <div id="chartWrapper"></div>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="chartWrapper">
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div id="toggleWrapper">
+                    <div class="itemWrapper">
+                        <div class='toggle item filters' id="filter1">
+                            <input id='layer1On' type="radio" value="layer1On" name="toggle" checked='checked'>
+                            <input id='layer1Off' type="radio" value="layer1Off" name="toggle">
+                            <div class="toggle__pointer color1"></div>
+                        </div>
+                        <div class="item toggleText">
+                            <p id="one">Solutions & Politics</p>
+                        </div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class='row toggle item filters' id="filter2">
+                            <input id='layer2On' type="radio" value="layer2On" name="toggle2" checked='checked'>
+                            <input id='layer2Off' type="radio" value="layer2Off" name="toggle2">
+                            <div class="toggle__pointer color2"></div>
+                        </div>
+                        <div class="item toggleText">
+                            <p id="two">Habitability & Hospitability</p>
+                        </div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class='row toggle3 item filters' id="filter3">
+                            <input id='layer3On' type="radio" value="layer3On" name="toggle3" checked='checked'>
+                            <input id='layer3Off' type="radio" value="layer3Off" name="toggle3">
+                            <div class="toggle__pointer color3"></div>
+                        </div>
+                        <div class="item toggleText">
+                            <p id="three">Justice & Ethics</p>
+                        </div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class='row toggle4 item filters' id="filter4">
+                            <input id='layer4On' type="radio" value="layer4On" name="toggle4" checked='checked'>
+                            <input id='layer4Off' type="radio" value="layer4Off" name="toggle4">
+                            <div class="toggle__pointer color4"></div>
+                        </div>
+                        <div class="item toggleText">
+                            <p id="four">Earth System Science</p>
+                        </div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class='row toggle5 item filters' id="filter5">
+                            <input id='layer5On' type="radio" value="layer5On" name="toggle5" checked='checked'>
+                            <input id='layer5Off' type="radio" value="layer5Off" name="toggle5">
+                            <div class="toggle__pointer color5"></div>
+                        </div>
+                        <div class="item toggleText">
+                            <p id="five">Solutions & Economics</p>
+                        </div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class='row toggle5 item filters' id="filter6">
+                            <input id='layer6On' type="radio" value="layer6On" name="toggle6" checked='checked'>
+                            <input id='layer6Off' type="radio" value="layer6Off" name="toggle6">
+                            <div class="toggle__pointer color6"></div>
+                        </div>
+                        <div class="item toggleText">
+                            <p id="six">Indigenous Knowledge</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 
     </div>
 
@@ -131,97 +293,9 @@
             }
         });
 
-        var data = [
-            {
-                title: "Reingold–Tilford Tree (Radial)",
-                url: "https://picsum.photos/id/237/200",
-            },
-            {
-                title: "Factorisation Diagrams",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Phylogenetic Tree of Life",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Geographic Clipping",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Les Misérables Co-occurrence Matrix",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "L*a*b* and HCL color spaces",
-                url: "https://picsum.photos/200",
-            },
-            { title: "Treemap", url: "https://picsum.photos/id/237/200" },
-            {
-                title: "Map Projection Transitions",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Across U.S. Companies, Tax Rates Vary Greatly",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Rotating Voronoi",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Zoomable Geography",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Fisheye Distortion",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Geodesic Rainbow",
-                url: "https://picsum.photos/id/237/200",
-            },
-            {
-                title: "Hierarchical Bar Chart",
-                url: "http://bl.ocks.org/mbostock/1283663",
-            },
-            { title: "Exoplanets", url: "http://bl.ocks.org/mbostock/3007180" },
-            { title: "Crossfilter", url: "http://square.github.io/crossfilter/" },
-            {
-                title: "Alaska’s villages on the frontline of climate change",
-                url: "http://www.guardian.co.uk/environment/interactive/2013/may/14/alaska-villages-frontline-global-warming",
-            },
-            {
-                title: "The federal health-care exchange’s abysmal success rate",
-                url: "http://www.washingtonpost.com/wp-srv/special/politics/state-vs-federal-exchanges/",
-            },
-            {
-                title: "Counties Blue and Red, Moving Right and Left",
-                url: "https://picsum.photos/id/237/200",
-            },
-            {
-                title: "At the National Conventions, the Words They Used",
-                url: "http://www.nytimes.com/interactive/2012/09/06/us/politics/convention-word-counts.html",
-            },
-            {
-                title: "Reprojected Raster Tiles",
-                url: "https://picsum.photos/200",
-            },
-            { title: "Hive Plots", url: "https://picsum.photos/200" },
-            {
-                title: "Donut Transitions",
-                url: "https://picsum.photos/200",
-            },
-            {
-                title: "Non-Contiguous Cartogram",
-                url: "https://picsum.photos/200",
-            },
-            { title: "Spermatozoa", url: "https://picsum.photos/id/237/200" },
-            {
-                title: "Zoomable Circle Packing",
-                url: "https://picsum.photos/200",
-            }
-        ];
+
+        let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
+        let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
 
 
         const colorScale = d3.scaleOrdinal()
@@ -237,8 +311,8 @@
 
         const sqrt3 = 1.7320508075688772;
 
-        let width = $("#chartWrapper").width();
-        let height = $("#chartWrapper").height();
+        let width = $(".chartWrapper").width();
+        let height = $(".chartWrapper").height();
 
 
         const individuals = d3.csv("./data/individualsData.csv");
@@ -314,7 +388,7 @@
             //   cols * 1.5 * hexRadius + 0.5 * hexRadius;
 
             var svg = d3
-                .select("#chartWrapper")
+                .select(".chartWrapper")
                 .append("svg")
                 .attr("width", svgWidth + margin.left + margin.right)
                 .attr("height", svgHeight + margin.top + margin.bottom)
@@ -359,9 +433,12 @@
                 .attr("class", "hexagonOverlay")
                 .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
                 .attr("d", hexbin.hexagon())
-                .attr("stroke", d => d[0].category == "" ? "none" : colorScale(d[0].category))
-                .attr("stroke-width", 3)
-                .attr("fill", "none")
+                .attr("fill", d => d[0].category == "" ? "none" : colorScale(d[0].category))
+                .attr("stroke-width", 2)
+                .attr("stroke", d => d[0].category == "" ? "none" : "white")
+            // .attr("stroke", d => d[0].category == "" ? "none" : colorScale(d[0].category))
+            // .attr("stroke-width", 3)
+            // .attr("fill", "none")
 
 
             svg
@@ -378,6 +455,55 @@
                 .text(d => d.name)
 
         });
+
+
+        function createFilterStatus(filterName, layerOnName, statusString) {
+            document.getElementById(filterName).addEventListener('change', function (e) {
+
+                if (e.target.value === layerOnName) {
+                    if (activeCategories.indexOf(statusString) == -1) {
+                        activeCategories.push(statusString)
+                    }
+
+                    console.log(activeCategories)
+
+                    // redraw using d3 here
+
+                    d3.selectAll(".hexagonOverlay")
+                        .transition().duration(300)
+                        .style("opacity", d => activeCategories.includes(d[0].category) ? 1 : 0)
+                    // .style("display", d => console.log(d[0].category));
+
+                    d3.selectAll(".hexagonImg").transition().duration(300)
+                        .style("opacity", d => activeCategories.includes(d.category) ? 1 : 0)
+
+
+                } else {
+                    if (activeCategories.indexOf(statusString) !== -1) {
+                        var index = activeCategories.indexOf(statusString);
+                        activeCategories.splice(index, 1);
+                    }
+
+                    console.log(activeCategories)
+
+                    // redraw using d3 here
+                    d3.selectAll(".hexagonOverlay")
+                        .transition().duration(300)
+                        .style("opacity", d => activeCategories.includes(d[0].category) ? 1 : 0)
+
+                    d3.selectAll(".hexagonImg").transition().duration(300)
+                        .style("opacity", d => activeCategories.includes(d.category) ? 1 : 0);
+                }
+            });
+
+        }
+
+        createFilterStatus('filter1', 'layer1On', 'Solutions & Politics')
+        createFilterStatus('filter2', 'layer2On', 'Habitability & Hospitability')
+        createFilterStatus('filter3', 'layer3On', 'Justice & Ethics')
+        createFilterStatus('filter4', 'layer4On', 'Earth System Science')
+        createFilterStatus('filter5', 'layer5On', 'Solutions & Economics')
+        createFilterStatus('filter6', 'layer6On', 'Indigenous Knowledge')
 
 
     </script>
