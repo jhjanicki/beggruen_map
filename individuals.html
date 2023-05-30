@@ -60,7 +60,7 @@
 
         @media only screen and (max-width: 1100px) {
             .chartWrapper {
-                height: 600px;
+                height: 450px;
                 width: 85%;
                 margin-top: 0px;
                 margin-left: auto;
@@ -70,7 +70,15 @@
 
         @media only screen and (max-width: 850px) {
             .chartWrapper {
-                height: 500px;
+                height: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .chartWrapper {
+                height: 300px;
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -178,12 +186,20 @@
             left: 10px;
         }
 
-        #locator {
-            width: 150px;
-            position: absolute;
-            bottom: 20px;
-            left: 10px;
-            z-index: 200;
+
+        #toggleWrapper {
+            margin-right: 10px;
+            float: right;
+        }
+
+        @media only screen and (max-width: 991px) {
+
+            #toggleWrapper {
+                margin-left: 60px;
+                float: none;
+                clear: both;
+
+            }
         }
     </style>
 </head>
@@ -191,7 +207,6 @@
 <body>
 
     <img id="logo" src="./img/logo.svg" />
-    <img id="locator" src="./img/globe.svg" />
     <div class="wrapper">
         <div class="navbar">
             <li><a href="index.html">map</a></li>
@@ -293,6 +308,25 @@
             }
         });
 
+        console.log(windowHeight)
+        if (windowHeight <= 1100 && windowHeight > 1000) {
+            $("#toggleWrapper").css("margin-top", windowHeight - 600)
+        } else if (windowHeight <= 1000 && windowHeight > 900) {
+            $("#toggleWrapper").css("margin-top", windowHeight - 500)
+        } else if (windowHeight <= 900 && windowHeight > 800) {
+            $("#toggleWrapper").css("margin-top", windowHeight - 400)
+        } else if (windowHeight <= 800 && windowHeight > 700) {
+            $("#toggleWrapper").css("margin-top", windowHeight - 350)
+        } else if (windowHeight <= 700 && windowHeight > 600) {
+            $("#toggleWrapper").css("margin-top", windowHeight - 350)
+        } else if (windowHeight <= 600) {
+            $("#toggleWrapper").css("margin-top", 20)
+        }
+
+        if (windowWidth <= 991) {
+            $("#toggleWrapper").css("margin-top", 20)
+        }
+
 
         let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
         let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
@@ -306,7 +340,7 @@
             top: 0,
             right: 0,
             bottom: 0,
-            left: 0,
+            left: 5,
         };
 
         const sqrt3 = 1.7320508075688772;
@@ -339,7 +373,6 @@
                     [width - margin.right, height - margin.bottom],
                 ]);
 
-            console.log(values[0])
 
             var points = [];
 
@@ -387,16 +420,18 @@
             //Math.ceil(rows * 1.5 * hexRadius + 0.5 * hexRadius);
             //   cols * 1.5 * hexRadius + 0.5 * hexRadius;
 
-            var svg = d3
+            let svg = d3
                 .select(".chartWrapper")
                 .append("svg")
                 .attr("width", svgWidth + margin.left + margin.right)
                 .attr("height", svgHeight + margin.top + margin.bottom)
+
+            let g = svg.append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             //Start drawing the hexagons
 
-            const defs = svg.append("defs");
+            const defs = g.append("defs");
 
             defs
                 .selectAll(".hexagon")
@@ -413,21 +448,19 @@
 
 
 
-            svg
-                .selectAll("image.hexagonImg")
-                .data(points)
-                .join("image")
-                .attr("class", "hexagonImg")
-                .attr("xlink:href", d => d.img)
-                .attr("x", d => d.x - hexRadius)
-                .attr("y", d => d.y - hexRadius / 2)
-                .attr("width", hexRadius * 2)
-                .attr("height", hexRadius * 2)
-                .attr("clip-path", (d, i) => "url(#clip" + i + ")");
+            // g.selectAll("image.hexagonImg")
+            //     .data(points)
+            //     .join("image")
+            //     .attr("class", "hexagonImg")
+            //     .attr("xlink:href", d => d.img)
+            //     .attr("x", d => d.x - hexRadius)
+            //     .attr("y", d => d.y - hexRadius / 2)
+            //     .attr("width", hexRadius * 2)
+            //     .attr("height", hexRadius * 2)
+            //     .attr("clip-path", (d, i) => "url(#clip" + i + ")");
 
 
-            svg
-                .selectAll(".hexagonOverlay")
+            g.selectAll(".hexagonOverlay")
                 .data(hexbin(points))
                 .join("path")
                 .attr("class", "hexagonOverlay")
@@ -435,14 +468,13 @@
                 .attr("d", hexbin.hexagon())
                 .attr("fill", d => d[0].category == "" ? "none" : colorScale(d[0].category))
                 .attr("stroke-width", 2)
-                .attr("stroke", d => d[0].category == "" ? "none" : "white")
+                .attr("stroke", d => d[0].category == "" ? "none" : "black")
             // .attr("stroke", d => d[0].category == "" ? "none" : colorScale(d[0].category))
             // .attr("stroke-width", 3)
             // .attr("fill", "none")
 
 
-            svg
-                .selectAll(".title")
+            g.selectAll(".title")
                 .data(points)
                 .join("text")
                 .attr("class", "title")
@@ -450,9 +482,11 @@
                 .attr("fill", "white")
                 .attr("text-anchor", "middle")
                 .style("font-weight", 700)
-                .style("font-size", 16)
+                .style("font-size", windowWidth < 800 ? 12 : 16)
                 // .text(d => d.col + "," + d.row)
+                .style("text-align", "center")
                 .text(d => d.name)
+                .call(wrap, hexRadius);
 
         });
 
@@ -465,7 +499,7 @@
                         activeCategories.push(statusString)
                     }
 
-                    console.log(activeCategories)
+                    // console.log(activeCategories)
 
                     // redraw using d3 here
 
@@ -475,6 +509,9 @@
                     // .style("display", d => console.log(d[0].category));
 
                     d3.selectAll(".hexagonImg").transition().duration(300)
+                        .style("opacity", d => activeCategories.includes(d.category) ? 1 : 0)
+
+                    d3.selectAll(".title").transition().duration(300)
                         .style("opacity", d => activeCategories.includes(d.category) ? 1 : 0)
 
 
@@ -493,6 +530,9 @@
 
                     d3.selectAll(".hexagonImg").transition().duration(300)
                         .style("opacity", d => activeCategories.includes(d.category) ? 1 : 0);
+
+                    d3.selectAll(".title").transition().duration(300)
+                        .style("opacity", d => activeCategories.includes(d.category) ? 1 : 0)
                 }
             });
 
@@ -504,6 +544,32 @@
         createFilterStatus('filter4', 'layer4On', 'Earth System Science')
         createFilterStatus('filter5', 'layer5On', 'Solutions & Economics')
         createFilterStatus('filter6', 'layer6On', 'Indigenous Knowledge')
+
+        const wrap = (text, width) => {
+            text.each(function () {
+                var text = d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    lineHeight = 1.1, // ems
+                    y = text.attr("y"),
+                    dy = parseFloat(text.attr("dy")) || 0,
+                    tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+                console.log(words)
+                while (word = words.pop()) {
+                    line.push(word);
+                    tspan.text(line.join(" "));
+                    if (tspan.node().getComputedTextLength() > width) {
+                        line.pop();
+                        tspan.text(line.join(" "));
+                        line = [word];
+                        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + 14).text(word);
+                    }
+                }
+            });
+
+        }
 
 
     </script>

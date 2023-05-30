@@ -204,12 +204,18 @@
     }
 
     #toggleWrapper {
-      /* position: absolute;
-      bottom: 10px;
-      right: 20px; */
-      margin-top: 250px;
       margin-right: 10px;
       float: right;
+    }
+
+    @media only screen and (max-width: 600px) {
+
+      #toggleWrapper {
+        margin-left: 60px;
+        float: none;
+        clear: both;
+
+      }
     }
 
     .toggleText {
@@ -426,9 +432,18 @@
     #locator {
       width: 150px;
       position: absolute;
-      bottom: 20px;
-      left: 20px;
+      bottom: 30px;
+      left: 40px;
       z-index: 200;
+    }
+
+    @media only screen and (max-width: 600px) {
+      #locator {
+        width: 120px;
+        bottom: 10px;
+        /* right: 20px;
+        left: auto; */
+      }
     }
   </style>
 </head>
@@ -437,7 +452,6 @@
 
 
   <img id="logo" src="./img/logo.svg" />
-  <img id="locator" src="./img/globe.svg" />
 
   <div class="tooltip">
     <span class="close">X</span>
@@ -461,6 +475,7 @@
       <div class="col-md-9">
         <div class="chartWrapper">
           <div id="chart1"></div>
+          <img id="locator" src="./img/globe.svg" />
         </div>
       </div>
       <div class="col-md-3">
@@ -567,6 +582,32 @@
         return;
       }
     });
+
+    // var scrollTop = $(window).scrollTop(),
+    //   elementOffset = $('#reset').offset().top,
+    //   distanceToTop = (elementOffset - scrollTop);
+    // let toggleWrapperHt = $("#toggleWrapper").height();
+    // let distanceFromTop = windowHeight - distanceToTop - toggleWrapperHt - 100;
+    if (windowHeight <= 1100 && windowHeight > 1000) {
+      $("#toggleWrapper").css("margin-top", windowHeight - 800)
+    } else if (windowHeight <= 1000 && windowHeight > 900) {
+      $("#toggleWrapper").css("margin-top", windowHeight - 700)
+    } else if (windowHeight <= 900 && windowHeight > 800) {
+      $("#toggleWrapper").css("margin-top", windowHeight - 600)
+    } else if (windowHeight <= 800 && windowHeight > 700) {
+      $("#toggleWrapper").css("margin-top", windowHeight - 550)
+    } else if (windowHeight <= 700 && windowHeight > 600) {
+      $("#toggleWrapper").css("margin-top", windowHeight - 550)
+    } else if (windowHeight <= 600) {
+      $("#toggleWrapper").css("margin-top", 20)
+    }
+
+    if (windowWidth <= 600) {
+      $("#toggleWrapper").css("margin-top", 20)
+    }
+
+
+
 
     const searchformWidth = $("#searchform").width();
     $(".output").css("width", searchformWidth);
