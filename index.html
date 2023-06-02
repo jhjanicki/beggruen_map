@@ -36,7 +36,7 @@
     .navbar li {
       display: inline;
       padding: 10px;
-      margin-right: 10px;
+      margin-right: 20px;
 
     }
 
@@ -367,7 +367,7 @@
 
     .close {
       position: absolute;
-      right: 7px;
+      right: 8px;
       top: 5px;
       color: black;
       opacity: 1;
@@ -437,6 +437,11 @@
       z-index: 200;
     }
 
+
+    #locator:hover {
+      cursor: pointer;
+    }
+
     @media only screen and (max-width: 600px) {
       #locator {
         width: 120px;
@@ -444,6 +449,8 @@
         /* right: 20px;
         left: auto; */
       }
+
+
     }
   </style>
 </head>
@@ -454,13 +461,13 @@
   <img id="logo" src="./img/logo.svg" />
 
   <div class="tooltip">
-    <span class="close">X</span>
+    <!-- <span class="close">✕</span>
     <div class="front show">
       <span class="more">More→</span>
     </div>
     <div class="back none">
       <span class="back">Back→</span>
-    </div>
+    </div> -->
   </div>
   <div class="wrapper">
 
@@ -469,7 +476,8 @@
       <li><a href="individuals.html">individuals</a></li>
     </div>
 
-    <div id="locator"></div>
+
+
 
     <div class="row">
       <div class="col-md-9">
@@ -565,6 +573,7 @@
   <script src="./js/tooltip.js"></script>
   <script>
 
+    // PROBLEM: when searched, then brush zoom, then stroke width is super thick
     // whenever I filter then reset, I cannot click anymore
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
@@ -607,6 +616,14 @@
     }
 
 
+    let isSmallScreen = false;
+
+
+    if (windowWidth <= 600) {
+      isSmallScreen = true;
+    }
+
+
 
 
     const searchformWidth = $("#searchform").width();
@@ -620,10 +637,12 @@
     let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
     let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
 
-    let tooltip = floatingTooltip('gates_tooltip', 240, 10);
+    let tooltip = floatingTooltip('circleTooltip', 240, 10);
     let clicked = false;
     let isZoomed = false;
     let brushing = false; // to make sure tooltip won't show up when brushing
+    let searched = false;
+    let reprojected = false;
 
 
     // Prepare our physical space
@@ -632,9 +651,15 @@
       .append("svg")
       .attr("width", width)
       .attr("height", height)
+      .append("g")
+      .attr("transform", "translate(0,0)")
 
 
     //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
+
+
+    const projection2 = d3.geoNaturalEarth1();
+    const path2 = d3.geoPath(projection2);
 
     // +30 to show NZ
     let projection = d3.geoPeirceQuincuncial()
@@ -643,8 +668,7 @@
       })
       .precision(0.1)
       .scale((width + 100) / 2 / Math.PI)
-    // .rotate([-100, 0])
-
+    // .rotate([0, 0, 0])
     let path = d3.geoPath().projection(projection);
 
     const colorScale = d3.scaleOrdinal()
@@ -698,11 +722,6 @@
       svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
 
 
-
-      // .attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
-
-      // d3.select(`#${texture.id()} path`).attr("transform", "translate(0,0)")
-
       //update brush extent
       brushExtent = e.selection;
       //update points style within the rect
@@ -719,16 +738,23 @@
     }
 
     function isInBrushExtent(d) {
-      return brushExtent &&
-        projection([d.Longitude, d.Latitude])[0] >= brushExtent[0][0] &&
-        projection([d.Longitude, d.Latitude])[0] <= brushExtent[1][0] &&
-        projection([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
-        projection([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
+      if (reprojected) {
+        return brushExtent &&
+          projection2([d.Longitude, d.Latitude])[0] >= brushExtent[0][0] &&
+          projection2([d.Longitude, d.Latitude])[0] <= brushExtent[1][0] &&
+          projection2([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
+          projection2([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
+
+      } else {
+        return brushExtent &&
+          projection([d.Longitude, d.Latitude])[0] >= brushExtent[0][0] &&
+          projection([d.Longitude, d.Latitude])[0] <= brushExtent[1][0] &&
+          projection([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
+          projection([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
+      }
+
     }
 
-
-    //the brush still detects the zoom level as the original, not the zoomed in level
-    // the current extent doesn't seem to be stored
 
 
     //brushEnd function
@@ -780,13 +806,6 @@
       }
 
 
-      // if (e.transform.k > 1) { //prevent the brush from showing up when resetZoom is clicked at initial scale
-
-      //   d3.select(".selection").style("display", "block")
-      //   d3.selectAll(".handle").style("display", "block");
-
-      // }
-
       isZoomed = true;
 
       const transform = e.transform; //k,x,y
@@ -799,7 +818,7 @@
       svg.selectAll("circle")
         .attr('transform', transform)
         .attr('r', 5.5 / transform.k)
-        .attr("stroke-width", isZoomed ? 1 / transformed.k : 1)
+        .attr("stroke-width", isZoomed ? 1 / transform.k : 1)
         .attr("fill", d => colorScale(d.Category))
         .style("opacity", d => function () {
           if (ids.includes(d.Id)) {
@@ -816,7 +835,8 @@
 
       svg.select('.brush')
         .attr('transform', transform)
-        .attr("stroke-width", isZoomed ? 1 / transformed.k : 1);
+        .attr("stroke-width", isZoomed ? 1 / transform.k : 1);
+
 
     }
 
@@ -836,11 +856,16 @@
 
     //IPSA & Earth4All are drawn twice, why??
 
+    let data;
+
 
     Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
 
 
-      let data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
+      projection2.fitSize([width, height], values[0]);
+
+
+      data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
 
       let organization = data.map(function (obj) {
         return obj.Organization;
@@ -883,7 +908,6 @@
 
       colorScale.domain(categories);
 
-
       //this part is to remove the weird artifacts (horizontal lines above and below the map)
       // draw first map just to get the bbox of the land
       svg.selectAll("path.land")
@@ -916,6 +940,7 @@
         .attr("d", path)
         .attr("clip-path", "url(#clip)");
 
+      // for more detailed areas on zoom
       svg.selectAll("path.land2")
         .data(values[2].features)
         .join("path")
@@ -936,15 +961,15 @@
         .join("circle")
         .attr("class", "point")
         .attr("id", d => "id" + d.Id)
-        .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
-        .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
+        .attr("cx", d => reprojected ? projection2([+d.Longitude, +d.Latitude])[0] : projection([+d.Longitude, +d.Latitude])[0])
+        .attr("cy", d => reprojected ? projection2([+d.Longitude, +d.Latitude])[1] : projection([+d.Longitude, +d.Latitude])[1])
         .attr("stroke-width", 1)
         .attr("stroke", "#808080")
         .attr("r", 5.5)
         .attr("fill", d => colorScale(d.Category))
         .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
         .on("mouseover", function (e, d) {
-          if (!brushing) {
+          if (!brushing && !isSmallScreen) {
             d3.selectAll(".point").style("stroke", "#808080")
             d3.select(this).style("stroke", "black")
             showDetail(e, d);
@@ -960,6 +985,10 @@
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
+
+          if (isSmallScreen) {
+            showDetail(e, d);
+          }
         })
 
 
@@ -1028,6 +1057,7 @@
 
             $(".prediction-item").on("click", function () {
 
+              searched = true;
               $text = $(this).find("span").text();
               resetFilters();
               filterPoints(values[1], $text)
@@ -1036,6 +1066,7 @@
                 $(this).html("");
               });
               $("#search-bar").val($text);
+
             });
 
             $(".prediction-item:first-child").addClass("focus");
@@ -1073,6 +1104,10 @@
 
     });
 
+
+
+
+    $("#locator").click(updateProjection);
 
 
     function createFilterStatus(filterName, layerOnName, statusString) {
@@ -1143,8 +1178,8 @@
         lon = -99.032502;
       }
 
-      const x = projection([lon, lat])[0];
-      const y = projection([lon, lat])[1];
+      const x = reprojected ? projection2([lon, lat])[0] : projection([lon, lat])[0];
+      const y = reprojected ? projection2([lon, lat])[1] : projection([lon, lat])[1];
       let k = 10;
 
       if (term === "Australia" || term === "USA") {
@@ -1159,9 +1194,12 @@
           .translate(-x, -y),
       )
 
+      // d3.selectAll(".selection").attr("stroke-width", 2 / transformedLevel)
+
       d3.selectAll("circle.point")
         .style("opacity", d => ids.includes(d.Id) ? 1 : 0)
         .style("display", d => ids.includes(d.Id) ? "inherit" : "none")
+
 
     }
 
@@ -1173,21 +1211,40 @@
         .data(data)
         .join("circle")
         .attr("class", "point")
-        .attr("cx", d => projection([d.Longitude, d.Latitude])[0])
-        .attr("cy", d => projection([d.Longitude, d.Latitude])[1])
+        .attr("cx", d => reprojected ? projection2([d.Longitude, d.Latitude])[0] : projection([d.Longitude, d.Latitude])[0])
+        .attr("cy", d => reprojected ? projection2([d.Longitude, d.Latitude])[1] : projection([d.Longitude, d.Latitude])[1])
         .attr("r", 5.5)
         .attr("stroke-width", isZoomed ? 1 / transformedLevel : 1)
         .attr("stroke", "#808080")
         .attr("fill", d => colorScale(d.Category))
         .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
-        .on("mouseover", (e, d) => showDetail(e, d))
-        .on("mouseout", d => hideDetail(d))
+        .on("mouseover", function (e, d) {
+          if (!brushing && !isSmallScreen) {
+            d3.selectAll(".point").style("stroke", "#808080")
+            d3.select(this).style("stroke", "black")
+            showDetail(e, d);
+          }
+        })
+        .on("mouseout", function (e, d) {
+          if (clicked == false) {
+            d3.selectAll(".point").style("stroke", "#808080")
+          }
+          hideDetail(d)
+        })
+        .on("click", function (e, d) {
+          d3.selectAll(".point").style("stroke", "#808080")
+          d3.select(this).style("stroke", "black")
+          clicked = true;
+
+          if (isSmallScreen) {
+            showDetail(e, d);
+          }
+        })
 
     }
 
 
     function resetFilters() {
-      console.log("reset filters")
       activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge'];
 
       $("#layer1On").prop("checked", true);
@@ -1214,18 +1271,18 @@
       <p> ${d.Contact_address} </p>
       <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
       <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      <span class="close">X</span>
+      <span class="close">✕</span>
       <span class="more">More→</span>`;
 
 
-      tooltip.showTooltip(content, e);
+      tooltip.showTooltip(isSmallScreen, content, e);
 
       d3.selectAll(".more").on("click", function () {
         content = `<h4> ${d.Organization}  </h4>
         <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
         <p> ${d.Mission} </p>
-      <span class="close">X</span>`;  // <span class="back">Back→</span>
-        tooltip.showTooltip(content, e);
+      <span class="close">✕</span>`;  // <span class="back">Back→</span>
+        tooltip.showTooltip(isSmallScreen, content, e);
 
         d3.selectAll(".close").on("click", function () {
           tooltip.hideTooltip();
@@ -1280,6 +1337,74 @@
         tooltip.hideTooltip(); // remove if want tooltip to stay open
         clicked = false;
       }
+
+    }
+
+
+    function updateProjection() {
+
+      resetZoom();
+      resetPoints(data);
+
+
+      console.log("updateProjection")
+
+      if (!reprojected) {
+
+        console.log("updateProjection Rect")
+
+        reprojected = true;
+
+        // d3.select("g").attr("transform", "translate(0,200) scale(0.95)")
+
+        // and redraw it using the clipping mask
+        d3.selectAll("path.land")
+          .transition().duration(500)
+          .attr("d", path2)
+          .attr("clip-path", "none");
+
+        // for more detailed areas on zoom
+        d3.selectAll("path.land2")
+          .attr("d", path2)
+          .attr("clip-path", "none")
+          .attr("display", "none")
+
+
+        // draw points
+        d3.selectAll("circle.point")
+          .transition().duration(500)
+          .attr("cx", d => projection2([+d.Longitude, +d.Latitude])[0])
+          .attr("cy", d => projection2([+d.Longitude, +d.Latitude])[1])
+
+      } else {
+
+        console.log("updateProjection Weird")
+
+        reprojected = false;
+        // d3.select("g").attr("transform", "translate(0,0) scale(1)")
+
+        // and redraw it using the clipping mask
+        d3.selectAll("path.land")
+          .transition().duration(500)
+          .attr("d", path)
+          .attr("clip-path", "url(#clip)")
+
+        // for more detailed areas on zoom
+        d3.selectAll("path.land2")
+          .attr("d", path)
+          .attr("clip-path", "url(#clip)")
+          .attr("display", "none")
+
+
+        // draw points
+        d3.selectAll("circle.point")
+          .transition().duration(500)
+          .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
+          .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
+      }
+
+
+
 
     }
 

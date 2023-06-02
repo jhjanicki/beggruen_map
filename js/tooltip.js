@@ -25,19 +25,38 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
      *
      * event is d3.event for positioning.
      */
-    function showTooltip(content, event) {
-      tt.style('opacity', 1.0)
+    function showTooltip(isSmallScreen, content, event) {
+      if(isSmallScreen){
+
+        tt.style('opacity', 1.0)
+        .style('display', 'inherit')
+        .style("top","50px")
+        .style("bottom","auto")
+        .style("left",0)
+        .style("right",0)
+        .style("margin-left","auto")
+        .style("margin-right","auto")
+        .html(content);
+
+
+      }else{
+        tt.style('opacity', 1)
         .style('display', 'inherit')
         .html(content);
 
-      updatePosition(event);
+        updatePosition(event);
+
+
+      }
+
+
     }
 
     /*
      * Hide the tooltip div.
      */
     function hideTooltip() {
-      tt.style('opacity', 0.0);
+      tt.style('opacity', 0);
       tt.style('display', 'none');
     }
 
@@ -54,9 +73,6 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
 
       var wscrY = window.scrollY;
       var wscrX = window.scrollX;
-
-      console.log(event.clientX + wscrX)
-      console.log(event.clientY + wscrY)
 
       var curX = (document.all) ? event.clientX + wscrX : event.pageX;
       var curY = (document.all) ? event.clientY + wscrY : event.pageY;
@@ -81,6 +97,8 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
       if(event.clientX + wscrX >520){
         ttleft = ttleft-320;
       }
+
+
 
       tt
         .style('top', tttop + 'px')
