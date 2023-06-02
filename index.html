@@ -59,12 +59,6 @@
       margin-right: auto;
     }
 
-    .land,
-    .land2 {
-      fill: #d9cdc2;
-      stroke: #808080;
-    }
-
     svg {
       margin-top: -10px;
     }
@@ -917,6 +911,7 @@
         .attr("id", "land")
         .attr("d", path);
 
+
       const bbox = d3.select("#land").node().getBBox();
 
       // add a clipping path the show the central part of the map (move 3 down from top and 3 up from bottom)
@@ -937,6 +932,8 @@
         .data(values[0].features)
         .join("path")
         .attr("class", "land")
+        .attr("fill", "#d9cdc2")
+        .attr("stroke", "#808080")
         .attr("d", path)
         .attr("clip-path", "url(#clip)");
 
@@ -945,6 +942,8 @@
         .data(values[2].features)
         .join("path")
         .attr("class", "land2")
+        .attr("fill", "#d9cdc2")
+        .attr("stroke", "#808080")
         .attr("d", path)
         .attr("clip-path", "url(#clip)")
         .attr("display", "none")
@@ -1359,7 +1358,11 @@
 
         // and redraw it using the clipping mask
         d3.selectAll("path.land")
-          .transition().duration(500)
+          .attr("fill", "transparent")
+          .attr("stroke", "transparent")
+          .transition().duration(700)
+          .attr("fill", "#d9cdc2")
+          .attr("stroke", "#808080")
           .attr("d", path2)
           .attr("clip-path", "none");
 
@@ -1372,7 +1375,7 @@
 
         // draw points
         d3.selectAll("circle.point")
-          .transition().duration(500)
+          .transition().duration(700)
           .attr("cx", d => projection2([+d.Longitude, +d.Latitude])[0])
           .attr("cy", d => projection2([+d.Longitude, +d.Latitude])[1])
 
@@ -1385,8 +1388,12 @@
 
         // and redraw it using the clipping mask
         d3.selectAll("path.land")
-          .transition().duration(500)
+          .attr("fill", "transparent")
+          .attr("stroke", "transparent")
+          .transition().duration(700)
           .attr("d", path)
+          .attr("fill", "#d9cdc2")
+          .attr("stroke", "#808080")
           .attr("clip-path", "url(#clip)")
 
         // for more detailed areas on zoom
@@ -1398,7 +1405,7 @@
 
         // draw points
         d3.selectAll("circle.point")
-          .transition().duration(500)
+          .transition().duration(700)
           .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
           .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
       }

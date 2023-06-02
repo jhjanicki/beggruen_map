@@ -13,6 +13,8 @@
     <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
         type="text/css" />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
+
     <link
         href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
         rel="stylesheet" />
@@ -188,8 +190,13 @@
 
 
         #toggleWrapper {
-            margin-right: 10px;
+            margin-right: 20px;
             float: right;
+        }
+
+        #instruction {
+            text-align: right;
+            margin-right: 20px;
         }
 
         @media only screen and (max-width: 991px) {
@@ -200,6 +207,107 @@
                 clear: both;
 
             }
+
+            #instruction {
+                text-align: left;
+                margin-left: 60px;
+            }
+        }
+
+        .tooltip {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            width: 300px;
+            background: #7ec7d9;
+            color: black;
+            padding: 10px;
+            font-size: 14px;
+            z-index: 10;
+            min-height: 200px;
+            max-height: 500px;
+            overflow: auto;
+        }
+
+        .tooltip h4 {
+            font-family: "Albert Sans", sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .tooltip p {
+            font-family: "Albert Sans", sans-serif;
+            font-size: 16px;
+            color: #000;
+            margin-top: 4px;
+        }
+
+        .tooltip a {
+            color: #000 !important;
+            text-decoration: underline;
+        }
+
+        .close {
+            position: absolute;
+            right: 8px;
+            top: 5px;
+            color: black;
+            opacity: 1;
+            font-size: 18px;
+        }
+
+        .close:hover {
+            cursor: pointer !important;
+        }
+
+        .focusarea {
+            color: #fff;
+            padding: 3px;
+            width: 100%;
+            font-family: "Albert Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 3px;
+        }
+
+        .more {
+            position: relative;
+            margin-right: 2px;
+            bottom: 8px;
+            color: black;
+            opacity: 1;
+            font-family: "Albert Sans", sans-serif;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        .back {
+            margin-left: 230px;
+            color: black;
+            opacity: 1;
+            font-family: "Albert Sans", sans-serif;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        .more:hover,
+        .back:hover {
+            cursor: pointer !important;
+            font-weight: 700;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .show {
+            display: inherit;
+        }
+
+        .hexagonOverlay:hover {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -207,6 +315,7 @@
 <body>
 
     <img id="logo" src="./img/logo.svg" />
+    <div class="tooltip"></div>
     <div class="wrapper">
         <div class="navbar">
             <li><a href="index.html">map</a></li>
@@ -220,6 +329,7 @@
                 </div>
             </div>
             <div class="col-md-3">
+                <h4 id="instruction">← Click on individual to see detail</h4>
                 <div id="toggleWrapper">
                     <div class="itemWrapper">
                         <div class='toggle item filters' id="filter1">
@@ -294,7 +404,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-hexbin/0.2.2/d3-hexbin.min.js"></script>
+    <script src="https://unpkg.com/textures@1.2.0/dist/textures.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js'></script>
+    <script src="./js/tooltip.js"></script>
+
     <script>
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
+
+
         const windowWidth = $(window).width();
         const windowHeight = $(window).height();
 
@@ -308,17 +426,16 @@
             }
         });
 
-        console.log(windowHeight)
         if (windowHeight <= 1100 && windowHeight > 1000) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 600)
+            $("#toggleWrapper").css("margin-top", windowHeight - 700)
         } else if (windowHeight <= 1000 && windowHeight > 900) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 500)
+            $("#toggleWrapper").css("margin-top", windowHeight - 600)
         } else if (windowHeight <= 900 && windowHeight > 800) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 400)
+            $("#toggleWrapper").css("margin-top", windowHeight - 500)
         } else if (windowHeight <= 800 && windowHeight > 700) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 350)
+            $("#toggleWrapper").css("margin-top", windowHeight - 450)
         } else if (windowHeight <= 700 && windowHeight > 600) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 350)
+            $("#toggleWrapper").css("margin-top", windowHeight - 450)
         } else if (windowHeight <= 600) {
             $("#toggleWrapper").css("margin-top", 20)
         }
@@ -327,14 +444,36 @@
             $("#toggleWrapper").css("margin-top", 20)
         }
 
+        let isSmallScreen = false;
+
+
+        if (windowWidth <= 600) {
+            isSmallScreen = true;
+        }
+
+
+        let clicked = false;
+
 
         let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
         let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
 
 
         const colorScale = d3.scaleOrdinal()
-            .domain(['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge'])
+            .domain(allCategories)
             .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
+
+        const textureArray = allCategories.map(d => {
+            return textures
+                .lines()
+                .size(6)
+                .strokeWidth(2)
+                .stroke(colorScale(d));
+        })
+
+        const textureScale = d3.scaleOrdinal().domain(allCategories).range(textureArray);
+
+
 
         var margin = {
             top: 0,
@@ -347,6 +486,8 @@
 
         let width = $(".chartWrapper").width();
         let height = $(".chartWrapper").height();
+
+        let tooltip = floatingTooltip('circleTooltip', 240, 10);
 
 
         const individuals = d3.csv("./data/individualsData.csv");
@@ -389,16 +530,19 @@
                         category: (j + rows * i) < numHex ? values[0][j + rows * i].Category : "",
                         keywords: (j + rows * i) < numHex ? values[0][j + rows * i].Key_words : "",
                         nationality: (j + rows * i) < numHex ? values[0][j + rows * i].Nationality : "",
+                        bio: (j + rows * i) < numHex ? values[0][j + rows * i].Bio : "",
                         organization: (j + rows * i) < numHex ? values[0][j + rows * i].Organization : "",
+                        website: (j + rows * i) < numHex ? values[0][j + rows * i].Contact_site : "",
                         type: (j + rows * i) < numHex ? values[0][j + rows * i].Type : "",
                         work: (j + rows * i) < numHex ? values[0][j + rows * i].Work : "",
+                        focus: (j + rows * i) < numHex ? values[0][j + rows * i].Focus : "",
+                        latitude: (j + rows * i) < numHex ? values[0][j + rows * i].Latitude : "",
+                        longitude: (j + rows * i) < numHex ? values[0][j + rows * i].Longitude : "",
                         col: i,
                         row: j
                     });
                 }
             }
-
-            console.log(points)
 
 
             function getIndex(i, j, col, row) {
@@ -429,24 +573,27 @@
             let g = svg.append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
+            // call texture on svg
+            for (let t of textureArray) {
+                svg.call(t);
+            }
+
             //Start drawing the hexagons
 
-            const defs = g.append("defs");
+            // const defs = g.append("defs");
 
-            defs
-                .selectAll(".hexagon")
-                .data(hexbin(points))
-                .join("clipPath")
-                .attr("class", "hexagon")
-                .attr("id", (d, i) => "clip" + i)
-                .append("path")
-                .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-                .attr("d", hexbin.hexagon())
-                .attr("stroke", "#fff")
-                .attr("stroke-width", "2px")
-
-
-
+            // defs
+            //     .selectAll(".hexagon")
+            //     .data(hexbin(points))
+            //     .join("clipPath")
+            //     .attr("class", "hexagon")
+            //     .attr("id", (d, i) => "clip" + i)
+            //     .append("path")
+            //     .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+            //     .attr("d", hexbin.hexagon())
+            //     .attr("stroke", "#fff")
+            //     .attr("stroke-width", "2px")
 
             // g.selectAll("image.hexagonImg")
             //     .data(points)
@@ -469,6 +616,19 @@
                 .attr("fill", d => d[0].category == "" ? "none" : colorScale(d[0].category))
                 .attr("stroke-width", 2)
                 .attr("stroke", d => d[0].category == "" ? "none" : "black")
+                .on("mouseover", function (e, d) {
+                    d3.select(this).attr("fill", textureScale(d[0].category).url())
+                    // showDetail(e, d);
+                })
+                .on("mouseout", function (e, d) {
+                    d3.select(this).attr("fill", colorScale(d[0].category))
+                    // hideDetail(d)
+                })
+                .on("click", function (e, d) {
+                    showDetail(e, d);
+                    // clicked = true;
+                })
+
             // .attr("stroke", d => d[0].category == "" ? "none" : colorScale(d[0].category))
             // .attr("stroke-width", 3)
             // .attr("fill", "none")
@@ -499,8 +659,6 @@
                         activeCategories.push(statusString)
                     }
 
-                    // console.log(activeCategories)
-
                     // redraw using d3 here
 
                     d3.selectAll(".hexagonOverlay")
@@ -521,7 +679,6 @@
                         activeCategories.splice(index, 1);
                     }
 
-                    console.log(activeCategories)
 
                     // redraw using d3 here
                     d3.selectAll(".hexagonOverlay")
@@ -544,6 +701,64 @@
         createFilterStatus('filter4', 'layer4On', 'Earth System Science')
         createFilterStatus('filter5', 'layer5On', 'Solutions & Economics')
         createFilterStatus('filter6', 'layer6On', 'Indigenous Knowledge')
+
+
+        function showDetail(e, d) {
+
+            let fill = colorScale(d[0].category)
+
+            let content = `<div id="map"></div><h4> ${d[0].name}  </h4>
+            <span class="focusarea" style='background-color:${fill} '> ${d[0].focus} </span>
+<p> ${d[0].nationality} </p>
+<p> ${d[0].bio} </p>
+<p>  <a href='${d[0].website}' target='_blank'>Website →</a></p>
+<span class="close">✕</span>
+<span class="more">More→</span>`;
+
+
+            tooltip.showTooltip(isSmallScreen, content, e);
+
+            d3.selectAll(".more").on("click", function () {
+                content = `<h4> ${d[0].name}  </h4>
+              <p> ${d[0].work} </p>
+            <span class="close">✕</span>`;  // <span class="back">Back→</span>
+                tooltip.showTooltip(isSmallScreen, content, e);
+
+                d3.selectAll(".close").on("click", function () {
+                    tooltip.hideTooltip();
+                    // clicked = false;
+                })
+
+            })
+
+
+            let map = new mapboxgl.Map({
+                container: 'map', // container element id
+                style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
+                center: [d[0].longitude, d[0].latitude], // initial map center in [lon, lat]
+                zoom: 15
+            });
+
+            var marker = new mapboxgl.Marker()
+                .setLngLat([d[0].longitude, d[0].latitude])
+                .addTo(map);
+
+            d3.selectAll(".close").on("click", function () {
+                tooltip.hideTooltip();
+            })
+
+        }
+
+
+
+        function hideDetail(d) {
+            // if (!clicked) {
+            tooltip.hideTooltip(); // remove if want tooltip to stay open
+            //     clicked = false;
+            // }
+
+        }
+
 
         const wrap = (text, width) => {
             text.each(function () {
@@ -570,6 +785,9 @@
             });
 
         }
+
+
+
 
 
     </script>

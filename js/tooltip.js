@@ -26,6 +26,11 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
      * event is d3.event for positioning.
      */
     function showTooltip(isSmallScreen, content, event) {
+
+      console.log(isSmallScreen)
+      console.log(content)
+      console.log(event)
+
       if(isSmallScreen){
 
         tt.style('opacity', 1.0)
@@ -65,6 +70,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
      * based on d3 mouse event.
      */
     function updatePosition(event) {
+      console.log(xPosOffset)
       var xOffset = xPosOffset;
       var yOffset = 10;
 
