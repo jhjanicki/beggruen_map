@@ -23,8 +23,7 @@
         body {
             font-family: "Albert Sans", sans-serif;
             -webkit-font-smoothing: antialiased;
-            background-color: #cbd0d3;
-            /* #BECAD2; */
+            background-color: #ddd2ca;
         }
 
         .navbar {
@@ -32,7 +31,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 10px 0px;
+            padding: 20px 0px 10px 0px;
             text-align: right;
         }
 
@@ -40,6 +39,8 @@
             display: inline;
             padding: 10px;
             margin-right: 20px;
+            opacity: 0.5;
+
         }
 
         .navbar li a {
@@ -53,12 +54,29 @@
             cursor: pointer;
         }
 
+        @media only screen and (max-width:600px) {
+            .navbar li {
+                margin-right: 5px;
+                padding: 5px;
+            }
+
+            .navbar li a {
+                font-size: 16px;
+            }
+        }
+
+        #individualsPage {
+            opacity: 1;
+        }
+
+
         .chartWrapper {
             width: 90%;
-            height: 100vh;
+            height: 90vh;
             margin-left: auto;
             margin-right: auto;
         }
+
 
         @media only screen and (max-width: 1100px) {
             .chartWrapper {
@@ -185,32 +203,40 @@
             width: 200px;
             position: absolute;
             top: 10px;
-            left: 10px;
+            left: 20px;
+            z-index: 200;
         }
 
+        #logoWrapper {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 200;
+        }
+
+        #logoWrapper img {
+            height: 25px;
+        }
 
         #toggleWrapper {
             margin-right: 20px;
             float: right;
         }
 
-        #instruction {
-            text-align: right;
-            margin-right: 20px;
-        }
 
         @media only screen and (max-width: 991px) {
 
-            #toggleWrapper {
-                margin-left: 60px;
-                float: none;
-                clear: both;
-
+            #logo {
+                width: 150px;
             }
 
-            #instruction {
-                text-align: left;
-                margin-left: 60px;
+            #logoWrapper {
+                top: 60px;
+                right: 20px;
+            }
+
+            #logoWrapper img {
+                height: 25px;
             }
         }
 
@@ -225,7 +251,7 @@
             color: black;
             padding: 10px;
             font-size: 14px;
-            z-index: 10;
+            z-index: 300;
             min-height: 200px;
             max-height: 500px;
             overflow: auto;
@@ -314,22 +340,26 @@
 
 <body>
 
-    <img id="logo" src="./img/logo.svg" />
+    <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
+    <div id="logoWrapper">
+        <img src="./img/giessen.png" />
+        <img src="./img/berggruen.png" />
+    </div>
     <div class="tooltip"></div>
     <div class="wrapper">
         <div class="navbar">
             <li><a href="index.html">map</a></li>
-            <li><a href="individuals.html">individuals</a></li>
+            <li id="individualsPage"><a href="individuals.html">individuals</a></li>
+            <li><a href="#">contact</a></li>
+            <li><a href="#">about</a></li>
         </div>
 
         <div class="row">
             <div class="col-md-9">
                 <div class="chartWrapper">
-
                 </div>
             </div>
             <div class="col-md-3">
-                <h4 id="instruction">← Click on individual to see detail</h4>
                 <div id="toggleWrapper">
                     <div class="itemWrapper">
                         <div class='toggle item filters' id="filter1">
@@ -426,19 +456,10 @@
             }
         });
 
-        if (windowHeight <= 1100 && windowHeight > 1000) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 700)
-        } else if (windowHeight <= 1000 && windowHeight > 900) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 600)
-        } else if (windowHeight <= 900 && windowHeight > 800) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 500)
-        } else if (windowHeight <= 800 && windowHeight > 700) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 450)
-        } else if (windowHeight <= 700 && windowHeight > 600) {
-            $("#toggleWrapper").css("margin-top", windowHeight - 450)
-        } else if (windowHeight <= 600) {
-            $("#toggleWrapper").css("margin-top", 20)
+        if (windowWidth >= 1150 && windowHeight > 800) {
+            $("#toggleWrapper").css("margin-top", 400)
         }
+
 
         if (windowWidth <= 991) {
             $("#toggleWrapper").css("margin-top", 20)
@@ -449,6 +470,12 @@
 
         if (windowWidth <= 600) {
             isSmallScreen = true;
+        }
+
+        let isMediumScreen = false;
+
+        if (windowWidth > 600 && windowWidth <= 991) {
+            isMediumScreen = true;
         }
 
 
@@ -475,7 +502,7 @@
 
 
 
-        var margin = {
+        let margin = {
             top: 0,
             right: 0,
             bottom: 0,
@@ -569,6 +596,7 @@
                 .append("svg")
                 .attr("width", svgWidth + margin.left + margin.right)
                 .attr("height", svgHeight + margin.top + margin.bottom)
+                .style("margin-top", isMediumScreen || isSmallScreen ? 70 : (windowHeight - svgHeight) / 2 - 50)
 
             let g = svg.append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -578,6 +606,7 @@
             for (let t of textureArray) {
                 svg.call(t);
             }
+
 
             //Start drawing the hexagons
 

@@ -20,7 +20,8 @@
     body {
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
-      background-color: #CBD0D3;
+      background-color: #ddd2ca;
+      /* #e4eae9 */
       overflow-x: hidden;
     }
 
@@ -29,7 +30,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      padding: 10px 0px;
+      padding: 20px 0px 10px 0px;
       text-align: right;
     }
 
@@ -37,6 +38,7 @@
       display: inline;
       padding: 10px;
       margin-right: 20px;
+      opacity: 0.5;
 
     }
 
@@ -51,10 +53,45 @@
       cursor: pointer;
     }
 
+    #mapPage {
+      opacity: 1;
+    }
+
+    @media only screen and (max-width:600px) {
+      .navbar li {
+        margin-right: 5px;
+        padding: 5px;
+      }
+
+      .navbar li a {
+        font-size: 16px;
+      }
+    }
+
+    #intro {
+      position: absolute;
+      top: 10px;
+      left: 38px;
+      max-width: 550px;
+    }
+
+    @media only screen and (max-width:1200px) {
+      #intro {
+        max-width: 400px;
+      }
+    }
+
+
+    @media only screen and (max-width:991px) {
+      #intro {
+        display: none;
+      }
+    }
+
     .chartWrapper {
       margin-top: -50px;
       width: 90%;
-      height: 100vh;
+      height: 98vh;
       margin-left: auto;
       margin-right: auto;
     }
@@ -130,6 +167,18 @@
       max-width: 400px;
     }
 
+    @media only screen and (max-width:900px) {
+      #searchform {
+        margin: -30px auto 20px;
+      }
+    }
+
+    @media only screen and (max-width:600px) {
+      #searchform {
+        margin: -60px auto 20px;
+      }
+    }
+
     span {
       font-size: 20px;
     }
@@ -202,13 +251,12 @@
       float: right;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 991px) {
 
       #toggleWrapper {
-        margin-left: 60px;
+        position: relative;
         float: none;
         clear: both;
-
       }
     }
 
@@ -335,7 +383,7 @@
       color: black;
       padding: 10px;
       font-size: 14px;
-      z-index: 10;
+      z-index: 300;
       min-height: 200px;
       max-height: 500px;
       overflow: auto;
@@ -419,32 +467,60 @@
     #logo {
       width: 200px;
       position: absolute;
-      top: 10px;
+      top: 20px;
       left: 20px;
-    }
-
-    #locator {
-      width: 150px;
-      position: absolute;
-      bottom: 30px;
-      left: 40px;
       z-index: 200;
     }
 
+    #logoWrapper {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 200;
+    }
+
+    #logoWrapper img {
+      height: 25px;
+    }
+
+    #locator {
+      height: 65px;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      z-index: 200;
+    }
 
     #locator:hover {
       cursor: pointer;
     }
 
+    @media only screen and (max-width:991px) {
+      #logo {
+        width: 150px;
+      }
+
+      #locator {
+        height: 60px;
+        top: 60px;
+        left: 20px;
+      }
+
+      #logoWrapper {
+        top: 60px;
+        right: 20px;
+      }
+    }
+
     @media only screen and (max-width: 600px) {
       #locator {
-        width: 120px;
-        bottom: 10px;
-        /* right: 20px;
-        left: auto; */
+        height: 50px;
       }
 
 
+      #logoWrapper img {
+        height: 25px;
+      }
     }
   </style>
 </head>
@@ -452,7 +528,12 @@
 <body>
 
 
-  <img id="logo" src="./img/logo.svg" />
+  <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
+  <div id="logoWrapper">
+    <img src="./img/giessen.png" />
+    <img src="./img/berggruen.png" />
+  </div>
+  <img id="locator" src="./img/globe.svg" />
 
   <div class="tooltip">
     <!-- <span class="close">✕</span>
@@ -466,18 +547,21 @@
   <div class="wrapper">
 
     <div class="navbar">
-      <li><a href="index.html">map</a></li>
-      <li><a href="individuals.html">individuals</a></li>
+      <li id="mapPage"><a href="index.html">map</a></li>
+      <li id="individualsPage"><a href="individuals.html">individuals</a></li>
+      <li><a href="#">contact</a></li>
+      <li><a href="#">about</a></li>
     </div>
-
-
 
 
     <div class="row">
       <div class="col-md-9">
+        <p id="intro">The Planetary perspective recognizes human affairs as inextricably linked with the biogeochemical
+          processes of an ever-changing planet. The Planetary Portal is a central platform for planetary discussions,
+          bringing together diverse communities from the fields of science, social sciences, humanities, arts, and
+          politics, bridging the gap between theoretical and practical.</p>
         <div class="chartWrapper">
           <div id="chart1"></div>
-          <img id="locator" src="./img/globe.svg" />
         </div>
       </div>
       <div class="col-md-3">
@@ -570,6 +654,11 @@
     // PROBLEM: when searched, then brush zoom, then stroke width is super thick
     // whenever I filter then reset, I cannot click anymore
 
+    // TODO: prevent brush / zoom on click
+
+    //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
+
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
 
 
@@ -586,27 +675,13 @@
       }
     });
 
-    // var scrollTop = $(window).scrollTop(),
-    //   elementOffset = $('#reset').offset().top,
-    //   distanceToTop = (elementOffset - scrollTop);
-    // let toggleWrapperHt = $("#toggleWrapper").height();
-    // let distanceFromTop = windowHeight - distanceToTop - toggleWrapperHt - 100;
-    if (windowHeight <= 1100 && windowHeight > 1000) {
-      $("#toggleWrapper").css("margin-top", windowHeight - 800)
-    } else if (windowHeight <= 1000 && windowHeight > 900) {
-      $("#toggleWrapper").css("margin-top", windowHeight - 700)
-    } else if (windowHeight <= 900 && windowHeight > 800) {
-      $("#toggleWrapper").css("margin-top", windowHeight - 600)
-    } else if (windowHeight <= 800 && windowHeight > 700) {
-      $("#toggleWrapper").css("margin-top", windowHeight - 550)
-    } else if (windowHeight <= 700 && windowHeight > 600) {
-      $("#toggleWrapper").css("margin-top", windowHeight - 550)
-    } else if (windowHeight <= 600) {
-      $("#toggleWrapper").css("margin-top", 20)
+    if (windowWidth >= 1150 && windowHeight > 800) {
+      $("#toggleWrapper").css("margin-top", 200)
     }
 
-    if (windowWidth <= 600) {
-      $("#toggleWrapper").css("margin-top", 20)
+    if (windowWidth <= 991) {
+      $("#toggleWrapper").css("margin-left", (windowWidth - 350) / 2)
+      $("#toggleWrapper").css("margin-right", (windowWidth - 350) / 2)
     }
 
 
@@ -617,16 +692,13 @@
       isSmallScreen = true;
     }
 
-
-
-
     const searchformWidth = $("#searchform").width();
     $(".output").css("width", searchformWidth);
     // think about search + toggle, what do we want one a category is toggled off but someone searches for an org in that category?
 
-    const figure = d3.selectAll(".chartWrapper");
-    let width = figure.node().getBoundingClientRect().width;
-    let height = figure.node().getBoundingClientRect().height;
+    // const figure = d3.selectAll(".chartWrapper");
+    let width = $(".chartWrapper").width();
+    let height = $(".chartWrapper").height();
 
     let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
     let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
@@ -645,11 +717,6 @@
       .append("svg")
       .attr("width", width)
       .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(0,0)")
-
-
-    //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
 
 
     const projection2 = d3.geoNaturalEarth1();
@@ -657,11 +724,11 @@
 
     // +30 to show NZ
     let projection = d3.geoPeirceQuincuncial()
-      .fitSize([width, height + 50], {
+      .fitSize([width, height], {
         type: "Sphere"
       })
       .precision(0.1)
-      .scale((width + 100) / 2 / Math.PI)
+      .scale((width) / 2 / Math.PI)
     // .rotate([0, 0, 0])
     let path = d3.geoPath().projection(projection);
 
@@ -714,7 +781,6 @@
 
 
       svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
-
 
       //update brush extent
       brushExtent = e.selection;
@@ -789,6 +855,8 @@
 
       d3.selectAll(".selection").style("display", "none");
       d3.selectAll(".handle").style("display", "none");
+      d3.select("#intro").style("display", "none");
+
       // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
       if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
@@ -1409,9 +1477,6 @@
           .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
           .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
       }
-
-
-
 
     }
 
