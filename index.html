@@ -68,6 +68,17 @@
       }
     }
 
+    @media only screen and (max-width:500px) {
+      .navbar li {
+        margin-right: 2px;
+        padding: 2px;
+      }
+
+      .navbar li a {
+        font-size: 14px;
+      }
+    }
+
     #intro {
       position: absolute;
       top: 10px;
@@ -513,6 +524,7 @@
     }
 
     @media only screen and (max-width: 600px) {
+
       #locator {
         height: 50px;
       }
@@ -520,6 +532,35 @@
 
       #logoWrapper img {
         height: 25px;
+      }
+    }
+
+    @media only screen and (max-width: 500px) {
+
+      #logo {
+        width: 120px;
+      }
+
+      #locator {
+        height: 40px;
+        top: 50px;
+      }
+
+
+      #logoWrapper img {
+        height: 20px;
+      }
+
+      #logoWrapper {
+        top: 50px;
+      }
+
+      #controlsWrapper {
+        margin-left: 15px;
+      }
+
+      #searchform span {
+        font-size: 18px;
       }
     }
   </style>
@@ -564,7 +605,7 @@
           <div id="chart1"></div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3" id="controlsWrapper">
         <form id="searchform">
           <span>Search for organization or location → </span>
           <input type="text" id="search-bar" autocomplete="off" placeholder="Type something here" />
@@ -932,6 +973,7 @@
       let organization = data.map(function (obj) {
         return obj.Organization;
       });
+
       organization = organization.filter(function (v, i) {
         return organization.indexOf(v) == i;
       });
@@ -1049,6 +1091,14 @@
           hideDetail(d)
         })
         .on("click", function (e, d) {
+          d3.selectAll(".point").style("stroke", "#808080")
+          d3.select(this).style("stroke", "black")
+          clicked = true;
+
+          if (isSmallScreen) {
+            showDetail(e, d);
+          }
+        }).on("touchend", function (e, d) {
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;

@@ -65,6 +65,17 @@
             }
         }
 
+        @media only screen and (max-width:500px) {
+            .navbar li {
+                margin-right: 2px;
+                padding: 2px;
+            }
+
+            .navbar li a {
+                font-size: 14px;
+            }
+        }
+
         #individualsPage {
             opacity: 1;
         }
@@ -237,6 +248,21 @@
 
             #logoWrapper img {
                 height: 25px;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+
+            #logo {
+                width: 120px;
+            }
+
+            #logoWrapper img {
+                height: 20px;
+            }
+
+            #logoWrapper {
+                top: 50px;
             }
         }
 
@@ -656,6 +682,9 @@
                 .on("click", function (e, d) {
                     showDetail(e, d);
                     // clicked = true;
+                })
+                .on("touchend", function (e, d) {
+                    showDetail(e, d);
                 })
 
             // .attr("stroke", d => d[0].category == "" ? "none" : colorScale(d[0].category))
