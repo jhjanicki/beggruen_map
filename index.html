@@ -11,7 +11,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
-  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <!-- <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'> -->
   <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
@@ -21,127 +21,43 @@
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
       background-color: #ddd2ca;
-      /* #e4eae9 */
       overflow-x: hidden;
+      margin: 0px;
+      padding: 0px;
     }
 
-    .navbar {
-      position: relative;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 0px 10px 0px;
-      text-align: right;
+    .main {
+      display: grid;
+      grid-template-columns: 2fr 7fr;
     }
 
-    .navbar li {
-      display: inline;
-      padding: 10px;
-      margin-right: 20px;
-      opacity: 0.5;
-
+    #sidebar {
+      /* padding: 20px; */
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-    .navbar li a {
-      color: #000;
+    #logo {
+      padding: 30px 0px 20px 30px;
+      width: 220px;
+      z-index: 200;
+    }
+
+    #about {
+      padding: 0px 0px 0px 30px;
       font-size: 18px;
     }
 
-    .navbar li a:hover {
-      font-weight: 700;
-      transition: all 0.5s ease;
-      cursor: pointer;
-    }
-
-    #mapPage {
-      opacity: 1;
-    }
-
-    @media only screen and (max-width:600px) {
-      .navbar li {
-        margin-right: 5px;
-        padding: 5px;
-      }
-
-      .navbar li a {
-        font-size: 16px;
-      }
-    }
-
-    @media only screen and (max-width:500px) {
-      .navbar li {
-        margin-right: 2px;
-        padding: 2px;
-      }
-
-      .navbar li a {
-        font-size: 14px;
-      }
-    }
-
-    #intro {
-      position: absolute;
-      top: 10px;
-      left: 38px;
-      max-width: 550px;
-    }
-
-    @media only screen and (max-width:1200px) {
-      #intro {
-        max-width: 400px;
-      }
-    }
-
-
-    @media only screen and (max-width:991px) {
-      #intro {
-        display: none;
-      }
-    }
-
-    .chartWrapper {
-      margin-top: -50px;
-      width: 90%;
-      height: 98vh;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    svg {
-      margin-top: -10px;
-    }
-
-    /* svg {
-      margin-top: -100px;
-      transform: rotate(45deg);
-    }
-
-    @media only screen and (max-width: 600px) {
-      svg {
-        margin-top: 0px;
-        transform: rotate(0deg);
-      }
-    } */
-
-    circle:hover {
-      cursor: pointer !important;
-    }
-
-    .hover {
-      font-weight: 700;
-    }
-
     .button {
-      min-width: 110px;
       text-transform: uppercase;
-      padding: 8px;
+      padding: 8px 12px;
       width: auto;
       display: inline-block;
       text-align: center;
-      border: 1px solid #000;
-      margin-top: 20px;
-      border-radius: 3px;
-      font-weight: 700;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      margin-top: 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 13px;
     }
 
     .button:hover {
@@ -151,47 +67,29 @@
       cursor: pointer;
     }
 
-    @media only screen and (max-width: 1100px) {
-      .chartWrapper {
-        height: 600px;
-        width: 85%;
-        margin-top: 0px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
+    .titleText {
+      padding-left: 30px;
+      font-size: 13px;
+      text-transform: uppercase;
     }
 
-    @media only screen and (max-width: 850px) {
-      .chartWrapper {
-        height: 500px;
-        margin-left: auto;
-        margin-right: auto;
-      }
+    #zoomInstruction {
+      margin-top: -5px;
+    }
+
+    #toggleWrapper {
+      padding-left: 30px;
     }
 
     #searchform {
       display: block;
-      margin: 30px auto 20px;
-      padding-right: 20px;
-      width: 100%;
-      max-width: 400px;
+      width: calc(100% - 80px);
+      padding-left: 30px;
     }
 
-    @media only screen and (max-width:900px) {
-      #searchform {
-        margin: -30px auto 20px;
-      }
-    }
-
-    @media only screen and (max-width:600px) {
-      #searchform {
-        margin: -60px auto 20px;
-      }
-    }
 
     span {
-      font-size: 20px;
+      font-size: 16px;
     }
 
     #search-bar {
@@ -205,7 +103,6 @@
     #searchform input {
       background-color: #fff;
       color: #000;
-      border: 1px solid #808080;
     }
 
     .output {
@@ -225,7 +122,7 @@
     .output,
     #search-bar {
       background: #fff;
-      border: 1px solid #767676;
+      border: none;
     }
 
     .prediction-item {
@@ -257,26 +154,18 @@
       color: #000;
     }
 
-    #toggleWrapper {
-      margin-right: 10px;
-      float: right;
-    }
 
-    @media only screen and (max-width: 991px) {
-
-      #toggleWrapper {
-        position: relative;
-        float: none;
-        clear: both;
-      }
-    }
+    /* Toggle button related */
 
     .toggleText {
-      margin-top: 10px;
+      margin-top: 0px;
       font-size: 16px;
     }
 
-    /* Toggle button related */
+    .toggleText p {
+      margin: 8px 0px;
+    }
+
     .toggle,
     .toggle2,
     .toggle3,
@@ -365,6 +254,9 @@
       margin-left: 0px;
     }
 
+    #resetZoom {
+      margin-left: 5px;
+    }
 
     #resetZoom:hover {
       cursor: pointer;
@@ -441,32 +333,6 @@
       border-radius: 3px;
     }
 
-    .more {
-      position: absolute;
-      right: 2px;
-      bottom: 8px;
-      color: black;
-      opacity: 1;
-      font-family: "Albert Sans", sans-serif;
-      font-size: 16px;
-      z-index: 100;
-    }
-
-    .back {
-      margin-left: 230px;
-      color: black;
-      opacity: 1;
-      font-family: "Albert Sans", sans-serif;
-      font-size: 16px;
-      z-index: 100;
-    }
-
-    .more:hover,
-    .back:hover {
-      cursor: pointer !important;
-      font-weight: 700;
-    }
-
     .none {
       display: none;
     }
@@ -475,30 +341,38 @@
       display: inherit;
     }
 
-    #logo {
-      width: 200px;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 200;
+    .chartWrapper {
+      width: 100%;
+      height: 100vh;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    #logoWrapper {
+    .point:hover {
+      cursor: pointer !important;
+    }
+
+    .hover {
+      font-weight: 700;
+    }
+
+
+    /* #logoWrapper {
       position: absolute;
       bottom: 20px;
       right: 20px;
       z-index: 200;
-    }
+    } */
 
-    #logoWrapper img {
+    /* #logoWrapper img {
       height: 25px;
-    }
+    } */
 
     #locator {
       height: 65px;
       position: absolute;
       bottom: 20px;
-      left: 20px;
+      right: 20px;
       z-index: 200;
     }
 
@@ -547,7 +421,7 @@
       }
 
 
-      #logoWrapper img {
+      /* #logoWrapper img {
         height: 20px;
       }
 
@@ -555,13 +429,11 @@
         top: 50px;
       }
 
-      #controlsWrapper {
-        margin-left: 15px;
-      }
+
 
       #searchform span {
         font-size: 18px;
-      }
+      } */
     }
   </style>
 </head>
@@ -569,51 +441,32 @@
 <body>
 
 
-  <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
-  <div id="logoWrapper">
+  <!-- <div id="logoWrapper">
     <img src="./img/giessen.png" />
     <img src="./img/berggruen.png" />
-  </div>
+  </div> -->
   <img id="locator" src="./img/globe.svg" />
 
-  <div class="tooltip">
-    <!-- <span class="close">✕</span>
-    <div class="front show">
-      <span class="more">More→</span>
-    </div>
-    <div class="back none">
-      <span class="back">Back→</span>
-    </div> -->
-  </div>
+  <div class="tooltip"></div>
   <div class="wrapper">
 
-    <div class="navbar">
-      <li id="mapPage"><a href="index.html">map</a></li>
-      <li id="individualsPage"><a href="individuals.html">individuals</a></li>
-      <li><a href="#">contact</a></li>
-      <li><a href="#">about</a></li>
-    </div>
-
-
-    <div class="row">
-      <div class="col-md-9">
-        <p id="intro">The Planetary perspective recognizes human affairs as inextricably linked with the biogeochemical
-          processes of an ever-changing planet. The Planetary Portal is a central platform for planetary discussions,
-          bringing together diverse communities from the fields of science, social sciences, humanities, arts, and
-          politics, bridging the gap between theoretical and practical.</p>
-        <div class="chartWrapper">
-          <div id="chart1"></div>
-        </div>
-      </div>
-      <div class="col-md-3" id="controlsWrapper">
+    <div class="main">
+      <div id="sidebar">
+        <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
+        <hr>
+        <p id="about">About</p>
+        <hr>
         <form id="searchform">
-          <span>Search for organization or location → </span>
           <input type="text" id="search-bar" autocomplete="off" placeholder="Type something here" />
           <ul class="output" style="display:none;">
           </ul>
-          <p id="reset" class="button">reset</p>
-          <p id="resetZoom" class="button">reset zoom</p>
+          <p id="reset" class="button">reset search</p>
         </form>
+        <hr>
+        <p class="titleText" id="zoomInstruction">Draw target area on map to zoom<span id="resetZoom"
+            class="button">reset</span></p>
+        <hr>
+        <p class="titleText">Filter by topic</p>
         <div id="toggleWrapper">
           <div class="itemWrapper">
             <div class='toggle item filters' id="filter1">
@@ -677,6 +530,12 @@
           </div>
         </div>
       </div>
+      <div id="mainMap">
+        <div class="chartWrapper">
+          <div id="chart1"></div>
+        </div>
+      </div>
+
     </div>
 
 
@@ -684,7 +543,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
   <script src="https://d3js.org/d3-array.v1.min.js"></script>
   <script src="https://d3js.org/d3-geo.v1.min.js"></script>
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
@@ -715,15 +573,6 @@
         return;
       }
     });
-
-    if (windowWidth >= 1150 && windowHeight > 800) {
-      $("#toggleWrapper").css("margin-top", 200)
-    }
-
-    if (windowWidth <= 991) {
-      $("#toggleWrapper").css("margin-left", (windowWidth - 350) / 2)
-      $("#toggleWrapper").css("margin-right", (windowWidth - 350) / 2)
-    }
 
 
     let isSmallScreen = false;
@@ -769,7 +618,7 @@
         type: "Sphere"
       })
       .precision(0.1)
-      .scale((width) / 2 / Math.PI)
+      .scale((width) / 2 / Math.PI * 0.85)
     // .rotate([0, 0, 0])
     let path = d3.geoPath().projection(projection);
 
@@ -808,30 +657,46 @@
       .on("zoom", zoomed)
       .on("end", zoomEnd);
 
-    //init brush function
-    function initBrush() {
-      svg.call(brush);
-    }
 
     //brushMove functions
 
     function brushMove(e) {
 
-      brushing = true;
-      tooltip.hideTooltip();
+      // console.log(e.type)
+      if (searched) {
+        // e.stopImmediatePropagation();
+        // if (e.type === "brush") return;
+        // svg.style("pointerEvents", "none")
+        // svg.on(".brush", null);
+        // brush.clear;
+
+        d3.selectAll(".brush").style("opacity", 0);
+        d3.selectAll(".selection").style("display", "none");
+        d3.selectAll(".handle").style("display", "none");
+
+      } else {
+        d3.selectAll(".brush").style("opacity", 1);
+        d3.selectAll(".selection").style("display", "inherit");
+        d3.selectAll(".handle").style("display", "inherit");
 
 
-      svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
 
-      //update brush extent
-      brushExtent = e.selection;
-      //update points style within the rect
-      svg.selectAll("circle.point")
-        .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Category))
-        .raise(); // in order to be able to hover
+        brushing = true;
+        tooltip.hideTooltip();
 
-      //check brush extent to see if it's big enough to brush
-      brushedSufficient = isSufficient();
+
+        svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
+
+        //update brush extent
+        brushExtent = e.selection;
+        //update points style within the rect
+        svg.selectAll("circle.point")
+          .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Category))
+          .raise(); // in order to be able to hover
+
+        //check brush extent to see if it's big enough to brush
+        brushedSufficient = isSufficient();
+      }
     }
 
     function isSufficient() { // make sure user can't zoom by clicking
@@ -878,19 +743,22 @@
         if (k > 130) { k = 130 };
         transformedLevel = k;
 
-        svg.transition().duration(750).call(
-          zoom.transform,
-          d3.zoomTransform(30, 30, 1)
-            .translate(width / 2, height / 2)
-            .scale(k)
-            .translate(x, y),
-        )
+        if (!searched) { //disable zoom after search
+          svg.transition().duration(750).call(
+            zoom.transform,
+            d3.zoomTransform(30, 30, 1)
+              .translate(width / 2, height / 2)
+              .scale(k)
+              .translate(x, y),
+          )
+        }
 
       }
 
     }
 
     function zoomed(e) {
+
       tooltip.hideTooltip();
       clicked = false;
 
@@ -1175,6 +1043,8 @@
             $(".prediction-item").on("click", function () {
 
               searched = true;
+              d3.selectAll(".overlay").style("cursor", "inherit")
+
               $text = $(this).find("span").text();
               resetFilters();
               filterPoints(values[1], $text)
@@ -1213,6 +1083,8 @@
 
       $("#reset").on("click", function () {
         resetZoom();
+        searched = false;
+        d3.selectAll(".overlay").style("cursor", "crosshair")
         resetPoints(data);
         $("#search-bar").val("");
 
@@ -1323,7 +1195,7 @@
     function resetPoints(data) {
       tooltip.hideTooltip();
       clicked = false;
-      resetFilters();
+      // resetFilters();
       svg.selectAll("circle.point")
         .data(data)
         .join("circle")
@@ -1409,26 +1281,6 @@
 
       })
 
-      // d3.selectAll(".back").on("click", function () {
-      //   console.log("back")
-      //   content = `<div id="map"></div><h4> ${d.Organization}  </h4>
-      // <p> ${d.Contact_address} </p>
-      // <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
-      // <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      // <span class="close">X</span>
-      // <span class="more">More→</span>`;
-
-      //   tooltip.showTooltip(content, e);
-
-      //   d3.selectAll(".close").on("click", function () {
-      //     tooltip.hideTooltip();
-      //     clicked = false;
-      //     d3.selectAll(".point").style("stroke", "#808080")
-      //   })
-
-      // })
-
-
 
       let map = new mapboxgl.Map({
         container: 'map', // container element id
@@ -1464,11 +1316,8 @@
       resetPoints(data);
 
 
-      console.log("updateProjection")
-
       if (!reprojected) {
 
-        console.log("updateProjection Rect")
 
         reprojected = true;
 
