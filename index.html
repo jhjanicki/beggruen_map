@@ -419,21 +419,49 @@
         height: 40px;
         top: 50px;
       }
+    }
 
+    input[type="radio"] {
+      height: 15px;
+      width: 15px;
+      margin-left: 30px;
+      margin-right: 10px;
+      vertical-align: top;
+    }
 
-      /* #logoWrapper img {
-        height: 20px;
-      }
+    input[type="radio"]:hover {
+      cursor: pointer;
+    }
 
-      #logoWrapper {
-        top: 50px;
-      }
+    .custom-radio {
+      /* hiding browser el */
+      appearance: none;
+      /* Safari support */
+      -webkit-appearance: none;
+      border: 0.2rem solid #ddd2ca;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+    }
 
+    /* keyboard navigation focus appearance */
+    .custom-radio:focus-visible {
+      outline-offset: 0;
+    }
 
+    .custom-radio:checked {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.5);
+      border-width: 0.2rem;
+    }
 
-      #searchform span {
-        font-size: 18px;
-      } */
+    .custom-radio:not(:checked) {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+      background-color: #ddd2ca;
+      border-width: 0.2rem;
+    }
+
+    .radioWrapper {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -458,7 +486,7 @@
         <hr>
         <form id="searchform">
           <input type="text" id="search-bar" autocomplete="off" placeholder="Type something here" />
-          <ul class="output" style="display:none;">
+          <ul class="output">
           </ul>
           <p id="reset" class="button">reset search</p>
         </form>
@@ -529,6 +557,17 @@
             </div>
           </div>
         </div>
+        <hr>
+        <p class="titleText">View by type</p>
+        <div class="radioWrapper">
+          <input type="radio" id="toggleMap" name="toggleMode" value="Map" class="custom-radio" checked>
+          <label for="Organizations">Organizations</label>
+        </div>
+        <div class="radioWrapper">
+          <input type="radio" id="toggleIndividual" name="toggleMode" value="Individual" class="custom-radio">
+          <label for="Individuals">Individuals</label>
+        </div>
+        <hr>
       </div>
       <div id="mainMap">
         <div class="chartWrapper">
@@ -679,11 +718,8 @@
         d3.selectAll(".selection").style("display", "inherit");
         d3.selectAll(".handle").style("display", "inherit");
 
-
-
         brushing = true;
         tooltip.hideTooltip();
-
 
         svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
 
@@ -718,10 +754,7 @@
           projection([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
           projection([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
       }
-
     }
-
-
 
     //brushEnd function
     function brushEnd() {
@@ -752,9 +785,7 @@
               .translate(x, y),
           )
         }
-
       }
-
     }
 
     function zoomed(e) {
@@ -775,7 +806,6 @@
         d3.selectAll(".land2").style("display", "none");
         d3.selectAll(".land").style("display", "block");
       }
-
 
       isZoomed = true;
 
@@ -801,14 +831,11 @@
           } else {
             return 0
           }
-          // activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none"
         })
 
       svg.select('.brush')
         .attr('transform', transform)
         .attr("stroke-width", isZoomed ? 1 / transform.k : 1);
-
-
     }
 
     function resetZoom() {
@@ -824,38 +851,81 @@
     const worldmap = d3.json("./data/land3.geojson");
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
     const points = d3.csv("./data/mapData3.csv");
-
+    const allPoints = d3.csv("./data/allData.csv");
     //IPSA & Earth4All are drawn twice, why??
 
     let data;
+    let dataMap;
+    let dataIndividual;
+    let toggleMode = "Map";
+
+    function filterByToggleCategory(d) {
+      if (activeCategories.includes(d.Category)) {
+        if (d.Visualization === toggleMode) {
+          return "inherit"
+        } else {
+          return "none"
+        }
+      } else {
+        return "none"
+      }
+    }
 
 
-    Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
+    Promise.all([worldmap, points, worldmapDetailed, allPoints]).then(function (values) {
 
 
       projection2.fitSize([width, height], values[0]);
 
+      data = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "");
+      dataMap = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "" && d.Visualization === "Map");
+      dataIndividual = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "" && d.Visualization === "Individual");
 
-      data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
 
-      let organization = data.map(function (obj) {
-        return obj.Organization;
-      });
-
-      organization = organization.filter(function (v, i) {
-        return organization.indexOf(v) == i;
-      });
-
-      let location = data.map(function (obj) {
-        return obj.Location;
-      });
-      location = location.filter(function (v, i) {
-        return location.indexOf(v) == i;
-      });
-
-      const $terms = [...organization, ...location].sort();
+      let $terms;
       let $return = [];
 
+      populateSearchterms();
+
+      function populateSearchterms() {
+        if (toggleMode === "Map") {
+          let organization = dataMap.map(function (obj) {
+            return obj.Organization;
+          });
+
+          organization = organization.filter(function (v, i) {
+            return organization.indexOf(v) == i;
+          });
+
+          let location = dataMap.map(function (obj) {
+            return obj.Location;
+          });
+
+          location = location.filter(function (v, i) {
+            return location.indexOf(v) == i;
+          });
+          $terms = [...organization, ...location].sort();
+          console.log($terms);
+        } else {
+
+          let name = dataIndividual.map(function (obj) {
+            return obj.Name;
+          });
+
+          name = name.filter(function (v, i) {
+            return name.indexOf(v) == i;
+          });
+
+          let location = dataIndividual.map(function (obj) {
+            return obj.Location;
+          });
+
+          location = location.filter(function (v, i) {
+            return location.indexOf(v) == i;
+          });
+          $terms = [...name, ...location].sort();
+        }
+      }
 
       let focus = data.map(function (obj) {
         return obj.Focus;
@@ -888,7 +958,6 @@
         .attr("class", "land")
         .attr("id", "land")
         .attr("d", path);
-
 
       const bbox = d3.select("#land").node().getBBox();
 
@@ -927,7 +996,6 @@
         .attr("display", "none")
 
       //need to come before points
-
       svg.append("g")
         .attr("class", "brush")
         .call(brush);
@@ -944,7 +1012,8 @@
         .attr("stroke", "#808080")
         .attr("r", 5.5)
         .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
+        .style("display", d => filterByToggleCategory(d))
         .on("mouseover", function (e, d) {
           if (!brushing && !isSmallScreen) {
             d3.selectAll(".point").style("stroke", "#808080")
@@ -962,7 +1031,6 @@
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
-
           if (isSmallScreen) {
             showDetail(e, d);
           }
@@ -970,12 +1038,10 @@
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
-
           if (isSmallScreen) {
             showDetail(e, d);
           }
         })
-
 
       $("#resetZoom").click(resetZoom);
 
@@ -1019,47 +1085,54 @@
         }
       }
 
-      $(function () {
+      populateSearch();
 
-        $("#search-bar").keydown(function (e) {
-          $key = e.keyCode;
-          if ($key == 38 || $key == 40) {
-            nextItem($key);
-            return;
-          }
+      function populateSearch() {
 
-          setTimeout(function () {
-            var $search = $("#search-bar").val();
-            $return = [];
-
-            strInArray($search, $terms);
-
-            if ($search == "" || !$("input").val) {
-              $(".output").html("").slideUp();
-            } else {
-              $(".output").html($return).slideDown();
+        $(function () {
+          $("#search-bar").keydown(function (e) {
+            $key = e.keyCode;
+            if ($key == 38 || $key == 40) {
+              nextItem($key);
+              return;
             }
 
-            $(".prediction-item").on("click", function () {
+            setTimeout(function () {
+              var $search = $("#search-bar").val();
+              $return = [];
 
-              searched = true;
-              d3.selectAll(".overlay").style("cursor", "inherit")
+              strInArray($search, $terms);
 
-              $text = $(this).find("span").text();
-              resetFilters();
-              filterPoints(values[1], $text)
+              if ($search == "" || !$("input").val) {
+                $(".output").html("").slideUp();
+              } else {
+                $(".output").html($return).slideDown();
+              }
 
-              $(".output").slideUp(function () {
-                $(this).html("");
+              $(".prediction-item").on("click", function () {
+
+                searched = true;
+                d3.selectAll(".overlay").style("cursor", "inherit")
+
+                $text = $(this).find("span").text();
+                resetFilters();
+                filterPoints(values[1], $text)
+
+                $(".output").slideUp(function () {
+                  $(this).html("");
+                });
+                $("#search-bar").val($text);
+
               });
-              $("#search-bar").val($text);
 
-            });
-
-            $(".prediction-item:first-child").addClass("focus");
-          }, 50);
+              $(".prediction-item:first-child").addClass("focus");
+            }, 50);
+          });
         });
-      });
+
+      }
+
+
 
       $("#search-bar").focus(function () {
         if ($(".prediction-item").length > 0) {
@@ -1068,6 +1141,7 @@
 
         $("#searchform").submit(function (e) {
           e.preventDefault();
+
           $text = $(".focus").find("span").text();
           $(".output").slideUp();
           $("#search-bar").val($text);
@@ -1089,6 +1163,14 @@
         $("#search-bar").val("");
 
       })
+
+      $('input:radio[name="toggleMode"]').change(function () {
+        console.log($(this).val())
+        toggleMode = $(this).val();
+        d3.selectAll("circle.point").style("display", d => filterByToggleCategory(d))
+        populateSearchterms();
+        populateSearch();
+      });
 
 
     });
@@ -1115,7 +1197,7 @@
 
           d3.selectAll("circle.point")
             .transition().duration(300)
-            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => filterByToggleCategory(d))
 
 
         } else {
@@ -1128,7 +1210,7 @@
           d3.selectAll("circle.point")
             .transition().duration(300)
             .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
-            .style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+            .style("display", d => filterByToggleCategory(d))
         }
       });
 
@@ -1144,15 +1226,22 @@
 
 
 
-
     function filterPoints(data, term) {
 
       tooltip.hideTooltip();
       clicked = false;
-      const filteredData = data.filter(d => d.Organization === term || d.Location === term)
+      let filteredData;
+
+      if (toggleMode === "Map") {
+        filteredData = dataMap.filter(d => d.Organization === term || d.Location === term);
+      } else {
+        filteredData = dataIndividual.filter(d => d.Name === term);
+      }
+
+      console.log(filteredData)
+
 
       ids = filteredData.map(a => a.Id);
-
 
       let lat = filteredData[0].Latitude;
       let lon = filteredData[0].Longitude;
@@ -1206,7 +1295,8 @@
         .attr("stroke-width", isZoomed ? 1 / transformedLevel : 1)
         .attr("stroke", "#808080")
         .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
+        .style("display", d => filterByToggleCategory(d))
         .on("mouseover", function (e, d) {
           if (!brushing && !isSmallScreen) {
             d3.selectAll(".point").style("stroke", "#808080")
@@ -1260,27 +1350,9 @@
       <p> ${d.Contact_address} </p>
       <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
       <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      <span class="close">✕</span>
-      <span class="more">More→</span>`;
-
+      <span class="close">✕</span>`;
 
       tooltip.showTooltip(isSmallScreen, content, e);
-
-      d3.selectAll(".more").on("click", function () {
-        content = `<h4> ${d.Organization}  </h4>
-        <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
-        <p> ${d.Mission} </p>
-      <span class="close">✕</span>`;  // <span class="back">Back→</span>
-        tooltip.showTooltip(isSmallScreen, content, e);
-
-        d3.selectAll(".close").on("click", function () {
-          tooltip.hideTooltip();
-          clicked = false;
-          d3.selectAll(".point").style("stroke", "#808080")
-        })
-
-      })
-
 
       let map = new mapboxgl.Map({
         container: 'map', // container element id
@@ -1306,7 +1378,6 @@
         tooltip.hideTooltip(); // remove if want tooltip to stay open
         clicked = false;
       }
-
     }
 
 
@@ -1315,13 +1386,8 @@
       resetZoom();
       resetPoints(data);
 
-
       if (!reprojected) {
-
-
         reprojected = true;
-
-        // d3.select("g").attr("transform", "translate(0,200) scale(0.95)")
 
         // and redraw it using the clipping mask
         d3.selectAll("path.land")
@@ -1339,7 +1405,6 @@
           .attr("clip-path", "none")
           .attr("display", "none")
 
-
         // draw points
         d3.selectAll("circle.point")
           .transition().duration(700)
@@ -1348,10 +1413,7 @@
 
       } else {
 
-        console.log("updateProjection Weird")
-
         reprojected = false;
-        // d3.select("g").attr("transform", "translate(0,0) scale(1)")
 
         // and redraw it using the clipping mask
         d3.selectAll("path.land")
