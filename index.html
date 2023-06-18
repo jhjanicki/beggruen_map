@@ -421,19 +421,17 @@
       }
     }
 
-    input[type="radio"] {
-      height: 15px;
-      width: 15px;
-      margin-left: 30px;
-      margin-right: 10px;
-      vertical-align: top;
-    }
 
     input[type="radio"]:hover {
       cursor: pointer;
     }
 
-    .custom-radio {
+    .typeRadio {
+      height: 15px;
+      width: 15px;
+      margin-left: 30px;
+      margin-right: 10px;
+      vertical-align: top;
       /* hiding browser el */
       appearance: none;
       /* Safari support */
@@ -444,17 +442,17 @@
     }
 
     /* keyboard navigation focus appearance */
-    .custom-radio:focus-visible {
+    .typeRadio:focus-visible {
       outline-offset: 0;
     }
 
-    .custom-radio:checked {
+    .typeRadio:checked {
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
       background-color: rgba(0, 0, 0, 0.5);
       border-width: 0.2rem;
     }
 
-    .custom-radio:not(:checked) {
+    .typeRadio:not(:checked) {
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
       background-color: #ddd2ca;
       border-width: 0.2rem;
@@ -560,11 +558,11 @@
         <hr>
         <p class="titleText">View by type</p>
         <div class="radioWrapper">
-          <input type="radio" id="toggleMap" name="toggleMode" value="Map" class="custom-radio" checked>
+          <input type="radio" id="toggleMap" name="toggleMode" value="Map" class="typeRadio" checked>
           <label for="Organizations">Organizations</label>
         </div>
         <div class="radioWrapper">
-          <input type="radio" id="toggleIndividual" name="toggleMode" value="Individual" class="custom-radio">
+          <input type="radio" id="toggleIndividual" name="toggleMode" value="Individual" class="typeRadio">
           <label for="Individuals">Individuals</label>
         </div>
         <hr>
