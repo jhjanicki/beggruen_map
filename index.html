@@ -11,7 +11,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
-  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <!-- <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'> -->
   <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
@@ -21,127 +21,43 @@
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
       background-color: #ddd2ca;
-      /* #e4eae9 */
       overflow-x: hidden;
+      margin: 0px;
+      padding: 0px;
     }
 
-    .navbar {
-      position: relative;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 0px 10px 0px;
-      text-align: right;
+    .main {
+      display: grid;
+      grid-template-columns: 2fr 7fr;
     }
 
-    .navbar li {
-      display: inline;
-      padding: 10px;
-      margin-right: 20px;
-      opacity: 0.5;
-
+    #sidebar {
+      /* padding: 20px; */
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-    .navbar li a {
-      color: #000;
+    #logo {
+      padding: 30px 0px 20px 30px;
+      width: 220px;
+      z-index: 200;
+    }
+
+    #about {
+      padding: 0px 0px 0px 30px;
       font-size: 18px;
     }
 
-    .navbar li a:hover {
-      font-weight: 700;
-      transition: all 0.5s ease;
-      cursor: pointer;
-    }
-
-    #mapPage {
-      opacity: 1;
-    }
-
-    @media only screen and (max-width:600px) {
-      .navbar li {
-        margin-right: 5px;
-        padding: 5px;
-      }
-
-      .navbar li a {
-        font-size: 16px;
-      }
-    }
-
-    @media only screen and (max-width:500px) {
-      .navbar li {
-        margin-right: 2px;
-        padding: 2px;
-      }
-
-      .navbar li a {
-        font-size: 14px;
-      }
-    }
-
-    #intro {
-      position: absolute;
-      top: 10px;
-      left: 38px;
-      max-width: 550px;
-    }
-
-    @media only screen and (max-width:1200px) {
-      #intro {
-        max-width: 400px;
-      }
-    }
-
-
-    @media only screen and (max-width:991px) {
-      #intro {
-        display: none;
-      }
-    }
-
-    .chartWrapper {
-      margin-top: -50px;
-      width: 90%;
-      height: 98vh;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    svg {
-      margin-top: -10px;
-    }
-
-    /* svg {
-      margin-top: -100px;
-      transform: rotate(45deg);
-    }
-
-    @media only screen and (max-width: 600px) {
-      svg {
-        margin-top: 0px;
-        transform: rotate(0deg);
-      }
-    } */
-
-    circle:hover {
-      cursor: pointer !important;
-    }
-
-    .hover {
-      font-weight: 700;
-    }
-
     .button {
-      min-width: 110px;
       text-transform: uppercase;
-      padding: 8px;
+      padding: 8px 12px;
       width: auto;
       display: inline-block;
       text-align: center;
-      border: 1px solid #000;
-      margin-top: 20px;
-      border-radius: 3px;
-      font-weight: 700;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      margin-top: 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 13px;
     }
 
     .button:hover {
@@ -151,47 +67,29 @@
       cursor: pointer;
     }
 
-    @media only screen and (max-width: 1100px) {
-      .chartWrapper {
-        height: 600px;
-        width: 85%;
-        margin-top: 0px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
+    .titleText {
+      padding-left: 30px;
+      font-size: 13px;
+      text-transform: uppercase;
     }
 
-    @media only screen and (max-width: 850px) {
-      .chartWrapper {
-        height: 500px;
-        margin-left: auto;
-        margin-right: auto;
-      }
+    #zoomInstruction {
+      margin-top: -5px;
+    }
+
+    #toggleWrapper {
+      padding-left: 30px;
     }
 
     #searchform {
       display: block;
-      margin: 30px auto 20px;
-      padding-right: 20px;
-      width: 100%;
-      max-width: 400px;
+      width: calc(100% - 80px);
+      padding-left: 30px;
     }
 
-    @media only screen and (max-width:900px) {
-      #searchform {
-        margin: -30px auto 20px;
-      }
-    }
-
-    @media only screen and (max-width:600px) {
-      #searchform {
-        margin: -60px auto 20px;
-      }
-    }
 
     span {
-      font-size: 20px;
+      font-size: 16px;
     }
 
     #search-bar {
@@ -205,7 +103,6 @@
     #searchform input {
       background-color: #fff;
       color: #000;
-      border: 1px solid #808080;
     }
 
     .output {
@@ -225,7 +122,7 @@
     .output,
     #search-bar {
       background: #fff;
-      border: 1px solid #767676;
+      border: none;
     }
 
     .prediction-item {
@@ -257,26 +154,18 @@
       color: #000;
     }
 
-    #toggleWrapper {
-      margin-right: 10px;
-      float: right;
-    }
 
-    @media only screen and (max-width: 991px) {
-
-      #toggleWrapper {
-        position: relative;
-        float: none;
-        clear: both;
-      }
-    }
+    /* Toggle button related */
 
     .toggleText {
-      margin-top: 10px;
+      margin-top: 0px;
       font-size: 16px;
     }
 
-    /* Toggle button related */
+    .toggleText p {
+      margin: 8px 0px;
+    }
+
     .toggle,
     .toggle2,
     .toggle3,
@@ -365,6 +254,9 @@
       margin-left: 0px;
     }
 
+    #resetZoom {
+      margin-left: 5px;
+    }
 
     #resetZoom:hover {
       cursor: pointer;
@@ -398,6 +290,7 @@
       min-height: 200px;
       max-height: 500px;
       overflow: auto;
+      display: none;
     }
 
     .tooltip h4 {
@@ -441,32 +334,6 @@
       border-radius: 3px;
     }
 
-    .more {
-      position: absolute;
-      right: 2px;
-      bottom: 8px;
-      color: black;
-      opacity: 1;
-      font-family: "Albert Sans", sans-serif;
-      font-size: 16px;
-      z-index: 100;
-    }
-
-    .back {
-      margin-left: 230px;
-      color: black;
-      opacity: 1;
-      font-family: "Albert Sans", sans-serif;
-      font-size: 16px;
-      z-index: 100;
-    }
-
-    .more:hover,
-    .back:hover {
-      cursor: pointer !important;
-      font-weight: 700;
-    }
-
     .none {
       display: none;
     }
@@ -475,30 +342,38 @@
       display: inherit;
     }
 
-    #logo {
-      width: 200px;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 200;
+    .chartWrapper {
+      width: 100%;
+      height: 100vh;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    #logoWrapper {
+    .point:hover {
+      cursor: pointer !important;
+    }
+
+    .hover {
+      font-weight: 700;
+    }
+
+
+    /* #logoWrapper {
       position: absolute;
       bottom: 20px;
       right: 20px;
       z-index: 200;
-    }
+    } */
 
-    #logoWrapper img {
+    /* #logoWrapper img {
       height: 25px;
-    }
+    } */
 
     #locator {
       height: 65px;
       position: absolute;
       bottom: 20px;
-      left: 20px;
+      right: 20px;
       z-index: 200;
     }
 
@@ -545,23 +420,47 @@
         height: 40px;
         top: 50px;
       }
+    }
 
 
-      #logoWrapper img {
-        height: 20px;
-      }
+    input[type="radio"]:hover {
+      cursor: pointer;
+    }
 
-      #logoWrapper {
-        top: 50px;
-      }
+    .typeRadio {
+      height: 15px;
+      width: 15px;
+      margin-left: 30px;
+      margin-right: 10px;
+      vertical-align: top;
+      /* hiding browser el */
+      appearance: none;
+      /* Safari support */
+      -webkit-appearance: none;
+      border: 0.2rem solid #ddd2ca;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+    }
 
-      #controlsWrapper {
-        margin-left: 15px;
-      }
+    /* keyboard navigation focus appearance */
+    .typeRadio:focus-visible {
+      outline-offset: 0;
+    }
 
-      #searchform span {
-        font-size: 18px;
-      }
+    .typeRadio:checked {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.5);
+      border-width: 0.2rem;
+    }
+
+    .typeRadio:not(:checked) {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+      background-color: #ddd2ca;
+      border-width: 0.2rem;
+    }
+
+    .radioWrapper {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -569,51 +468,32 @@
 <body>
 
 
-  <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
-  <div id="logoWrapper">
+  <!-- <div id="logoWrapper">
     <img src="./img/giessen.png" />
     <img src="./img/berggruen.png" />
-  </div>
+  </div> -->
   <img id="locator" src="./img/globe.svg" />
 
-  <div class="tooltip">
-    <!-- <span class="close">✕</span>
-    <div class="front show">
-      <span class="more">More→</span>
-    </div>
-    <div class="back none">
-      <span class="back">Back→</span>
-    </div> -->
-  </div>
+  <div class="tooltip"></div>
   <div class="wrapper">
 
-    <div class="navbar">
-      <li id="mapPage"><a href="index.html">map</a></li>
-      <li id="individualsPage"><a href="individuals.html">individuals</a></li>
-      <li><a href="#">contact</a></li>
-      <li><a href="#">about</a></li>
-    </div>
-
-
-    <div class="row">
-      <div class="col-md-9">
-        <p id="intro">The Planetary perspective recognizes human affairs as inextricably linked with the biogeochemical
-          processes of an ever-changing planet. The Planetary Portal is a central platform for planetary discussions,
-          bringing together diverse communities from the fields of science, social sciences, humanities, arts, and
-          politics, bridging the gap between theoretical and practical.</p>
-        <div class="chartWrapper">
-          <div id="chart1"></div>
-        </div>
-      </div>
-      <div class="col-md-3" id="controlsWrapper">
+    <div class="main">
+      <div id="sidebar">
+        <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
+        <hr>
+        <p id="about">About</p>
+        <hr>
         <form id="searchform">
-          <span>Search for organization or location → </span>
           <input type="text" id="search-bar" autocomplete="off" placeholder="Type something here" />
-          <ul class="output" style="display:none;">
+          <ul class="output">
           </ul>
-          <p id="reset" class="button">reset</p>
-          <p id="resetZoom" class="button">reset zoom</p>
+          <p id="reset" class="button">reset search</p>
         </form>
+        <hr>
+        <p class="titleText" id="zoomInstruction">Draw target area on map to zoom<span id="resetZoom"
+            class="button">reset</span></p>
+        <hr>
+        <p class="titleText">Filter by topic</p>
         <div id="toggleWrapper">
           <div class="itemWrapper">
             <div class='toggle item filters' id="filter1">
@@ -676,7 +556,24 @@
             </div>
           </div>
         </div>
+        <hr>
+        <p class="titleText">View by type</p>
+        <div class="radioWrapper">
+          <input type="radio" id="toggleMap" name="toggleMode" value="Map" class="typeRadio" checked>
+          <label for="Organizations">Organizations</label>
+        </div>
+        <div class="radioWrapper">
+          <input type="radio" id="toggleIndividual" name="toggleMode" value="Individual" class="typeRadio">
+          <label for="Individuals">Individuals</label>
+        </div>
+        <hr>
       </div>
+      <div id="mainMap">
+        <div class="chartWrapper">
+          <div id="chart1"></div>
+        </div>
+      </div>
+
     </div>
 
 
@@ -684,7 +581,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
   <script src="https://d3js.org/d3-array.v1.min.js"></script>
   <script src="https://d3js.org/d3-geo.v1.min.js"></script>
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
@@ -715,15 +611,6 @@
         return;
       }
     });
-
-    if (windowWidth >= 1150 && windowHeight > 800) {
-      $("#toggleWrapper").css("margin-top", 200)
-    }
-
-    if (windowWidth <= 991) {
-      $("#toggleWrapper").css("margin-left", (windowWidth - 350) / 2)
-      $("#toggleWrapper").css("margin-right", (windowWidth - 350) / 2)
-    }
 
 
     let isSmallScreen = false;
@@ -769,7 +656,7 @@
         type: "Sphere"
       })
       .precision(0.1)
-      .scale((width) / 2 / Math.PI)
+      .scale((width) / 2 / Math.PI * 0.85)
     // .rotate([0, 0, 0])
     let path = d3.geoPath().projection(projection);
 
@@ -808,30 +695,43 @@
       .on("zoom", zoomed)
       .on("end", zoomEnd);
 
-    //init brush function
-    function initBrush() {
-      svg.call(brush);
-    }
 
     //brushMove functions
 
     function brushMove(e) {
 
-      brushing = true;
-      tooltip.hideTooltip();
+      // console.log(e.type)
+      if (searched) {
+        // e.stopImmediatePropagation();
+        // if (e.type === "brush") return;
+        // svg.style("pointerEvents", "none")
+        // svg.on(".brush", null);
+        // brush.clear;
 
+        d3.selectAll(".brush").style("opacity", 0);
+        d3.selectAll(".selection").style("display", "none");
+        d3.selectAll(".handle").style("display", "none");
 
-      svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
+      } else {
+        d3.selectAll(".brush").style("opacity", 1);
+        d3.selectAll(".selection").style("display", "inherit");
+        d3.selectAll(".handle").style("display", "inherit");
 
-      //update brush extent
-      brushExtent = e.selection;
-      //update points style within the rect
-      svg.selectAll("circle.point")
-        .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Category))
-        .raise(); // in order to be able to hover
+        brushing = true;
+        tooltip.hideTooltip();
 
-      //check brush extent to see if it's big enough to brush
-      brushedSufficient = isSufficient();
+        svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
+
+        //update brush extent
+        brushExtent = e.selection;
+        //update points style within the rect
+        svg.selectAll("circle.point")
+          .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Category))
+          .raise(); // in order to be able to hover
+
+        //check brush extent to see if it's big enough to brush
+        brushedSufficient = isSufficient();
+      }
     }
 
     function isSufficient() { // make sure user can't zoom by clicking
@@ -853,10 +753,7 @@
           projection([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
           projection([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
       }
-
     }
-
-
 
     //brushEnd function
     function brushEnd() {
@@ -878,19 +775,20 @@
         if (k > 130) { k = 130 };
         transformedLevel = k;
 
-        svg.transition().duration(750).call(
-          zoom.transform,
-          d3.zoomTransform(30, 30, 1)
-            .translate(width / 2, height / 2)
-            .scale(k)
-            .translate(x, y),
-        )
-
+        if (!searched) { //disable zoom after search
+          svg.transition().duration(750).call(
+            zoom.transform,
+            d3.zoomTransform(30, 30, 1)
+              .translate(width / 2, height / 2)
+              .scale(k)
+              .translate(x, y),
+          )
+        }
       }
-
     }
 
     function zoomed(e) {
+
       tooltip.hideTooltip();
       clicked = false;
 
@@ -907,7 +805,6 @@
         d3.selectAll(".land2").style("display", "none");
         d3.selectAll(".land").style("display", "block");
       }
-
 
       isZoomed = true;
 
@@ -933,14 +830,11 @@
           } else {
             return 0
           }
-          // activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none"
         })
 
       svg.select('.brush')
         .attr('transform', transform)
         .attr("stroke-width", isZoomed ? 1 / transform.k : 1);
-
-
     }
 
     function resetZoom() {
@@ -956,38 +850,81 @@
     const worldmap = d3.json("./data/land3.geojson");
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
     const points = d3.csv("./data/mapData3.csv");
-
+    const allPoints = d3.csv("./data/allData.csv");
     //IPSA & Earth4All are drawn twice, why??
 
     let data;
+    let dataMap;
+    let dataIndividual;
+    let toggleMode = "Map";
+
+    function filterByToggleCategory(d) {
+      if (activeCategories.includes(d.Category)) {
+        if (d.Visualization === toggleMode) {
+          return "inherit"
+        } else {
+          return "none"
+        }
+      } else {
+        return "none"
+      }
+    }
 
 
-    Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
+    Promise.all([worldmap, points, worldmapDetailed, allPoints]).then(function (values) {
 
 
       projection2.fitSize([width, height], values[0]);
 
+      data = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "");
+      dataMap = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "" && d.Visualization === "Map");
+      dataIndividual = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "" && d.Visualization === "Individual");
 
-      data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
 
-      let organization = data.map(function (obj) {
-        return obj.Organization;
-      });
-
-      organization = organization.filter(function (v, i) {
-        return organization.indexOf(v) == i;
-      });
-
-      let location = data.map(function (obj) {
-        return obj.Location;
-      });
-      location = location.filter(function (v, i) {
-        return location.indexOf(v) == i;
-      });
-
-      const $terms = [...organization, ...location].sort();
+      let $terms;
       let $return = [];
 
+      populateSearchterms();
+
+      function populateSearchterms() {
+        if (toggleMode === "Map") {
+          let organization = dataMap.map(function (obj) {
+            return obj.Organization;
+          });
+
+          organization = organization.filter(function (v, i) {
+            return organization.indexOf(v) == i;
+          });
+
+          let location = dataMap.map(function (obj) {
+            return obj.Location;
+          });
+
+          location = location.filter(function (v, i) {
+            return location.indexOf(v) == i;
+          });
+          $terms = [...organization, ...location].sort();
+          console.log($terms);
+        } else {
+
+          let name = dataIndividual.map(function (obj) {
+            return obj.Name;
+          });
+
+          name = name.filter(function (v, i) {
+            return name.indexOf(v) == i;
+          });
+
+          let location = dataIndividual.map(function (obj) {
+            return obj.Location;
+          });
+
+          location = location.filter(function (v, i) {
+            return location.indexOf(v) == i;
+          });
+          $terms = [...name, ...location].sort();
+        }
+      }
 
       let focus = data.map(function (obj) {
         return obj.Focus;
@@ -1020,7 +957,6 @@
         .attr("class", "land")
         .attr("id", "land")
         .attr("d", path);
-
 
       const bbox = d3.select("#land").node().getBBox();
 
@@ -1059,7 +995,6 @@
         .attr("display", "none")
 
       //need to come before points
-
       svg.append("g")
         .attr("class", "brush")
         .call(brush);
@@ -1076,7 +1011,8 @@
         .attr("stroke", "#808080")
         .attr("r", 5.5)
         .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
+        .style("display", d => filterByToggleCategory(d))
         .on("mouseover", function (e, d) {
           if (!brushing && !isSmallScreen) {
             d3.selectAll(".point").style("stroke", "#808080")
@@ -1094,7 +1030,6 @@
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
-
           if (isSmallScreen) {
             showDetail(e, d);
           }
@@ -1102,12 +1037,10 @@
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
-
           if (isSmallScreen) {
             showDetail(e, d);
           }
         })
-
 
       $("#resetZoom").click(resetZoom);
 
@@ -1151,45 +1084,54 @@
         }
       }
 
-      $(function () {
+      populateSearch();
 
-        $("#search-bar").keydown(function (e) {
-          $key = e.keyCode;
-          if ($key == 38 || $key == 40) {
-            nextItem($key);
-            return;
-          }
+      function populateSearch() {
 
-          setTimeout(function () {
-            var $search = $("#search-bar").val();
-            $return = [];
-
-            strInArray($search, $terms);
-
-            if ($search == "" || !$("input").val) {
-              $(".output").html("").slideUp();
-            } else {
-              $(".output").html($return).slideDown();
+        $(function () {
+          $("#search-bar").keydown(function (e) {
+            $key = e.keyCode;
+            if ($key == 38 || $key == 40) {
+              nextItem($key);
+              return;
             }
 
-            $(".prediction-item").on("click", function () {
+            setTimeout(function () {
+              var $search = $("#search-bar").val();
+              $return = [];
 
-              searched = true;
-              $text = $(this).find("span").text();
-              resetFilters();
-              filterPoints(values[1], $text)
+              strInArray($search, $terms);
 
-              $(".output").slideUp(function () {
-                $(this).html("");
+              if ($search == "" || !$("input").val) {
+                $(".output").html("").slideUp();
+              } else {
+                $(".output").html($return).slideDown();
+              }
+
+              $(".prediction-item").on("click", function () {
+
+                searched = true;
+                d3.selectAll(".overlay").style("cursor", "inherit")
+
+                $text = $(this).find("span").text();
+                resetFilters();
+                filterPoints(values[1], $text)
+
+                $(".output").slideUp(function () {
+                  $(this).html("");
+                });
+                $("#search-bar").val($text);
+
               });
-              $("#search-bar").val($text);
 
-            });
-
-            $(".prediction-item:first-child").addClass("focus");
-          }, 50);
+              $(".prediction-item:first-child").addClass("focus");
+            }, 50);
+          });
         });
-      });
+
+      }
+
+
 
       $("#search-bar").focus(function () {
         if ($(".prediction-item").length > 0) {
@@ -1198,6 +1140,7 @@
 
         $("#searchform").submit(function (e) {
           e.preventDefault();
+
           $text = $(".focus").find("span").text();
           $(".output").slideUp();
           $("#search-bar").val($text);
@@ -1213,10 +1156,20 @@
 
       $("#reset").on("click", function () {
         resetZoom();
+        searched = false;
+        d3.selectAll(".overlay").style("cursor", "crosshair")
         resetPoints(data);
         $("#search-bar").val("");
 
       })
+
+      $('input:radio[name="toggleMode"]').change(function () {
+        console.log($(this).val())
+        toggleMode = $(this).val();
+        d3.selectAll("circle.point").style("display", d => filterByToggleCategory(d))
+        populateSearchterms();
+        populateSearch();
+      });
 
 
     });
@@ -1243,7 +1196,7 @@
 
           d3.selectAll("circle.point")
             .transition().duration(300)
-            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => filterByToggleCategory(d))
 
 
         } else {
@@ -1256,7 +1209,7 @@
           d3.selectAll("circle.point")
             .transition().duration(300)
             .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
-            .style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+            .style("display", d => filterByToggleCategory(d))
         }
       });
 
@@ -1272,15 +1225,22 @@
 
 
 
-
     function filterPoints(data, term) {
 
       tooltip.hideTooltip();
       clicked = false;
-      const filteredData = data.filter(d => d.Organization === term || d.Location === term)
+      let filteredData;
+
+      if (toggleMode === "Map") {
+        filteredData = dataMap.filter(d => d.Organization === term || d.Location === term);
+      } else {
+        filteredData = dataIndividual.filter(d => d.Name === term);
+      }
+
+      console.log(filteredData)
+
 
       ids = filteredData.map(a => a.Id);
-
 
       let lat = filteredData[0].Latitude;
       let lon = filteredData[0].Longitude;
@@ -1323,7 +1283,7 @@
     function resetPoints(data) {
       tooltip.hideTooltip();
       clicked = false;
-      resetFilters();
+      // resetFilters();
       svg.selectAll("circle.point")
         .data(data)
         .join("circle")
@@ -1334,7 +1294,8 @@
         .attr("stroke-width", isZoomed ? 1 / transformedLevel : 1)
         .attr("stroke", "#808080")
         .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
+        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
+        .style("display", d => filterByToggleCategory(d))
         .on("mouseover", function (e, d) {
           if (!brushing && !isSmallScreen) {
             d3.selectAll(".point").style("stroke", "#808080")
@@ -1388,47 +1349,9 @@
       <p> ${d.Contact_address} </p>
       <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
       <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      <span class="close">✕</span>
-      <span class="more">More→</span>`;
-
+      <span class="close">✕</span>`;
 
       tooltip.showTooltip(isSmallScreen, content, e);
-
-      d3.selectAll(".more").on("click", function () {
-        content = `<h4> ${d.Organization}  </h4>
-        <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
-        <p> ${d.Mission} </p>
-      <span class="close">✕</span>`;  // <span class="back">Back→</span>
-        tooltip.showTooltip(isSmallScreen, content, e);
-
-        d3.selectAll(".close").on("click", function () {
-          tooltip.hideTooltip();
-          clicked = false;
-          d3.selectAll(".point").style("stroke", "#808080")
-        })
-
-      })
-
-      // d3.selectAll(".back").on("click", function () {
-      //   console.log("back")
-      //   content = `<div id="map"></div><h4> ${d.Organization}  </h4>
-      // <p> ${d.Contact_address} </p>
-      // <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
-      // <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      // <span class="close">X</span>
-      // <span class="more">More→</span>`;
-
-      //   tooltip.showTooltip(content, e);
-
-      //   d3.selectAll(".close").on("click", function () {
-      //     tooltip.hideTooltip();
-      //     clicked = false;
-      //     d3.selectAll(".point").style("stroke", "#808080")
-      //   })
-
-      // })
-
-
 
       let map = new mapboxgl.Map({
         container: 'map', // container element id
@@ -1454,7 +1377,6 @@
         tooltip.hideTooltip(); // remove if want tooltip to stay open
         clicked = false;
       }
-
     }
 
 
@@ -1463,16 +1385,8 @@
       resetZoom();
       resetPoints(data);
 
-
-      console.log("updateProjection")
-
       if (!reprojected) {
-
-        console.log("updateProjection Rect")
-
         reprojected = true;
-
-        // d3.select("g").attr("transform", "translate(0,200) scale(0.95)")
 
         // and redraw it using the clipping mask
         d3.selectAll("path.land")
@@ -1490,7 +1404,6 @@
           .attr("clip-path", "none")
           .attr("display", "none")
 
-
         // draw points
         d3.selectAll("circle.point")
           .transition().duration(700)
@@ -1499,10 +1412,7 @@
 
       } else {
 
-        console.log("updateProjection Weird")
-
         reprojected = false;
-        // d3.select("g").attr("transform", "translate(0,0) scale(1)")
 
         // and redraw it using the clipping mask
         d3.selectAll("path.land")

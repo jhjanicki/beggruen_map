@@ -70,7 +70,6 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
      * based on d3 mouse event.
      */
     function updatePosition(event) {
-      console.log(xPosOffset)
       var xOffset = xPosOffset;
       var yOffset = 10;
 
@@ -101,7 +100,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
       }
 
       if(event.clientX + wscrX >520){
-        ttleft = ttleft-320;
+        ttleft = ttleft-360;
       }
 
 
