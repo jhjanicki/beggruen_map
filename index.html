@@ -17,13 +17,6 @@
     rel="stylesheet">
 
   <style>
-    hr {
-      margin: 0em;
-      border-style: solid;
-      border-width: 0.5px;
-      border-color: rgba(0, 0, 0, 0.15);
-    }
-
     body {
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -33,14 +26,110 @@
       padding: 0px;
     }
 
+    hr {
+      margin: 0em;
+      border-style: solid;
+      border-width: 0.5px;
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+
     .main {
+      /* width: 100vw; */
       display: grid;
-      grid-template-columns: 2fr 7fr;
+      grid-template-columns: 3fr 11fr;
     }
 
     #sidebar {
-      /* padding: 20px; */
       border-right: 1px solid rgba(0, 0, 0, 0.15);
+      min-height: 100vh;
+    }
+
+    #mainMap {}
+
+    #aboutPanel {
+      background-color: #ddd2ca;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+      margin-left: 350px;
+      min-height: 100vh;
+      width: 250px;
+      position: fixed;
+      top: 0;
+    }
+
+    #individualsPanel {
+      background-color: #ddd2ca;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+      overflow: auto;
+      height: 100vh;
+      width: 350px;
+      position: absolute;
+      top: 0;
+      text-align: left;
+      -webkit-transition-duration: 0.3s;
+      -moz-transition-duration: 0.3s;
+      -o-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      display: none;
+    }
+
+    #individualsPanel .panelTitle {
+      padding: 20px 0px 20px 30px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .individualList {
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+      overflow: auto;
+      font-size: 12px;
+    }
+
+    .individualList>li>a {
+      font-size: 14px;
+      padding: 12px 30px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      color: #000;
+      text-decoration: none;
+      border-top: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .individualList>li.active>a,
+    .individualList>li>a:hover {
+      background: #ddd2ca;
+      font-weight: 700;
+    }
+
+    .individualList>li>a .arrow {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .accordion {
+      margin: 0px;
+      height: 0px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .accordion p {
+      padding: 0px 30px 0px 0px;
+
+    }
+
+    .individualList>li.active .accordion {
+      height: auto;
+      transition: all 0.3s ease;
+    }
+
+    .individualList>li.active .arrow {
+      transform: rotate(180deg);
+      transition: all 0.3s ease;
     }
 
     #logo {
@@ -87,7 +176,6 @@
       pointer-events: inherit;
       border: 1px solid #73C7D8;
       background-color: #73C7D8;
-
     }
 
     .titleText {
@@ -466,7 +554,6 @@
 
     }
 
-
     input[type="radio"]:hover {
       cursor: pointer;
     }
@@ -519,6 +606,15 @@
 
   <div class="tooltip"></div>
   <div class="wrapper">
+
+    <div id="individualsPanel">
+      <p class="panelTitle">Thinkers</p>
+      <span class="close">Close ✕</span>
+      <hr>
+      <ul class="individualList">
+      </ul>
+
+    </div>
 
     <div class="main">
       <div id="sidebar">
@@ -620,10 +716,7 @@
           <div id="chart1"></div>
         </div>
       </div>
-
     </div>
-
-
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
@@ -641,6 +734,8 @@
     // TODO: prevent brush / zoom on click
 
     //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
+
+
 
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
@@ -901,14 +996,75 @@
     const worldmap = d3.json("./data/land3.geojson");
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
     const points = d3.csv("./data/mapData3.csv");
+    const individuals = d3.csv("./data/individualsData.csv");
     //IPSA & Earth4All are drawn twice, why??
 
     let data;
+    let dataIndividuals
 
-    Promise.all([worldmap, points, worldmapDetailed]).then(function (values) {
+    Promise.all([worldmap, points, worldmapDetailed, individuals]).then(function (values) {
+
+      let sidebarWidth = $("#sidebar").width();
+
+      $("#individualsPanel").css("margin-left", sidebarWidth + 1);
+      // $("#individualsPanel").css("display", "block");
+
+      $("#individualsPanel .close").on("click", function () {
+        $("#individualsPanel").css("display", "none");
+      })
+
+      $("#thinkers").on("click", function () {
+        $("#individualsPanel").css("display", "block");
+      })
+
+
+      function addIndividuals() {
+
+        dataIndividuals.forEach((d) => {
+          $(".individualList").append(
+            `<li>
+              <a href="#">
+                <div class="title">${d.Name}</div>
+                <div class="arrow"><i class="fas fa-chevron-down"></i></div>
+              </a>
+              <ul class="accordion">
+                <p>${d.Work}</p>
+              </ul>
+             </li>`
+          )
+        })
+
+
+        $(".individualList li").click(function () {
+          event.preventDefault();
+
+          // $(".individualList li").removeClass("active");
+          // var accordion = $(this);
+          // var accordionContent = accordion.next('.accordion');
+          // accordion.toggleClass("active");
+          // accordionContent.slideToggle(250);
+
+          // $(this).addClass("active");
+
+
+          if ($(this).hasClass("active")) {
+            $(".individualList li").removeClass("active");
+
+            $(this).removeClass("active");
+
+          } else {
+            $(".individualList li").removeClass("active");
+
+            $(this).addClass("active");
+          }
+        });
+      }
 
       projection2.fitSize([width, height], values[0]);
       data = values[1].filter(d => d.Latitude !== "-" && d.Latitude !== "");
+      dataIndividuals = values[3];
+
+      addIndividuals()
 
       let $terms;
       let $return = [];
@@ -931,8 +1087,6 @@
       });
 
       $terms = [...organization, ...location].sort();
-
-
 
       let focus = data.map(function (obj) {
         return obj.Focus;
@@ -1169,7 +1323,6 @@
         resetPoints(data);
         $("#reset").removeClass("active"); //make button unclickable
         $("#search-bar").val("");
-
       })
 
       $('input:radio[name="setProjection"]').change(function () {
@@ -1361,7 +1514,7 @@
         .setLngLat([d.Longitude, d.Latitude])
         .addTo(map);
 
-      d3.selectAll(".close").on("click", function () {
+      d3.selectAll(".tooltip .close").on("click", function () {
         tooltip.hideTooltip();
         clicked = false;
         d3.selectAll(".point").style("stroke", "#808080")
