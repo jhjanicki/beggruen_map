@@ -17,6 +17,11 @@
     rel="stylesheet">
 
   <style>
+    p {
+      margin: 0px;
+      padding: 0px;
+    }
+
     body {
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -49,11 +54,18 @@
     #aboutPanel {
       background-color: #ddd2ca;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
-      margin-left: 350px;
-      min-height: 100vh;
-      width: 250px;
-      position: fixed;
+      overflow: auto;
+      height: 100vh;
+      width: 0px;
+      position: absolute;
       top: 0;
+      text-align: left;
+      transition: all 0.5s ease;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+      display: none;
     }
 
     #individualsPanel {
@@ -61,21 +73,33 @@
       border-right: 1px solid rgba(0, 0, 0, 0.15);
       overflow: auto;
       height: 100vh;
-      width: 350px;
+      width: 0px;
       position: absolute;
       top: 0;
       text-align: left;
-      -webkit-transition-duration: 0.3s;
-      -moz-transition-duration: 0.3s;
-      -o-transition-duration: 0.3s;
-      transition-duration: 0.3s;
+      transition: all 0.5s ease;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
       display: none;
     }
 
+    #aboutPanel .panelTitle,
     #individualsPanel .panelTitle {
       padding: 20px 0px 20px 30px;
       font-size: 16px;
       font-weight: 700;
+    }
+
+    #aboutPanel .close,
+    #individualsPanel .close {
+      margin-top: 2px;
+    }
+
+    #aboutPanel p {
+      font-size: 16px;
+      padding: 30px;
     }
 
     .individualList {
@@ -94,8 +118,12 @@
       position: relative;
       color: #000;
       text-decoration: none;
+    }
+
+    .individualList>li:not(:first-of-type) {
       border-top: 1px solid rgba(0, 0, 0, 0.15);
     }
+
 
     .individualList>li.active>a,
     .individualList>li>a:hover {
@@ -103,9 +131,14 @@
       font-weight: 700;
     }
 
+    .arrow img {
+      width: 20px;
+      height: 20px;
+    }
+
     .individualList>li>a .arrow {
       position: absolute;
-      top: 20px;
+      top: 10px;
       right: 20px;
       transition: all 0.3s ease;
     }
@@ -118,8 +151,11 @@
     }
 
     .accordion p {
-      padding: 0px 30px 0px 0px;
+      padding: 0px 30px 15px 0px;
+    }
 
+    .accordion .work {
+      margin-top: 10px;
     }
 
     .individualList>li.active .accordion {
@@ -128,7 +164,7 @@
     }
 
     .individualList>li.active .arrow {
-      transform: rotate(180deg);
+      transform: rotate(90deg);
       transition: all 0.3s ease;
     }
 
@@ -145,10 +181,27 @@
       background-color: white;
     }
 
-    #about,
-    #thinkers {
-      padding: 0px 0px 0px 30px;
+    #logoWrapperBottom {
+      padding: 30px;
+    }
+
+
+
+
+    #logoWrapperBottom img {
+      height: 25px;
+    }
+
+    #about p,
+    #thinkers p {
       font-size: 16px;
+      padding: 15px 0px 15px 30px;
+    }
+
+    #about:hover,
+    #thinkers:hover {
+      background-color: #BCB3AC;
+      cursor: pointer;
     }
 
     .button {
@@ -158,7 +211,6 @@
       display: inline-block;
       text-align: center;
       border: 1px solid rgba(0, 0, 0, 0.25);
-      margin-top: 10px;
       border-radius: 20px;
       font-weight: 600;
       font-size: 12px;
@@ -185,10 +237,7 @@
       text-transform: uppercase;
     }
 
-    #zoomInstruction {
-      margin: 0px 0px 10px 0px;
-
-    }
+    #zoomInstruction {}
 
 
     #toggleWrapper {
@@ -199,11 +248,6 @@
       display: block;
       width: calc(100% - 80px);
       padding-left: 30px;
-    }
-
-
-    span {
-      font-size: 16px;
     }
 
     #search-bar {
@@ -275,7 +319,6 @@
       color: #000;
     }
 
-
     /* Toggle button related */
 
     .toggleText {
@@ -284,7 +327,7 @@
     }
 
     .toggleText p {
-      margin: 8px 0px;
+      margin: 5px 0px;
     }
 
     .toggle,
@@ -322,7 +365,7 @@
       width: 20px;
       height: 20px;
       border-radius: 15px;
-      background-color: #007979;
+      background-color: #777777;
       -webkit-transition: left .15s ease-out;
       transition: left .15s ease-out;
     }
@@ -373,6 +416,22 @@
       vertical-align: middle;
       margin-right: 10px;
       margin-left: 0px;
+    }
+
+    .contact p {
+      padding: 20px 0px 20px 30px;
+      font-size: 16px;
+    }
+
+    .contact img {
+      padding: 20px 0px 19px 30px;
+      width: 20px;
+      height: 20px;
+      float: right;
+    }
+
+    #reset {
+      margin: 10px 0px;
     }
 
     #resetZoom {
@@ -455,10 +514,21 @@
       cursor: pointer !important;
     }
 
-    .website {
+    .tooltip .website {
       margin-top: 10px;
       margin-right: 0px;
       float: right;
+    }
+
+    .accordion .website {
+      z-index: 200;
+    }
+
+    .accordion .website:hover {
+      font-weight: 700;
+    }
+
+    .website {
       padding: 3px 5px;
       width: auto;
       display: inline-block;
@@ -473,18 +543,22 @@
 
     .website a {
       text-decoration: none;
+      color: black;
     }
 
-    .mission {}
+    .mission {
+      margin-top: 12px;
+    }
 
     .address {
-      max-width: 240px;
+      max-width: 220px;
+      margin-top: 12px;
+      margin-bottom: 12px;
     }
 
     .focusarea {
       color: #fff;
       padding: 3px;
-      width: 100%;
       font-family: "Albert Sans", sans-serif;
       font-size: 12px;
       font-weight: 700;
@@ -599,22 +673,29 @@
 <body>
 
 
-  <!-- <div id="logoWrapper">
-    <img src="./img/giessen.png" />
-    <img src="./img/berggruen.png" />
-  </div> -->
-
   <div class="tooltip"></div>
   <div class="wrapper">
 
     <div id="individualsPanel">
       <p class="panelTitle">Thinkers</p>
-      <span class="close">Close ✕</span>
+      <span class="close">Close&nbsp;&nbsp;✕</span>
       <hr>
       <ul class="individualList">
       </ul>
-
     </div>
+
+    <div id="aboutPanel">
+      <p class="panelTitle">About</p>
+      <span class="close">Close&nbsp;&nbsp;✕</span>
+      <hr>
+      <p> The Planetary perspective recognizes human affairs as inextricably linked with the biogeochemical processes of
+        an ever-changing planet. The Planetary Portal is a central platform for planetary discussions, bringing together
+        diverse communities from the fields of science, social sciences, humanities, arts, and politics, bridging the
+        gap between theoretical and practical.
+      </p>
+    </div>
+
+
 
     <div class="main">
       <div id="sidebar">
@@ -622,9 +703,13 @@
           <a href="index.html"><img id="logo" src="./img/globe.svg" /></a>
         </div>
         <hr>
-        <p id="about">About</p>
+        <div id="about">
+          <p>About</p>
+        </div>
         <hr>
-        <p id="thinkers">Thinkers</p>
+        <div id="thinkers">
+          <p>Thinkers</p>
+        </div>
         <hr>
         <form id="searchform">
           <input type="text" id="search-bar" autocomplete="off" placeholder="Search for organization or location" />
@@ -710,7 +795,17 @@
           <label for="NE">Natural Earth</label>
         </div>
         <hr>
+        <div class="itemWrapper contact">
+          <p class="item">Contact us</p>
+          <img src="./img/mail.svg" class="item" />
+        </div>
+        <hr>
+        <div id="logoWrapperBottom">
+          <img src="./img/giessen.png" />
+          <img src="./img/berggruen.png" />
+        </div>
       </div>
+
       <div id="mainMap">
         <div class="chartWrapper">
           <div id="chart1"></div>
@@ -736,8 +831,6 @@
     //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
 
 
-
-
     mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
 
 
@@ -754,9 +847,7 @@
       }
     });
 
-
     let isSmallScreen = false;
-
 
     if (windowWidth <= 600) {
       isSmallScreen = true;
@@ -764,9 +855,7 @@
 
     const searchformWidth = $("#search-bar").width();
     $(".output").css("width", searchformWidth + 20);
-    // think about search + toggle, what do we want one a category is toggled off but someone searches for an org in that category?
 
-    // const figure = d3.selectAll(".chartWrapper");
     let width = $(".chartWrapper").width();
     let height = $(".chartWrapper").height();
 
@@ -792,7 +881,6 @@
     const projection2 = d3.geoNaturalEarth1();
     const path2 = d3.geoPath(projection2);
 
-    // +30 to show NZ
     let projection = d3.geoPeirceQuincuncial()
       .fitSize([width, height], {
         type: "Sphere"
@@ -824,7 +912,6 @@
       $("#resetZoom").addClass("active");
     }
 
-
     const zoom = d3.zoom()
       .scaleExtent([1, Infinity])
       .translateExtent([
@@ -839,17 +926,8 @@
       .on("end", zoomEnd);
 
 
-    //brushMove functions
-
     function brushMove(e) {
-
-      // console.log(e.type)
       if (searched) {
-        // e.stopImmediatePropagation();
-        // if (e.type === "brush") return;
-        // svg.style("pointerEvents", "none")
-        // svg.on(".brush", null);
-        // brush.clear;
 
         d3.selectAll(".brush").style("opacity", 0);
         d3.selectAll(".selection").style("display", "none");
@@ -898,7 +976,6 @@
       }
     }
 
-    //brushEnd function
     function brushEnd() {
 
       brushing = false;
@@ -996,7 +1073,7 @@
     const worldmap = d3.json("./data/land3.geojson");
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
     const points = d3.csv("./data/mapData3.csv");
-    const individuals = d3.csv("./data/individualsData.csv");
+    const individuals = d3.csv("./data/individualsData2.csv");
     //IPSA & Earth4All are drawn twice, why??
 
     let data;
@@ -1007,56 +1084,65 @@
       let sidebarWidth = $("#sidebar").width();
 
       $("#individualsPanel").css("margin-left", sidebarWidth + 1);
-      // $("#individualsPanel").css("display", "block");
+      $("#aboutPanel").css("margin-left", sidebarWidth + 1);
 
       $("#individualsPanel .close").on("click", function () {
         $("#individualsPanel").css("display", "none");
       })
 
+      $("#aboutPanel .close").on("click", function () {
+        $("#aboutPanel").css("display", "none");
+      })
+
       $("#thinkers").on("click", function () {
         $("#individualsPanel").css("display", "block");
+        $("#individualsPanel").css("width", "350px");
+        $("#aboutPanel").css("display", "none");
+      })
+
+      $("#about").on("click", function () {
+        $("#aboutPanel").css("display", "block");
+        $("#aboutPanel").css("width", "350px");
+        $("#individualsPanel").css("display", "none");
       })
 
 
       function addIndividuals() {
 
         dataIndividuals.forEach((d) => {
+          let fill = colorScale(d.Category);
           $(".individualList").append(
             `<li>
               <a href="#">
                 <div class="title">${d.Name}</div>
-                <div class="arrow"><i class="fas fa-chevron-down"></i></div>
+                <div class="arrow"><img src="./img/chevron-right.svg"></div>
               </a>
               <ul class="accordion">
-                <p>${d.Work}</p>
+                <br>
+                <span class="focusarea" style='background-color:${fill} '> ${d.Category}: ${d.Focus}</span>
+                <p class="work">${d.Work}</p>
+                <span class="website"><a href='${d.Contact_site}' target='_blank'>Website →</a></span>
+                <br><br>
               </ul>
              </li>`
           )
         })
 
-
         $(".individualList li").click(function () {
           event.preventDefault();
 
-          // $(".individualList li").removeClass("active");
-          // var accordion = $(this);
-          // var accordionContent = accordion.next('.accordion');
-          // accordion.toggleClass("active");
-          // accordionContent.slideToggle(250);
-
-          // $(this).addClass("active");
-
-
           if ($(this).hasClass("active")) {
             $(".individualList li").removeClass("active");
-
             $(this).removeClass("active");
 
           } else {
             $(".individualList li").removeClass("active");
-
             $(this).addClass("active");
           }
+        });
+
+        $('.accordion .website').click(function (event) {
+          event.stopPropagation();
         });
       }
 
@@ -1273,6 +1359,9 @@
               $(".prediction-item").on("click", function () {
 
                 searched = true;
+                disableToggle();
+                $("#individualsPanel").css("display", "none");
+                $("#aboutPanel").css("display", "none");
                 d3.selectAll(".overlay").style("cursor", "inherit")
 
                 $text = $(this).find("span").text();
@@ -1291,10 +1380,7 @@
             }, 50);
           });
         });
-
       }
-
-
 
       $("#search-bar").focus(function () {
         if ($(".prediction-item").length > 0) {
@@ -1318,6 +1404,7 @@
 
       $("#reset").on("click", function () {
         resetZoom();
+        enableToggle();
         searched = false;
         d3.selectAll(".overlay").style("cursor", "crosshair");
         resetPoints(data);
@@ -1329,13 +1416,53 @@
         currentProjection = $(this).val();
         updateProjection();
       });
-
-
     });
 
+    function disableToggle() {
+      $('input:radio[name="toggle"]').attr('disabled', 'disabled');
+      $('input:radio[name="toggle2"]').attr('disabled', 'disabled');
+      $('input:radio[name="toggle3"]').attr('disabled', 'disabled');
+      $('input:radio[name="toggle4"]').attr('disabled', 'disabled');
+      $('input:radio[name="toggle5"]').attr('disabled', 'disabled');
+      $('input:radio[name="toggle6"]').attr('disabled', 'disabled');
+
+      // $(".toggle__pointer").css("background-color", "#777777");
+      $(".toggle__pointer").css("opacity", "0.7");
+      $(".toggle").css("opacity", "0.3");
+      $(".toggle2").css("opacity", "0.3");
+      $(".toggle3").css("opacity", "0.3");
+      $(".toggle4").css("opacity", "0.3");
+      $(".toggle5").css("opacity", "0.3");
+      $(".toggle6").css("opacity", "0.3");
+
+    }
+
+    function enableToggle() {
+      $('input:radio').removeAttr("disabled");
+      $(".toggle__pointer").css("opacity", "1");
+      $(".toggle").css("opacity", "1");
+      $(".toggle2").css("opacity", "1");
+      $(".toggle3").css("opacity", "1");
+      $(".toggle4").css("opacity", "1");
+      $(".toggle5").css("opacity", "1");
+      $(".toggle6").css("opacity", "1");
+
+      // $(".toggle input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
+      // $(".toggle2 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
+      // $(".toggle3 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
+      // $(".toggle4 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
+      // $(".toggle5 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
+      // $(".toggle6 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
+
+      // $(".toggle__pointer.color1").css("background-color", "#d69a07");
+      // $(".toggle__pointer.color2").css("background-color", "#db311b");
+      // $(".toggle__pointer.color3").css("background-color", "#71918a");
+      // $(".toggle__pointer.color4").css("background-color", "#c9bc11");
+      // $(".toggle__pointer.color5").css("background-color", "#39603d");
+      // $(".toggle__pointer.color6").css("background-color", "#305d77");
 
 
-
+    }
 
 
     function createFilterStatus(filterName, layerOnName, statusString) {

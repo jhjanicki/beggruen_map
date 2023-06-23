@@ -96,7 +96,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
       }
 
       if(event.clientY + wscrY >400){
-        tttop = tttop-390;
+        tttop = tttop-450;
       }
 
       if(event.clientX + wscrX >520){
