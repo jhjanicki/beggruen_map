@@ -44,6 +44,7 @@
       grid-template-columns: 3fr 11fr;
     }
 
+
     #sidebar {
       border-right: 1px solid rgba(0, 0, 0, 0.15);
       min-height: 100vh;
@@ -51,11 +52,17 @@
 
     #mainMap {}
 
+    #topBar {
+      display: none;
+    }
+
+
     #aboutPanel {
       background-color: #ddd2ca;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
       overflow: auto;
-      height: 100vh;
+      height: 100%;
+      min-height: 100vh;
       width: 0px;
       position: absolute;
       top: 0;
@@ -72,7 +79,8 @@
       background-color: #ddd2ca;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
       overflow: auto;
-      height: 100vh;
+      height: 100%;
+      min-height: 100vh;
       width: 0px;
       position: absolute;
       top: 0;
@@ -85,8 +93,31 @@
       display: none;
     }
 
+    #tooltipPanel {
+      background-color: #ddd2ca;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+      overflow: auto;
+      height: 100%;
+      min-height: 100vh;
+      width: 100vw;
+      position: absolute;
+      top: 50px;
+      text-align: left;
+      transition: all 0.5s ease;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+      display: none;
+    }
+
+    .mapWrapper #mapMobile {
+      margin-top: 10px;
+    }
+
     #aboutPanel .panelTitle,
-    #individualsPanel .panelTitle {
+    #individualsPanel .panelTitle,
+    #tooltipPanel .panelTitle {
       padding: 20px 0px 20px 30px;
       font-size: 16px;
       font-weight: 700;
@@ -97,9 +128,29 @@
       margin-top: 2px;
     }
 
+    #tooltipPanel .textWrapper {
+      padding: 20px;
+    }
+
+    #tooltipPanel #website {
+      margin-top: 10px;
+      margin-right: 0px;
+      float: right;
+    }
+
+    #tooltipPanel #focus {
+      margin-left: -5px;
+    }
+
+    #tooltipPanel #address {
+      font-size: 14px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
     #aboutPanel p {
-      font-size: 16px;
-      padding: 30px;
+      font-size: 14px;
+      padding: 20px;
     }
 
     .individualList {
@@ -186,8 +237,6 @@
     }
 
 
-
-
     #logoWrapperBottom img {
       height: 25px;
     }
@@ -202,6 +251,94 @@
     #thinkers:hover {
       background-color: #BCB3AC;
       cursor: pointer;
+    }
+
+    @media only screen and (min-width:750px) and (max-width:1500px) {
+      .main {
+        /* width: 100vw; */
+        display: grid;
+        grid-template-columns: 5fr 11fr;
+      }
+    }
+
+    @media only screen and (max-width:750px) {
+      .main {
+        width: 100vw;
+        display: inherit;
+      }
+
+      #sidebar {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100vw;
+        display: none;
+        height: auto;
+        background-color: #ddd2ca;
+      }
+
+      #logoWrapper {
+        display: none;
+      }
+
+      #topBar {
+        display: inherit;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        background-color: #fff;
+        border-bottom: 1px solid #1C5F7A;
+        z-index: 300;
+        position: relative;
+      }
+
+      #logo_s {
+        height: 15px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 12.5px;
+      }
+
+      #menu {
+        height: 25px;
+        position: absolute;
+        top: 12.5px;
+        right: 12.5px;
+      }
+
+      #menu:hover {
+        cursor: pointer;
+      }
+
+      #mapButton {
+        width: auto;
+        border-radius: 20px;
+        border: 1.5px solid #1C5E7B;
+        padding: 3px;
+        color: #1C5E7B;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 600;
+        position: absolute;
+        top: 12.5px;
+        right: 12.5px;
+        line-height: normal;
+        display: none;
+      }
+
+      #mapButton:hover {
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      #aboutPanel,
+      #individualsPanel {
+        top: 50px;
+      }
+
     }
 
     .button {
@@ -427,6 +564,11 @@
       font-size: 16px;
     }
 
+    .contact a {
+      text-decoration: none;
+      color: black;
+    }
+
     .contact img {
       padding: 20px 0px 19px 30px;
       width: 20px;
@@ -452,6 +594,14 @@
     }
 
     #map {
+      width: 280px;
+      height: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 5px 18px 5px 2px;
+    }
+
+    #mapMobile {
       width: 280px;
       height: 200px;
       margin-left: auto;
@@ -692,16 +842,68 @@
       <p class="panelTitle">About</p>
       <span class="close">Close&nbsp;&nbsp;✕</span>
       <hr>
-      <p> The Planetary perspective recognizes human affairs as inextricably linked with the biogeochemical processes of
-        an ever-changing planet. The Planetary Portal is a central platform for planetary discussions, bringing together
-        diverse communities from the fields of science, social sciences, humanities, arts, and politics, bridging the
-        gap between theoretical and practical.
+      <p> The Planetary is an emerging concept in the sciences, social sciences, humanities, arts, and politics that
+        draws attention to the basic fact that human affairs take place on a planet — and the innumerous and complex
+        implications that flow from this realization. To think with and through the Planetary is to acknowledge that
+        human life is inextricably embedded within the biogeochemical ferment of an ever-changing planet — a planet that
+        expands spatially from the Earth’s core to interplanetary space, temporally from nanoseconds to cosmic time
+        scales, and materially from elementary particles to the dark matter of the universe.
+
+        <br><br>In contrast to concepts like “global,” “international,” and “transnational” — premised, as they are, on
+        human
+        perspectives and institutions — the concept of the Planetary does not privilege humans or any other particular
+        species. Rather, it makes plain that Earth is not humanity’s alone. We share it with other living beings,
+        nonliving matter, and forms of energy. In fact, these other-than-human agents, conditions and processes are what
+        make human existence possible – though the reverse is not true. The Earth affects humans and is affected by
+        humans, but it was here before humans evolved and will be here long after humans have gone. A planetary
+        perspective, then, requires grappling with the political consequences, necessities, and possibilities of
+        properly placing human experiences and sensibilities within the inhumanly vast frames of geological timescales,
+        and Earth-spanning biological, chemical, and physical phenomenon.
+        <br><br>
+        This website, the Planetary Portal, aims to serve as a hub for planetary thinking, connecting disparate
+        communities where theoretical and practical ideas on the Planetary are being developed. A collaboration between
+        the <a href="https://www.uni-giessen.de/en/faculties/planetarythinking/planetarythinking-en">Panel on Planetary
+          Thinking</a> at the University of Giessen and the <a
+          href="https://www.berggruen.org/work/the-planetary/">Planetary research program</a> at the Berggruen
+        Institute, the Planetary Portal maps institutions around the world that are working on or within a planetary
+        framework. They include university research centers, independent research institutes, NGOs, and other
+        organizations that approach policy, politics, and philosophy through a planetary lens. It is our hope that
+        representing the many diverse institutions that are working on the Planetary in one place will help visitors
+        visualize the contours of this emerging field, draw connections between the various intellectual ventures,
+        provide basic structure for the nascent category, and further the development of planetary thought, with the aim
+        of developing a viable planetary politics.
+
+        <br><br>
+        The list of institutions and individual forerunners included on this website was compiled by the Panel on
+        Planetary Thinking at the University of Giessen and the Planetary research program at the Berggruen Institute.
+        It is a work in progress: if you would like your institutions to be considered for inclusion (or to be removed
+        from the site), please contact us through the submission form.
+
       </p>
     </div>
 
+    <div id="tooltipPanel">
+      <p class="panelTitle" id="organization"></p>
+      <span class="close">✕</span>
+      <hr>
+      <div class="mapWrapper">
+        <div id="mapMobile"></div>
+      </div>
+      <div class="textWrapper">
+        <span class="website" id="website"><a href='' target='_blank'>Website →</a></span>
+        <p id="address">address</p>
+        <span class="focusarea" id="focus"> focus</span>
+        <p class="mission" id="mission"> mission </p>
+      </div>
+    </div>
 
 
     <div class="main">
+      <div id="topBar">
+        <img id="logo_s" src="./img/logo_s.svg" />
+        <img id="menu" src="./img/menu.svg" />
+        <span id="mapButton">Back to map</span>
+      </div>
       <div id="sidebar">
         <div id="logoWrapper">
           <a href="index.html"><img id="logo" src="./img/globe.svg" /></a>
@@ -800,8 +1002,10 @@
         </div>
         <hr>
         <div class="itemWrapper contact">
-          <p class="item">Contact us</p>
-          <img src="./img/mail.svg" class="item" />
+          <a href="mailto: info@planetaryportal.org">
+            <p class="item">Contact us</p>
+            <img src="./img/mail.svg" class="item" />
+          </a>
         </div>
         <hr>
         <div id="logoWrapperBottom">
@@ -853,9 +1057,10 @@
 
     let isSmallScreen = false;
 
-    if (windowWidth <= 600) {
+    if (windowWidth <= 750) {
       isSmallScreen = true;
     }
+
 
     const searchformWidth = $("#search-bar").width();
     $(".output").css("width", searchformWidth + 20);
@@ -1084,11 +1289,26 @@
     let dataIndividuals
 
     Promise.all([worldmap, points, worldmapDetailed, individuals]).then(function (values) {
+      if (isSmallScreen) {
+        $("#mapButton").on("click", function () {
+          $("#sidebar").css("display", "none");
+          $("#mapButton").css("display", "none");
+          $("#menu").css("display", "inherit");
+        })
 
-      let sidebarWidth = $("#sidebar").width();
+        $("#menu").on("click", function () {
+          $("#sidebar").css("display", "inherit");
+          $("#mapButton").css("display", "inherit");
+          $("#menu").css("display", "none");
+        })
 
-      $("#individualsPanel").css("margin-left", sidebarWidth + 1);
-      $("#aboutPanel").css("margin-left", sidebarWidth + 1);
+
+      } else {
+        let sidebarWidth = $("#sidebar").width();
+        $("#individualsPanel").css("margin-left", sidebarWidth + 1);
+        $("#aboutPanel").css("margin-left", sidebarWidth + 1);
+
+      }
 
       $("#individualsPanel .close").on("click", function () {
         $("#individualsPanel").css("display", "none");
@@ -1100,14 +1320,28 @@
 
       $("#thinkers").on("click", function () {
         $("#individualsPanel").css("display", "block");
-        $("#individualsPanel").css("width", "350px");
         $("#aboutPanel").css("display", "none");
+        if (isSmallScreen) {
+          let sidebarHeight = $("#sidebar").height();
+          $("#individualsPanel").css("width", "100vw");
+          $("#individualsPanel").css("z-index", 400);
+          $("#individualsPanel").css("height", sidebarHeight);
+        } else {
+          $("#individualsPanel").css("width", "350px");
+        }
       })
 
       $("#about").on("click", function () {
         $("#aboutPanel").css("display", "block");
-        $("#aboutPanel").css("width", "350px");
         $("#individualsPanel").css("display", "none");
+        if (isSmallScreen) {
+          let sidebarHeight = $("#sidebar").height();
+          $("#aboutPanel").css("width", "100vw");
+          $("#aboutPanel").css("z-index", 400);
+          $("#aboutPanel").css("height", sidebarHeight);
+        } else {
+          $("#aboutPanel").css("width", "350px");
+        }
       })
 
 
@@ -1451,20 +1685,6 @@
       $(".toggle5").css("opacity", "1");
       $(".toggle6").css("opacity", "1");
 
-      // $(".toggle input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
-      // $(".toggle2 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
-      // $(".toggle3 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
-      // $(".toggle4 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
-      // $(".toggle5 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
-      // $(".toggle6 input:nth-child(2):checked+.toggle__pointer").css("background-color", "#777777");
-
-      // $(".toggle__pointer.color1").css("background-color", "#d69a07");
-      // $(".toggle__pointer.color2").css("background-color", "#db311b");
-      // $(".toggle__pointer.color3").css("background-color", "#71918a");
-      // $(".toggle__pointer.color4").css("background-color", "#c9bc11");
-      // $(".toggle__pointer.color5").css("background-color", "#39603d");
-      // $(".toggle__pointer.color6").css("background-color", "#305d77");
-
 
     }
 
@@ -1616,13 +1836,40 @@
       $("#layer6Off").prop("checked", false);
     }
 
+    $("#tooltipPanel .close").on("click", function () {
+      $("#tooltipPanel").css("display", "none")
+    })
 
     function showDetail(e, d) {
 
       let fill = colorScale(d.Category)
 
-      svg.select(`#id${d.Id}`).raise();
-      let content = `<h4> ${d.Organization} </h4>
+      if (isSmallScreen) {
+
+        $("#tooltipPanel").css("display", "inherit")
+        $("#organization").html(d.Organization);
+        $("#address").html(d.Contact_address);
+        $("#mission").html(d.Mission);
+        $("#website").html(`<span class="website"><a href='${d.Contact_site}' target='_blank'>Website →</a></span>`);
+        $("#focus").html(`<span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>`);
+
+        let map = new mapboxgl.Map({
+          container: 'mapMobile', // container element id
+          style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
+          center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
+          zoom: 15
+        });
+
+        let marker = new mapboxgl.Marker()
+          .setLngLat([d.Longitude, d.Latitude])
+          .addTo(map);
+
+
+
+      } else {
+
+        svg.select(`#id${d.Id}`).raise();
+        let content = `<h4> ${d.Organization} </h4>
       <div class="mapWrapper">
         <div id="map"></div>
         <span class="website"><a href='${d.Contact_site}' target='_blank'>Website →</a></span>
@@ -1632,25 +1879,25 @@
       <p class="mission"> ${d.Mission} </p>
       <span class="close">Close ✕</span>`;
 
-      tooltip.showTooltip(isSmallScreen, content, e);
+        tooltip.showTooltip(isSmallScreen, content, e);
 
-      let map = new mapboxgl.Map({
-        container: 'map', // container element id
-        style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
-        center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
-        zoom: 15
-      });
+        let map = new mapboxgl.Map({
+          container: 'map', // container element id
+          style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
+          center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
+          zoom: 15
+        });
 
-      var marker = new mapboxgl.Marker()
-        .setLngLat([d.Longitude, d.Latitude])
-        .addTo(map);
+        let marker = new mapboxgl.Marker()
+          .setLngLat([d.Longitude, d.Latitude])
+          .addTo(map);
 
-      d3.selectAll(".tooltip .close").on("click", function () {
-        tooltip.hideTooltip();
-        clicked = false;
-        d3.selectAll(".point").style("stroke", "#808080")
-      })
-
+        d3.selectAll(".tooltip .close").on("click", function () {
+          tooltip.hideTooltip();
+          clicked = false;
+          d3.selectAll(".point").style("stroke", "#808080")
+        })
+      }
     }
 
     function hideDetail(d) {
