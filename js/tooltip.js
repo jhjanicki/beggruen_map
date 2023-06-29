@@ -95,7 +95,13 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
         tttop = curY + yOffset;
       }
 
-      if(event.clientY + wscrY >400){
+      console.log(event.clientY + wscrY)
+
+      if(event.clientY + wscrY >300 && event.clientY + wscrY <500){
+        tttop = tttop-300;
+      }
+
+      if(event.clientY + wscrY >=500){
         tttop = tttop-450;
       }
 

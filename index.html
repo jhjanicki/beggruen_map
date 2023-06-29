@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Planetary</title>
+  <title>Planetary Portal</title>
   <meta name="title" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
@@ -11,22 +11,110 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
-  <!-- <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'> -->
+
   <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
 
   <style>
-    p {
-      margin: 0px;
-      padding: 0px;
+    /* LANDING PAGE */
+
+    #landingLogo {
+      width: 500px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
+    .infopanel-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .infopanel-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+    }
+
+    .infopanel {
+      display: block;
+      position: absolute;
+      width: auto;
+      height: auto;
+      padding: 30px;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      display: block;
+      text-align: center;
+      background-color: #F0F0F1;
+      border: 1px solid #1C5E7B;
+      box-shadow: -4px 4px #1C5E7B;
+      color: white;
+      text-align: left;
+      z-index: 101;
+      border-radius: 10px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    .infopanel-content {
+      height: 100%;
+      overflow: auto;
+    }
+
+    .infopanel-content p {
+      color: #1C5E7B;
+      padding: 10px 0px;
+      width: 500px;
+      text-align: justify;
+    }
+
+    .explore {
+      margin-left: 218px;
+      padding: 3px 3px 3px 6px;
+      width: auto;
+      display: inline-block;
+      text-align: center;
+      border-radius: 20px;
+      border: 1px solid #73C7D8;
+      background-color: #73C7D8;
+      color: black;
+      opacity: 1;
+      font-size: 12px;
+    }
+
+    .explore:hover {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .explore img {
+      width: 15px;
+      vertical-align: middle;
+    }
+
+
+    /* GENERAL */
     body {
       font-family: "Albert Sans", sans-serif;
       -webkit-font-smoothing: antialiased;
       background-color: #ddd2ca;
       overflow-x: hidden;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    p {
       margin: 0px;
       padding: 0px;
     }
@@ -38,25 +126,234 @@
       border-color: rgba(0, 0, 0, 0.15);
     }
 
-    .main {
-      /* width: 100vw; */
-      display: grid;
-      grid-template-columns: 3fr 11fr;
+    .button {
+      text-transform: uppercase;
+      padding: 6px 8px;
+      width: auto;
+      display: inline-block;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 10px;
+      pointer-events: none;
     }
 
+    .button.active:hover {
+      transition: all 0.5s ease;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+
+
+    .button.active {
+      pointer-events: inherit;
+      border: 1px solid #73C7D8;
+      background-color: #73C7D8;
+    }
+
+    .titleText {
+      padding-left: 30px;
+      margin: 10px 0px;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .item {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+      margin-left: 0px;
+    }
+
+    .none {
+      display: none;
+      transition: all 0.5s ease;
+    }
+
+    .show {
+      display: inherit;
+      transition: all 0.5s ease;
+    }
+
+    /* LAYOUT */
+
+    .main {}
 
     #sidebar {
       border-right: 1px solid rgba(0, 0, 0, 0.15);
       min-height: 100vh;
+      position: absolute;
+      width: 290px;
     }
 
-    #mainMap {}
+    #mainMap {
+      margin-left: 290px;
+      max-width: 1300px;
+      width: auto;
+    }
 
     #topBar {
       display: none;
     }
 
+    /* MAIN VIZ */
 
+    .chartWrapper {
+      width: 100%;
+      height: 100vh;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .mapWrapper #mapMobile {
+      margin-top: 10px;
+    }
+
+
+    .selection {
+      opacity: 1;
+      fill-opacity: 1;
+    }
+
+    #map {
+      width: 280px;
+      height: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 5px 18px 5px 2px;
+    }
+
+    #mapMobile {
+      width: 280px;
+      height: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 5px 18px 5px 2px;
+    }
+
+    .point:hover {
+      cursor: pointer !important;
+    }
+
+    .hover {
+      font-weight: 700;
+    }
+
+    /* Tooltip */
+
+    .tooltip {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      width: 300px;
+      background: #ddd2ca;
+      box-shadow: -2px 5px 5px rgba(0, 0, 0, 0.5);
+      color: black;
+      padding: 10px;
+      font-size: 14px;
+      z-index: 300;
+      min-height: 200px;
+      max-height: 450px;
+      overflow: auto;
+      display: none;
+    }
+
+    .tooltip h4 {
+      font-family: "Albert Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px;
+      margin: 0px;
+      max-width: 240px;
+    }
+
+    .tooltip p {
+      font-family: "Albert Sans", sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+
+    .tooltip a {
+      color: #000 !important;
+      text-decoration: underline;
+    }
+
+    .close {
+      padding: 3px 5px;
+      width: auto;
+      display: inline-block;
+      text-align: center;
+      border-radius: 20px;
+      border: 1px solid #73C7D8;
+      background-color: #73C7D8;
+      position: absolute;
+      right: 8px;
+      top: 16px;
+      color: black;
+      opacity: 1;
+      font-size: 12px;
+    }
+
+    .close:hover {
+      cursor: pointer;
+    }
+
+    .tooltip .website {
+      margin-top: 10px;
+      margin-right: 0px;
+      float: right;
+    }
+
+    .accordion .website {
+      z-index: 200;
+    }
+
+    .accordion .website:hover {
+      font-weight: 700;
+    }
+
+    .website {
+      padding: 3px 5px;
+      width: auto;
+      display: inline-block;
+      text-align: center;
+      border-radius: 20px;
+      border: 1px solid #73C7D8;
+      background-color: #73C7D8;
+      color: black;
+      opacity: 1;
+      font-size: 12px;
+    }
+
+    .website a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .mission {
+      margin-top: 12px;
+    }
+
+    .address {
+      max-width: 220px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .focusarea {
+      color: #fff;
+      padding: 3px;
+      font-family: "Albert Sans", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 3px;
+    }
+
+
+    /* ABOUT & INDIVIDUAL */
     #aboutPanel {
       background-color: #ddd2ca;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
@@ -93,31 +390,8 @@
       display: none;
     }
 
-    #tooltipPanel {
-      background-color: #ddd2ca;
-      border-right: 1px solid rgba(0, 0, 0, 0.15);
-      overflow: auto;
-      height: 100%;
-      min-height: 100vh;
-      width: 100vw;
-      position: absolute;
-      top: 50px;
-      text-align: left;
-      transition: all 0.5s ease;
-      -webkit-transition: all 0.5s ease;
-      -moz-transition: all 0.5s ease;
-      -o-transition: all 0.5s ease;
-      transition: all 0.5s ease;
-      display: none;
-    }
-
-    .mapWrapper #mapMobile {
-      margin-top: 10px;
-    }
-
     #aboutPanel .panelTitle,
-    #individualsPanel .panelTitle,
-    #tooltipPanel .panelTitle {
+    #individualsPanel .panelTitle {
       padding: 20px 0px 20px 30px;
       font-size: 16px;
       font-weight: 700;
@@ -126,26 +400,6 @@
     #aboutPanel .close,
     #individualsPanel .close {
       margin-top: 2px;
-    }
-
-    #tooltipPanel .textWrapper {
-      padding: 20px;
-    }
-
-    #tooltipPanel #website {
-      margin-top: 10px;
-      margin-right: 0px;
-      float: right;
-    }
-
-    #tooltipPanel #focus {
-      margin-left: -5px;
-    }
-
-    #tooltipPanel #address {
-      font-size: 14px;
-      margin-top: 10px;
-      margin-bottom: 10px;
     }
 
     #aboutPanel p {
@@ -219,14 +473,52 @@
       transition: all 0.3s ease;
     }
 
-    #logo {
-      padding: 10px 0px;
-      margin-left: auto;
-      margin-right: auto;
-      width: 150px;
-      z-index: 200;
-      display: block;
+    /* TOOLTIP */
+    #tooltipPanel {
+      background-color: #ddd2ca;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+      overflow: auto;
+      height: 100%;
+      min-height: 100vh;
+      width: 100vw;
+      position: absolute;
+      top: 50px;
+      text-align: left;
+      transition: all 0.5s ease;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+      display: none;
     }
+
+    #tooltipPanel .panelTitle {
+      padding: 20px 0px 20px 30px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    #tooltipPanel .textWrapper {
+      padding: 20px;
+    }
+
+    #tooltipPanel #website {
+      margin-top: 10px;
+      margin-right: 0px;
+      float: right;
+    }
+
+    #tooltipPanel #focus {
+      margin-left: -5px;
+    }
+
+    #tooltipPanel #address {
+      font-size: 14px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* SIDEBAR */
 
     #logoWrapper {
       background-color: white;
@@ -236,14 +528,22 @@
       padding: 30px;
     }
 
-
     #logoWrapperBottom img {
       height: 25px;
     }
 
+    #logo {
+      padding: 30px 0px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 160px;
+      z-index: 200;
+      display: block;
+    }
+
     #about p,
     #thinkers p {
-      font-size: 16px;
+      font-size: 14px;
       padding: 15px 0px 15px 30px;
     }
 
@@ -253,132 +553,33 @@
       cursor: pointer;
     }
 
-    @media only screen and (min-width:750px) and (max-width:1500px) {
-      .main {
-        /* width: 100vw; */
-        display: grid;
-        grid-template-columns: 5fr 11fr;
-      }
+    #zoomInstruction {
+      font-size: 10px;
     }
 
-    @media only screen and (max-width:750px) {
-      .main {
-        width: 100vw;
-        display: inherit;
-      }
-
-      #sidebar {
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100vw;
-        display: none;
-        height: auto;
-        background-color: #ddd2ca;
-      }
-
-      #logoWrapper {
-        display: none;
-      }
-
-      #topBar {
-        display: inherit;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        line-height: 50px;
-        background-color: #fff;
-        border-bottom: 1px solid #1C5F7A;
-        z-index: 300;
-        position: relative;
-      }
-
-      #logo_s {
-        height: 15px;
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 12.5px;
-      }
-
-      #menu {
-        height: 25px;
-        position: absolute;
-        top: 12.5px;
-        right: 12.5px;
-      }
-
-      #menu:hover {
-        cursor: pointer;
-      }
-
-      #mapButton {
-        width: auto;
-        border-radius: 20px;
-        border: 1.5px solid #1C5E7B;
-        padding: 3px;
-        color: #1C5E7B;
-        text-transform: uppercase;
-        font-size: 12px;
-        font-weight: 600;
-        position: absolute;
-        top: 12.5px;
-        right: 12.5px;
-        line-height: normal;
-        display: none;
-      }
-
-      #mapButton:hover {
-        cursor: pointer;
-        font-weight: 700;
-      }
-
-      #aboutPanel,
-      #individualsPanel {
-        top: 50px;
-      }
-
+    #resetZoom {
+      margin-right: 15px;
     }
-
-    .button {
-      text-transform: uppercase;
-      padding: 8px 12px;
-      width: auto;
-      display: inline-block;
-      text-align: center;
-      border: 1px solid rgba(0, 0, 0, 0.25);
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 12px;
-      pointer-events: none;
-    }
-
-    .button.active:hover {
-      transition: all 0.5s ease;
-      border: 1px solid rgba(0, 0, 0, 0.5);
-      cursor: pointer;
-    }
-
-
-    .button.active {
-      pointer-events: inherit;
-      border: 1px solid #73C7D8;
-      background-color: #73C7D8;
-    }
-
-    .titleText {
-      padding-left: 30px;
-      margin: 10px 0px;
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-
-    #zoomInstruction {}
-
 
     #toggleWrapper {
       padding-left: 30px;
+      padding-bottom: 10px;
+    }
+
+    /* zoom related */
+
+    #resetZoom {
+      margin-left: 5px;
+    }
+
+    #resetZoom:hover {
+      cursor: pointer;
+    }
+
+    /* Search form related */
+
+    #reset {
+      margin: 10px 0px;
     }
 
     #searchform {
@@ -392,7 +593,7 @@
       margin: 10px 0 0;
       width: 100%;
       padding: 5px 10px;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     #search-bar:focus {
@@ -407,7 +608,7 @@
     }
 
     #searchform span {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .output {
@@ -462,13 +663,31 @@
 
     /* Toggle button related */
 
+    #filterArrow {
+      transform: rotate(90deg);
+      width: 20px;
+      float: right;
+      margin-top: 5px;
+      margin-right: 15px;
+      transition: all 0.3s ease;
+    }
+
+    #filterArrow.active {
+      transform: rotate(0deg);
+      transition: all 0.3s ease;
+    }
+
+    #filterArrow:hover {
+      cursor: pointer;
+    }
+
     .toggleText {
       margin-top: 0px;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .toggleText p {
-      margin: 5px 0px;
+      margin: 8px 0px;
     }
 
     .toggle,
@@ -552,12 +771,7 @@
       z-index: 1;
     }
 
-    .item {
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 10px;
-      margin-left: 0px;
-    }
+    /* contact */
 
     .contact p {
       padding: 20px 0px 20px 30px;
@@ -570,216 +784,29 @@
     }
 
     .contact img {
-      padding: 20px 0px 19px 30px;
+      padding: 20px 10px 19px 30px;
       width: 20px;
       height: 20px;
       float: right;
     }
 
-    #reset {
-      margin: 10px 0px;
-    }
-
-    #resetZoom {
-      margin-left: 5px;
-    }
-
-    #resetZoom:hover {
-      cursor: pointer;
-    }
-
-    .selection {
-      opacity: 1;
-      fill-opacity: 1;
-    }
-
-    #map {
-      width: 280px;
-      height: 200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 5px 18px 5px 2px;
-    }
-
-    #mapMobile {
-      width: 280px;
-      height: 200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 5px 18px 5px 2px;
-    }
-
-    .tooltip {
-      position: absolute;
-      top: 100px;
-      left: 100px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      width: 300px;
-      background: #ddd2ca;
-      box-shadow: -2px 5px 5px rgba(0, 0, 0, 0.5);
-      color: black;
-      padding: 10px;
-      font-size: 14px;
-      z-index: 300;
-      min-height: 200px;
-      max-height: 500px;
-      overflow: auto;
-      display: none;
-    }
-
-    .tooltip h4 {
-      font-family: "Albert Sans", sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 10px;
-      margin: 0px;
-      max-width: 240px;
-    }
-
-    .tooltip p {
-      font-family: "Albert Sans", sans-serif;
-      font-size: 12px;
-      color: #000;
-    }
-
-    .tooltip a {
-      color: #000 !important;
-      text-decoration: underline;
-    }
-
-    .close {
-      padding: 3px 5px;
-      width: auto;
-      display: inline-block;
-      text-align: center;
-      border-radius: 20px;
-      border: 1px solid #73C7D8;
-      background-color: #73C7D8;
-      position: absolute;
-      right: 8px;
-      top: 16px;
-      color: black;
-      opacity: 1;
-      font-size: 12px;
-    }
-
-    .close:hover {
-      cursor: pointer !important;
-    }
-
-    .tooltip .website {
-      margin-top: 10px;
-      margin-right: 0px;
+    /* projection toggle */
+    #projectionArrow {
+      transform: rotate(90deg);
+      width: 20px;
       float: right;
+      margin-top: 5px;
+      margin-right: 15px;
+      transition: all 0.3s ease;
     }
 
-    .accordion .website {
-      z-index: 200;
+    #projectionArrow.active {
+      transform: rotate(0deg);
+      transition: all 0.3s ease;
     }
 
-    .accordion .website:hover {
-      font-weight: 700;
-    }
-
-    .website {
-      padding: 3px 5px;
-      width: auto;
-      display: inline-block;
-      text-align: center;
-      border-radius: 20px;
-      border: 1px solid #73C7D8;
-      background-color: #73C7D8;
-      color: black;
-      opacity: 1;
-      font-size: 12px;
-    }
-
-    .website a {
-      text-decoration: none;
-      color: black;
-    }
-
-    .mission {
-      margin-top: 12px;
-    }
-
-    .address {
-      max-width: 220px;
-      margin-top: 12px;
-      margin-bottom: 12px;
-    }
-
-    .focusarea {
-      color: #fff;
-      padding: 3px;
-      font-family: "Albert Sans", sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      border-radius: 3px;
-    }
-
-    .none {
-      display: none;
-    }
-
-    .show {
-      display: inherit;
-    }
-
-    .chartWrapper {
-      width: 100%;
-      height: 100vh;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .point:hover {
-      cursor: pointer !important;
-    }
-
-    .hover {
-      font-weight: 700;
-    }
-
-
-    /* #logoWrapper {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      z-index: 200;
-    } */
-
-    /* #logoWrapper img {
-      height: 25px;
-    } */
-
-
-
-    @media only screen and (max-width:991px) {
-      #logo {
-        width: 150px;
-      }
-
-      /* #logoWrapper {
-        top: 60px;
-        right: 20px;
-      } */
-    }
-
-    @media only screen and (max-width: 600px) {
-
-      /* #logoWrapper img {
-        height: 25px;
-      } */
-    }
-
-    @media only screen and (max-width: 500px) {
-
-      #logo {
-        width: 120px;
-      }
-
+    #projectionArrow:hover {
+      cursor: pointer;
     }
 
     input[type="radio"]:hover {
@@ -820,11 +847,116 @@
 
     .radioWrapper {
       margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+
+    @media only screen and (max-width:750px) {
+
+      .chartWrapper {
+        height: 90vh;
+      }
+
+      .main {
+        width: 100vw;
+        display: inherit;
+      }
+
+      #mainMap {
+        margin-left: 0px;
+        width: 100vw;
+      }
+
+      #sidebar {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100vw;
+        display: none;
+        height: auto;
+        background-color: #ddd2ca;
+      }
+
+      #logoWrapper {
+        display: none;
+      }
+
+      #topBar {
+        display: inherit;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        background-color: #fff;
+        border-bottom: 1px solid #1C5F7A;
+        z-index: 300;
+        position: relative;
+      }
+
+      #logo_s {
+        height: 15px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 12.5px;
+      }
+
+      #menu {
+        height: 25px;
+        position: absolute;
+        top: 12.5px;
+        right: 12.5px;
+      }
+
+      #menu:hover {
+        cursor: pointer;
+      }
+
+      #mapButton {
+        width: auto;
+        border-radius: 20px;
+        border: 1.5px solid #1C5E7B;
+        padding: 3px;
+        color: #1C5E7B;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 600;
+        position: absolute;
+        top: 12.5px;
+        right: 12.5px;
+        line-height: normal;
+        display: none;
+      }
+
+      #mapButton:hover {
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      #aboutPanel,
+      #individualsPanel {
+        top: 50px;
+      }
+
     }
   </style>
 </head>
 
 <body>
+
+  <div class="infopanel-overlay">
+    <div class="infopanel-wrapper">
+      <div class="infopanel">
+        <div class="infopanel-content">
+          <img id="landingLogo" src="./img/globe.svg" />
+          <p>The Planetary is an emerging concept in the sciences, social sciences, humanities, arts, and politics that
+            draws attention to the basic fact that human affairs take place on a planet</p>
+          <span class="explore">Explore&nbsp;&nbsp;<img src="./img/chevron-right.svg"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <div class="tooltip"></div>
@@ -908,7 +1040,7 @@
         <div id="logoWrapper">
           <a href="index.html"><img id="logo" src="./img/globe.svg" /></a>
         </div>
-        <hr>
+        <!-- <hr> -->
         <div id="about">
           <p>About</p>
         </div>
@@ -927,7 +1059,10 @@
         <p class="titleText" id="zoomInstruction">Draw target area on map to zoom<span id="resetZoom"
             class="button">reset</span></p>
         <hr>
-        <p class="titleText">Filter by topic</p>
+        <div>
+          <p class="titleText item">Filter by topic</p>
+          <img class="item" id="filterArrow" src="./img/chevron-right.svg">
+        </div>
         <div id="toggleWrapper">
           <div class="itemWrapper">
             <div class='toggle item filters' id="filter1">
@@ -991,14 +1126,19 @@
           </div>
         </div>
         <hr>
-        <p class="titleText">Map projection</p>
-        <div class="radioWrapper">
-          <input type="radio" id="PQ" name="setProjection" value="PQ" class="typeRadio" checked>
-          <label for="PQ">Peirce Quincuncial</label>
+        <div>
+          <p class="titleText item">Map projection</p>
+          <img class="item" id="projectionArrow" src="./img/chevron-right.svg">
         </div>
-        <div class="radioWrapper">
-          <input type="radio" id="NE" name="setProjection" value="NE" class="typeRadio">
-          <label for="NE">Natural Earth</label>
+        <div id="projectionWrapper">
+          <div class="radioWrapper">
+            <input type="radio" id="PQ" name="setProjection" value="PQ" class="typeRadio" checked>
+            <label for="PQ">Peirce Quincuncial</label>
+          </div>
+          <div class="radioWrapper">
+            <input type="radio" id="NE" name="setProjection" value="NE" class="typeRadio">
+            <label for="NE">Natural Earth</label>
+          </div>
         </div>
         <hr>
         <div class="itemWrapper contact">
@@ -1031,12 +1171,6 @@
   <script src="./js/tooltip.js"></script>
   <script>
 
-    // PROBLEM: when searched, then brush zoom, then stroke width is super thick
-    // whenever I filter then reset, I cannot click anymore
-
-    // TODO: prevent brush / zoom on click
-
-    //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
 
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
@@ -1086,22 +1220,21 @@
       .attr("width", width)
       .attr("height", height)
 
-
-    const projection2 = d3.geoNaturalEarth1();
-    const path2 = d3.geoPath(projection2);
-
     let projection = d3.geoPeirceQuincuncial()
       .fitSize([width, height], {
         type: "Sphere"
       })
       .precision(0.1)
       .scale((width) / 2 / Math.PI * 0.85)
-    // .rotate([0, 0, 0])
+
     let path = d3.geoPath().projection(projection);
+
+    const projection2 = d3.geoNaturalEarth1();
+    const path2 = d3.geoPath(projection2);
+
 
     const colorScale = d3.scaleOrdinal()
       .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
-
 
     let brush = d3.brush()
       .on('brush', brushMove)
@@ -1115,11 +1248,6 @@
 
     let ids;
 
-    function zoomEnd() {
-      d3.select(".selection").style("display", "none");
-      d3.selectAll(".handle").style("display", "none");
-      $("#resetZoom").addClass("active");
-    }
 
     const zoom = d3.zoom()
       .scaleExtent([1, Infinity])
@@ -1216,6 +1344,12 @@
       }
     }
 
+    function zoomEnd() {
+      d3.select(".selection").style("display", "none");
+      d3.selectAll(".handle").style("display", "none");
+      $("#resetZoom").addClass("active");
+    }
+
     function zoomed(e) {
 
       tooltip.hideTooltip();
@@ -1225,7 +1359,6 @@
       d3.selectAll(".handle").style("display", "none");
       d3.select("#intro").style("display", "none");
 
-      // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
 
       if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
         d3.selectAll(".land2").style("display", "block");
@@ -1279,11 +1412,36 @@
         })
     }
 
+    $(".explore").on("click", function () {
+      $(".infopanel-wrapper").css("display", "none");
+      $(".infopanel-overlay").css("display", "none");
+    })
+
+    $("body").on("click", function () {
+      $(".infopanel-wrapper").css("display", "none");
+      $(".infopanel-overlay").css("display", "none");
+    })
+
+    $("#reset").on("click", function () {
+      resetZoom();
+      enableToggle();
+      searched = false;
+      d3.selectAll(".overlay").style("cursor", "crosshair");
+      resetPoints(data);
+      $("#reset").removeClass("active"); //make button unclickable
+      $("#search-bar").val("");
+    })
+
+    $('input:radio[name="setProjection"]').change(function () {
+      currentProjection = $(this).val();
+      updateProjection();
+    });
+
     const worldmap = d3.json("./data/land3.geojson");
     const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
     const points = d3.csv("./data/mapData3.csv");
     const individuals = d3.csv("./data/individualsData2.csv");
-    //IPSA & Earth4All are drawn twice, why??
+    //IPSA & Earth4All are drawn twice, because of the data
 
     let data;
     let dataIndividuals
@@ -1341,6 +1499,24 @@
           $("#aboutPanel").css("height", sidebarHeight);
         } else {
           $("#aboutPanel").css("width", "350px");
+        }
+      })
+
+      $("#filterArrow").on("click", function () {
+        $("#toggleWrapper").toggleClass("none", "show");
+        if ($(this).hasClass("active")) {
+          $(this).removeClass("active");
+        } else {
+          $(this).addClass("active");
+        }
+      })
+
+      $("#projectionArrow").on("click", function () {
+        $("#projectionWrapper").toggleClass("none", "show");
+        if ($(this).hasClass("active")) {
+          $(this).removeClass("active");
+        } else {
+          $(this).addClass("active");
         }
       })
 
@@ -1640,21 +1816,7 @@
         }
       });
 
-      $("#reset").on("click", function () {
-        resetZoom();
-        enableToggle();
-        searched = false;
-        d3.selectAll(".overlay").style("cursor", "crosshair");
-        resetPoints(data);
-        $("#reset").removeClass("active"); //make button unclickable
-        $("#search-bar").val("");
-      })
-
-      $('input:radio[name="setProjection"]').change(function () {
-        currentProjection = $(this).val();
-        updateProjection();
-      });
-    });
+    }); // end promise
 
     function disableToggle() {
       $('input:radio[name="toggle"]').attr('disabled', 'disabled');
@@ -1684,8 +1846,6 @@
       $(".toggle4").css("opacity", "1");
       $(".toggle5").css("opacity", "1");
       $(".toggle6").css("opacity", "1");
-
-
     }
 
 
@@ -1773,8 +1933,6 @@
       d3.selectAll("circle.point")
         .style("opacity", d => ids.includes(d.Id) ? 1 : 0)
         .style("display", d => ids.includes(d.Id) ? "inherit" : "none")
-
-
     }
 
     function resetPoints(data) {
@@ -1863,8 +2021,6 @@
         let marker = new mapboxgl.Marker()
           .setLngLat([d.Longitude, d.Latitude])
           .addTo(map);
-
-
 
       } else {
 
