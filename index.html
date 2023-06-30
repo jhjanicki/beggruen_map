@@ -59,7 +59,7 @@
       border: 1px solid #1C5E7B;
       box-shadow: -4px 4px #1C5E7B;
       color: white;
-      text-align: left;
+      text-align: center;
       z-index: 101;
       border-radius: 10px;
       background-size: cover;
@@ -80,7 +80,6 @@
     }
 
     .explore {
-      margin-left: 218px;
       padding: 3px 3px 3px 6px;
       width: auto;
       display: inline-block;
@@ -182,6 +181,7 @@
 
     #sidebar {
       border-right: 1px solid rgba(0, 0, 0, 0.15);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
       min-height: 100vh;
       position: absolute;
       width: 290px;
@@ -217,7 +217,7 @@
     }
 
     #map {
-      width: 280px;
+      width: 430px;
       height: 200px;
       margin-left: auto;
       margin-right: auto;
@@ -248,9 +248,10 @@
       left: 100px;
       -moz-border-radius: 5px;
       border-radius: 5px;
-      width: 300px;
+      width: 450px;
       background: #ddd2ca;
-      box-shadow: -2px 5px 5px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      box-shadow: -4px 4px rgba(0, 0, 0, 0.15);
       color: black;
       padding: 10px;
       font-size: 14px;
@@ -267,7 +268,7 @@
       font-weight: 600;
       padding: 10px;
       margin: 0px;
-      max-width: 240px;
+      max-width: 380px;
     }
 
     .tooltip p {
@@ -294,7 +295,8 @@
       top: 16px;
       color: black;
       opacity: 1;
-      font-size: 12px;
+      font-size: 10px;
+      text-transform: uppercase;
     }
 
     .close:hover {
@@ -305,10 +307,24 @@
       margin-top: 10px;
       margin-right: 0px;
       float: right;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .tooltip .website img {
+      vertical-align: text-top;
+      width: 10px;
     }
 
     .accordion .website {
       z-index: 200;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .accordion .website img {
+      vertical-align: text-top;
+      width: 10px;
     }
 
     .accordion .website:hover {
@@ -347,9 +363,10 @@
       color: #fff;
       padding: 3px;
       font-family: "Albert Sans", sans-serif;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
-      border-radius: 3px;
+      /* border-radius: 3px; */
+      text-transform: uppercase;
     }
 
 
@@ -370,6 +387,7 @@
       -o-transition: all 0.5s ease;
       transition: all 0.5s ease;
       display: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
 
     #individualsPanel {
@@ -388,6 +406,7 @@
       -o-transition: all 0.5s ease;
       transition: all 0.5s ease;
       display: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
 
     #aboutPanel .panelTitle,
@@ -451,6 +470,7 @@
     .accordion {
       margin: 0px;
       height: 0px;
+      padding-left: 30px;
       overflow: hidden;
       transition: all 0.3s ease;
     }
@@ -526,10 +546,22 @@
 
     #logoWrapperBottom {
       padding: 30px;
+      margin-left: auto;
+      margin-right: auto;
+      display: table;
     }
 
     #logoWrapperBottom img {
       height: 25px;
+    }
+
+    #logo1 {
+      padding-right: 8px;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    #logo2 {
+      padding-left: 6px;
     }
 
     #logo {
@@ -613,7 +645,6 @@
 
     .output {
       list-style: none;
-      /* max-width: 400px; */
       min-height: 0px;
       border-top: 0px !important;
       color: #767676;
@@ -774,8 +805,8 @@
     /* contact */
 
     .contact p {
-      padding: 20px 0px 20px 30px;
-      font-size: 16px;
+      font-size: 14px;
+      padding: 15px 0px 15px 30px;
     }
 
     .contact a {
@@ -784,7 +815,7 @@
     }
 
     .contact img {
-      padding: 20px 10px 19px 30px;
+      padding: 15px 0px 12px 30px;
       width: 20px;
       height: 20px;
       float: right;
@@ -851,7 +882,7 @@
     }
 
 
-    @media only screen and (max-width:750px) {
+    @media only screen and (max-width:700px) {
 
       .chartWrapper {
         height: 90vh;
@@ -875,6 +906,7 @@
         display: none;
         height: auto;
         background-color: #ddd2ca;
+        z-index: 1000;
       }
 
       #logoWrapper {
@@ -939,6 +971,38 @@
         top: 50px;
       }
 
+    }
+
+    @media only screen and (max-width:550px) {
+      /* LANDING PAGE */
+
+      #landingLogo {
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .infopanel-content p {
+        width: 400px;
+      }
+    }
+
+    @media only screen and (max-width:450px) {
+      /* LANDING PAGE */
+
+      #landingLogo {
+        width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .infopanel-content p {
+        width: 300px;
+      }
+
+      .infopanel {
+        padding: 20px;
+      }
     }
   </style>
 </head>
@@ -1022,12 +1086,14 @@
         <div id="mapMobile"></div>
       </div>
       <div class="textWrapper">
-        <span class="website" id="website"><a href='' target='_blank'>Website →</a></span>
+        <span class="website" id="website"><a href='' target='_blank'>Website&nbsp;&nbsp;<img
+              src="./img/website.svg" /></a></span>
         <p id="address">address</p>
         <span class="focusarea" id="focus"> focus</span>
         <p class="mission" id="mission"> mission </p>
       </div>
     </div>
+
 
 
     <div class="main">
@@ -1149,8 +1215,8 @@
         </div>
         <hr>
         <div id="logoWrapperBottom">
-          <img src="./img/giessen.png" />
-          <img src="./img/berggruen.png" />
+          <img id="logo1" src="./img/berggruen.png" />
+          <img id="logo2" src="./img/giessen.png" />
         </div>
       </div>
 
@@ -1191,13 +1257,14 @@
 
     let isSmallScreen = false;
 
-    if (windowWidth <= 750) {
+    if (windowWidth <= 700) {
       isSmallScreen = true;
     }
 
 
     const searchformWidth = $("#search-bar").width();
     $(".output").css("width", searchformWidth + 20);
+
 
     let width = $(".chartWrapper").width();
     let height = $(".chartWrapper").height();
@@ -1447,6 +1514,7 @@
     let dataIndividuals
 
     Promise.all([worldmap, points, worldmapDetailed, individuals]).then(function (values) {
+
       if (isSmallScreen) {
         $("#mapButton").on("click", function () {
           $("#sidebar").css("display", "none");
@@ -1458,13 +1526,23 @@
           $("#sidebar").css("display", "inherit");
           $("#mapButton").css("display", "inherit");
           $("#menu").css("display", "none");
+          if (windowWidth <= 700) {
+            const searchformWidth = $("#search-bar").width();
+            $(".output").css("width", searchformWidth + 20);
+          }
         })
 
 
       } else {
+
+
         let sidebarWidth = $("#sidebar").width();
+        let sidebarHeight = $("#sidebar").height();
+
         $("#individualsPanel").css("margin-left", sidebarWidth + 1);
         $("#aboutPanel").css("margin-left", sidebarWidth + 1);
+        $("#individualsPanel").css("min-height", Math.max(sidebarHeight, $(window).height()));
+        $("#aboutPanel").css("min-height", Math.max(sidebarHeight, $(window).height()));
 
       }
 
@@ -1477,6 +1555,7 @@
       })
 
       $("#thinkers").on("click", function () {
+        tooltip.hideTooltip();
         $("#individualsPanel").css("display", "block");
         $("#aboutPanel").css("display", "none");
         if (isSmallScreen) {
@@ -1490,6 +1569,7 @@
       })
 
       $("#about").on("click", function () {
+        tooltip.hideTooltip();
         $("#aboutPanel").css("display", "block");
         $("#individualsPanel").css("display", "none");
         if (isSmallScreen) {
@@ -1535,7 +1615,7 @@
                 <br>
                 <span class="focusarea" style='background-color:${fill} '> ${d.Category}: ${d.Focus}</span>
                 <p class="work">${d.Work}</p>
-                <span class="website"><a href='${d.Contact_site}' target='_blank'>Website →</a></span>
+                <span class="website"><a href='${d.Contact_site}' target='_blank'>Website&nbsp;&nbsp;<img src="./img/website.svg" /></a></span>
                 <br><br>
               </ul>
              </li>`
@@ -1676,6 +1756,8 @@
         .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
         .style("display", d => activeCategories.includes(d.Category) ? "inherit" : "none")
         .on("mouseover", function (e, d) {
+          $("#aboutPanel").css("display", "none");
+          $("#individualsPanel").css("display", "none");
           if (!brushing && !isSmallScreen) {
             d3.selectAll(".point").style("stroke", "#808080")
             d3.select(this).style("stroke", "black")
@@ -1689,6 +1771,8 @@
           hideDetail(d)
         })
         .on("click", function (e, d) {
+          $("#aboutPanel").css("display", "none");
+          $("#individualsPanel").css("display", "none");
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
@@ -2028,12 +2112,12 @@
         let content = `<h4> ${d.Organization} </h4>
       <div class="mapWrapper">
         <div id="map"></div>
-        <span class="website"><a href='${d.Contact_site}' target='_blank'>Website →</a></span>
+        <span class="website"><a href='${d.Contact_site}' target='_blank'>Website&nbsp;&nbsp;<img src="./img/website.svg" /></a></span>
       </div>
       <p class="address">${d.Contact_address}</p>
       <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
       <p class="mission"> ${d.Mission} </p>
-      <span class="close">Close ✕</span>`;
+      <span class="close">Close&nbsp;&nbsp;✕</span>`;
 
         tooltip.showTooltip(isSmallScreen, content, e);
 

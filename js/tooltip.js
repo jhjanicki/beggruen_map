@@ -106,7 +106,7 @@ function floatingTooltip(tooltipId, width, xPosOffset) {
       }
 
       if(event.clientX + wscrX >520){
-        ttleft = ttleft-360;
+        ttleft = ttleft-500;
       }
 
 
