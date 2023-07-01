@@ -426,6 +426,29 @@
       padding: 20px;
     }
 
+    #thinkerTextWrapper p {
+      font-size: 14px;
+      padding: 20px;
+    }
+
+    #thinkerArrow {
+      transform: rotate(90deg);
+      width: 20px;
+      float: right;
+      margin-top: 5px;
+      margin-right: 15px;
+      transition: all 0.3s ease;
+    }
+
+    #thinkerArrow.active {
+      transform: rotate(0deg);
+      transition: all 0.3s ease;
+    }
+
+    #thinkerArrow:hover {
+      cursor: pointer;
+    }
+
     .individualList {
       list-style: none;
       padding: 0px;
@@ -1030,6 +1053,22 @@
       <p class="panelTitle">Thinkers</p>
       <span class="close">Close&nbsp;&nbsp;✕</span>
       <hr>
+      <!-- <div>
+        <p class="titleText item"></p>
+        <img class="item" id="thinkerArrow" src="./img/chevron-right.svg">
+      </div> -->
+      <div id="thinkerTextWrapper">
+        <p>Here we highlight individuals who are unaffiliated with a single planetary-focused organization, but
+          nonetheless act as nodes of planetary thinking. As individuals are notably more mobile than fixed centers,
+          they are not included in the portal map. However, in our estimation, a comprehensive database of planetary
+          thinking hubs, such as this site endeavors to be, would not be complete without including such individual
+          contributors.
+          <br><br>This list is always growing and never complete. Submissions of additional individuals for
+          consideration to
+          include here are most welcome.
+        </p>
+      </div>
+      <hr>
       <ul class="individualList">
       </ul>
     </div>
@@ -1581,6 +1620,15 @@
           $("#aboutPanel").css("width", "350px");
         }
       })
+
+      // $("#thinkerArrow").on("click", function () {
+      //   $("#thinkerTextWrapper").toggleClass("none", "show");
+      //   if ($(this).hasClass("active")) {
+      //     $(this).removeClass("active");
+      //   } else {
+      //     $(this).addClass("active");
+      //   }
+      // })
 
       $("#filterArrow").on("click", function () {
         $("#toggleWrapper").toggleClass("none", "show");
