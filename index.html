@@ -20,7 +20,7 @@
     /* LANDING PAGE */
 
     #landingLogo {
-      width: 500px;
+      width: 80%;
       margin-left: auto;
       margin-right: auto;
     }
@@ -47,7 +47,8 @@
     .infopanel {
       display: block;
       position: absolute;
-      width: auto;
+      width: 50%;
+      max-width: 600px;
       height: auto;
       padding: 30px;
       left: 50%;
@@ -74,9 +75,8 @@
 
     .infopanel-content p {
       color: #1C5E7B;
-      padding: 10px 0px;
-      width: 500px;
-      text-align: justify;
+      padding: 18px 0px 15px 0px;
+      text-align: center;
     }
 
     .explore {
@@ -90,6 +90,7 @@
       color: black;
       opacity: 1;
       font-size: 12px;
+      text-transform: uppercase;
     }
 
     .explore:hover {
@@ -99,7 +100,7 @@
 
     .explore img {
       width: 15px;
-      vertical-align: middle;
+      vertical-align: text-bottom;
     }
 
 
@@ -217,7 +218,7 @@
     }
 
     #map {
-      width: 430px;
+      width: 420px;
       height: 200px;
       margin-left: auto;
       margin-right: auto;
@@ -253,7 +254,7 @@
       border: 1px solid rgba(0, 0, 0, 0.15);
       box-shadow: -4px 4px rgba(0, 0, 0, 0.15);
       color: black;
-      padding: 10px;
+      padding: 6px 10px 10px 10px;
       font-size: 14px;
       z-index: 300;
       min-height: 200px;
@@ -268,7 +269,7 @@
       font-weight: 600;
       padding: 10px;
       margin: 0px;
-      max-width: 380px;
+      max-width: 370px;
     }
 
     .tooltip p {
@@ -291,7 +292,7 @@
       border: 1px solid #73C7D8;
       background-color: #73C7D8;
       position: absolute;
-      right: 8px;
+      right: 15px;
       top: 16px;
       color: black;
       opacity: 1;
@@ -305,7 +306,7 @@
 
     .tooltip .website {
       margin-top: 10px;
-      margin-right: 0px;
+      margin-right: 6px;
       float: right;
       font-size: 10px;
       text-transform: uppercase;
@@ -411,9 +412,14 @@
 
     #aboutPanel .panelTitle,
     #individualsPanel .panelTitle {
-      padding: 20px 0px 20px 30px;
+      padding: 20px 0px 20px 20px;
       font-size: 16px;
       font-weight: 700;
+    }
+
+    #aboutPanel .close,
+    #individualsPanel .close {
+      right: 20px;
     }
 
     #aboutPanel .close,
@@ -455,6 +461,7 @@
       margin: 0px;
       overflow: auto;
       font-size: 12px;
+      text-align: left;
     }
 
     .individualList>li>a {
@@ -471,11 +478,9 @@
       border-top: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-
     .individualList>li.active>a,
     .individualList>li>a:hover {
-      background: #ddd2ca;
-      font-weight: 700;
+      background-color: #BCB3AC;
     }
 
     .arrow img {
@@ -997,35 +1002,26 @@
     }
 
     @media only screen and (max-width:550px) {
-      /* LANDING PAGE */
 
+      /* LANDING PAGE */
       #landingLogo {
-        width: 400px;
         margin-left: auto;
         margin-right: auto;
       }
 
-      .infopanel-content p {
-        width: 400px;
+      .infopanel {
+        width: 70%;
+      }
+
+      .infopanel {
+        padding: 20px;
       }
     }
 
     @media only screen and (max-width:450px) {
       /* LANDING PAGE */
 
-      #landingLogo {
-        width: 300px;
-        margin-left: auto;
-        margin-right: auto;
-      }
 
-      .infopanel-content p {
-        width: 300px;
-      }
-
-      .infopanel {
-        padding: 20px;
-      }
     }
   </style>
 </head>
@@ -1037,9 +1033,13 @@
       <div class="infopanel">
         <div class="infopanel-content">
           <img id="landingLogo" src="./img/globe.svg" />
-          <p>The Planetary is an emerging concept in the sciences, social sciences, humanities, arts, and politics that
-            draws attention to the basic fact that human affairs take place on a planet</p>
-          <span class="explore">Explore&nbsp;&nbsp;<img src="./img/chevron-right.svg"></span>
+          <p>Planetary thinking recognizes human affairs as inextricably linked with the biogeochemical processes of an
+            ever-changing planet. The Planetary Portal is a central database of thinkers and organizations working on
+            the Planetary. By bringing together diverse communities from the fields of science, social sciences,
+            humanities, arts, and politics, the Planetary Portal can be a facilitator for planetary discussions,
+            bridging the gap between the theoretical and the practical.
+          </p>
+          <span class="explore">Explore<img src="./img/chevron-right.svg"></span>
         </div>
       </div>
     </div>
@@ -1600,7 +1600,7 @@
         if (isSmallScreen) {
           let sidebarHeight = $("#sidebar").height();
           $("#individualsPanel").css("width", "100vw");
-          $("#individualsPanel").css("z-index", 400);
+          $("#individualsPanel").css("z-index", 1002);
           $("#individualsPanel").css("height", sidebarHeight);
         } else {
           $("#individualsPanel").css("width", "350px");
@@ -1614,7 +1614,7 @@
         if (isSmallScreen) {
           let sidebarHeight = $("#sidebar").height();
           $("#aboutPanel").css("width", "100vw");
-          $("#aboutPanel").css("z-index", 400);
+          $("#aboutPanel").css("z-index", 1002);
           $("#aboutPanel").css("height", sidebarHeight);
         } else {
           $("#aboutPanel").css("width", "350px");
