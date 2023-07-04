@@ -201,7 +201,7 @@
     /* MAIN VIZ */
 
     .chartWrapper {
-      width: 100%;
+      width: calc(100vw - 290px);
       height: 100vh;
       margin-left: auto;
       margin-right: auto;
@@ -999,6 +999,13 @@
         top: 50px;
       }
 
+      .chartWrapper {
+        width: 100vw;
+        height: 100vh;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
     }
 
     @media only screen and (max-width:550px) {
@@ -1331,7 +1338,16 @@
         type: "Sphere"
       })
       .precision(0.1)
-      .scale((width) / 2 / Math.PI * 0.85)
+      .scale((width) / 2 / Math.PI * 0.75)
+
+    if (isSmallScreen) {
+      projection = d3.geoPeirceQuincuncial()
+        .fitSize([width, height], {
+          type: "Sphere"
+        })
+        .precision(0.1)
+        .scale((width) / 2 / Math.PI * 0.9)
+    }
 
     let path = d3.geoPath().projection(projection);
 
