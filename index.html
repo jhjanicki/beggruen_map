@@ -17,6 +17,11 @@
     rel="stylesheet">
 
   <style>
+    @font-face {
+      font-family: 'Diatype';
+      src: url("./font/ABCDiatype-Regular.otf") format("opentype");
+    }
+
     /* LANDING PAGE */
 
     #landingLogo {
@@ -106,7 +111,7 @@
 
     /* GENERAL */
     body {
-      font-family: "Albert Sans", sans-serif;
+      font-family: "Diatype", sans-serif;
       -webkit-font-smoothing: antialiased;
       background-color: #ddd2ca;
       overflow-x: hidden;
@@ -352,12 +357,14 @@
 
     .mission {
       margin-top: 12px;
+      margin-left: 8px;
     }
 
     .address {
       max-width: 220px;
       margin-top: 12px;
       margin-bottom: 12px;
+      margin-left: 8px;
     }
 
     .focusarea {
@@ -368,6 +375,7 @@
       font-weight: 700;
       /* border-radius: 3px; */
       text-transform: uppercase;
+      margin-left: 8px;
     }
 
 
@@ -437,23 +445,6 @@
       padding: 20px;
     }
 
-    #thinkerArrow {
-      transform: rotate(90deg);
-      width: 20px;
-      float: right;
-      margin-top: 5px;
-      margin-right: 15px;
-      transition: all 0.3s ease;
-    }
-
-    #thinkerArrow.active {
-      transform: rotate(0deg);
-      transition: all 0.3s ease;
-    }
-
-    #thinkerArrow:hover {
-      cursor: pointer;
-    }
 
     .individualList {
       list-style: none;
@@ -478,7 +469,7 @@
       border-top: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-    .individualList>li.active>a,
+    /* .individualList>li.active>a, */
     .individualList>li>a:hover {
       background-color: #BCB3AC;
     }
@@ -1307,6 +1298,7 @@
       isSmallScreen = true;
     }
 
+    let is_iPad = navigator.userAgent.match(/iPad/i) != null;
 
     const searchformWidth = $("#search-bar").width();
     $(".output").css("width", searchformWidth + 20);
@@ -1439,6 +1431,8 @@
 
       brushing = false;
 
+      d3.selectAll(".point").style("stroke", "#808080")
+
       //get the four corner coordinates
       const x0 = brushExtent[0][0];
       const x1 = brushExtent[1][0];
@@ -1522,6 +1516,7 @@
     }
 
     function resetZoom() {
+      d3.selectAll(".point").style("stroke", "#808080")
       tooltip.hideTooltip();
       clicked = false;
       transformedLevel = 1;
@@ -1637,14 +1632,6 @@
         }
       })
 
-      // $("#thinkerArrow").on("click", function () {
-      //   $("#thinkerTextWrapper").toggleClass("none", "show");
-      //   if ($(this).hasClass("active")) {
-      //     $(this).removeClass("active");
-      //   } else {
-      //     $(this).addClass("active");
-      //   }
-      // })
 
       $("#filterArrow").on("click", function () {
         $("#toggleWrapper").toggleClass("none", "show");
@@ -1847,7 +1834,7 @@
           d3.selectAll(".point").style("stroke", "#808080")
           d3.select(this).style("stroke", "black")
           clicked = true;
-          if (isSmallScreen) {
+          if (isSmallScreen || is_iPad) {
             showDetail(e, d);
           }
         })
