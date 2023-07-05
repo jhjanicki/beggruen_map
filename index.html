@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Planetary</title>
+  <title>Planetary Portal</title>
   <meta name="title" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
@@ -11,489 +11,146 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
-  <!-- <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'> -->
+
   <link href='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css' rel='stylesheet' />
   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
+  <link href="./main.css" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: "Albert Sans", sans-serif;
-      -webkit-font-smoothing: antialiased;
-      background-color: #ddd2ca;
-      overflow-x: hidden;
-      margin: 0px;
-      padding: 0px;
-    }
-
-    .main {
-      display: grid;
-      grid-template-columns: 2fr 7fr;
-    }
-
-    #sidebar {
-      /* padding: 20px; */
-      border-right: 1px solid rgba(0, 0, 0, 0.15);
-    }
-
-    #logo {
-      padding: 30px 0px 20px 30px;
-      width: 220px;
-      z-index: 200;
-    }
-
-    #about {
-      padding: 0px 0px 0px 30px;
-      font-size: 18px;
-    }
-
-    .button {
-      text-transform: uppercase;
-      padding: 8px 12px;
-      width: auto;
-      display: inline-block;
-      text-align: center;
-      border: 1px solid rgba(0, 0, 0, 0.25);
-      margin-top: 10px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .button:hover {
-      transition: all 0.5s ease;
-      background-color: #000;
-      color: #d8cac0;
-      cursor: pointer;
-    }
-
-    .titleText {
-      padding-left: 30px;
-      font-size: 13px;
-      text-transform: uppercase;
-    }
-
-    #zoomInstruction {
-      margin-top: -5px;
-    }
-
-    #toggleWrapper {
-      padding-left: 30px;
-    }
-
-    #searchform {
-      display: block;
-      width: calc(100% - 80px);
-      padding-left: 30px;
-    }
-
-
-    span {
-      font-size: 16px;
-    }
-
-    #search-bar {
-      display: block;
-      margin: 10px 0 0;
-      width: 100%;
-      padding: 5px 10px;
-      font-size: 16px;
-    }
-
-    #searchform input {
-      background-color: #fff;
-      color: #000;
-    }
-
-    .output {
-      list-style: none;
-      max-width: 400px;
-      min-height: 0px;
-      border-top: 0 !important;
-      color: #767676;
-      font-size: .75em;
-      transition: min-height 0.2s;
-      position: absolute;
-      z-index: 5;
-      padding-left: 0px;
-
-    }
-
-    .output,
-    #search-bar {
-      background: #fff;
-      border: none;
-    }
-
-    .prediction-item {
-      padding: .5em .75em;
-      transition: color 0.2s, background 0.2s;
-    }
-
-    .output:hover .focus {
-      background: #fff;
-      color: #767676;
-    }
-
-    .prediction-item:hover,
-    .focus,
-    .output:hover .focus:hover {
-      background: #ddd;
-      color: #333;
-    }
-
-    .prediction-item:hover {
-      cursor: pointer;
-    }
-
-    .prediction-item strong {
-      color: #333;
-    }
-
-    .prediction-item:hover strong {
-      color: #000;
-    }
-
-
-    /* Toggle button related */
-
-    .toggleText {
-      margin-top: 0px;
-      font-size: 16px;
-    }
-
-    .toggleText p {
-      margin: 8px 0px;
-    }
-
-    .toggle,
-    .toggle2,
-    .toggle3,
-    .toggle4,
-    .toggle5 {
-      position: relative;
-      height: 14px;
-      width: 35px;
-      border-radius: 15px;
-      background: #b7b2ab;
-      margin-right: 5px;
-    }
-
-    .toggle input,
-    .toggle2 input,
-    .toggle3 input,
-    .toggle4 input,
-    .toggle5 input {
-      opacity: 0;
-      width: 100%;
-      height: 200%;
-      position: absolute;
-      top: -7px;
-      left: 0;
-      z-index: 2;
-      margin: 0
-    }
-
-    .toggle__pointer {
-      position: absolute;
-      top: -2px;
-      left: 18px;
-      width: 20px;
-      height: 20px;
-      border-radius: 15px;
-      background-color: #007979;
-      -webkit-transition: left .15s ease-out;
-      transition: left .15s ease-out;
-    }
-
-    .toggle input:nth-child(2):checked+.toggle__pointer,
-    .toggle2 input:nth-child(2):checked+.toggle__pointer,
-    .toggle3 input:nth-child(2):checked+.toggle__pointer,
-    .toggle4 input:nth-child(2):checked+.toggle__pointer,
-    .toggle5 input:nth-child(2):checked+.toggle__pointer {
-      left: 0px;
-      background-color: #777777;
-    }
-
-    .toggle__pointer.color1 {
-      background-color: #d69a07;
-    }
-
-    .toggle__pointer.color2 {
-      background-color: #db311b;
-    }
-
-    .toggle__pointer.color3 {
-      background-color: #71918a;
-    }
-
-    .toggle__pointer.color4 {
-      background-color: #c9bc11;
-    }
-
-    .toggle__pointer.color5 {
-      background-color: #39603d;
-    }
-
-    .toggle__pointer.color6 {
-      background-color: #305d77;
-    }
-
-    .toggle input:nth-child(2):checked,
-    .toggle2 input:nth-child(2):checked,
-    .toggle3 input:nth-child(2):checked,
-    .toggle4 input:nth-child(2):checked,
-    .toggle5 input:nth-child(2):checked {
-      z-index: 1;
-    }
-
-    .item {
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 10px;
-      margin-left: 0px;
-    }
-
-    #resetZoom {
-      margin-left: 5px;
-    }
-
-    #resetZoom:hover {
-      cursor: pointer;
-    }
-
-    .selection {
-      opacity: 1;
-      fill-opacity: 1;
-    }
-
-    #map {
-      width: 280px;
-      height: 200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 5px 18px 5px 2px;
-    }
-
-    .tooltip {
-      position: absolute;
-      top: 100px;
-      left: 100px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      width: 300px;
-      background: #7ec7d9;
-      color: black;
-      padding: 10px;
-      font-size: 14px;
-      z-index: 300;
-      min-height: 200px;
-      max-height: 500px;
-      overflow: auto;
-      display: none;
-    }
-
-    .tooltip h4 {
-      font-family: "Albert Sans", sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .tooltip p {
-      font-family: "Albert Sans", sans-serif;
-      font-size: 16px;
-      color: #000;
-      margin-top: 4px;
-    }
-
-    .tooltip a {
-      color: #000 !important;
-      text-decoration: underline;
-    }
-
-    .close {
-      position: absolute;
-      right: 8px;
-      top: 5px;
-      color: black;
-      opacity: 1;
-      font-size: 18px;
-    }
-
-    .close:hover {
-      cursor: pointer !important;
-    }
-
-    .focusarea {
-      color: #fff;
-      padding: 3px;
-      width: 100%;
-      font-family: "Albert Sans", sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 3px;
-    }
-
-    .none {
-      display: none;
-    }
-
-    .show {
-      display: inherit;
-    }
-
-    .chartWrapper {
-      width: 100%;
-      height: 100vh;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .point:hover {
-      cursor: pointer !important;
-    }
-
-    .hover {
-      font-weight: 700;
-    }
-
-
-    /* #logoWrapper {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      z-index: 200;
-    } */
-
-    /* #logoWrapper img {
-      height: 25px;
-    } */
-
-    #locator {
-      height: 65px;
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      z-index: 200;
-    }
-
-    #locator:hover {
-      cursor: pointer;
-    }
-
-    @media only screen and (max-width:991px) {
-      #logo {
-        width: 150px;
-      }
-
-      #locator {
-        height: 60px;
-        top: 60px;
-        left: 20px;
-      }
-
-      #logoWrapper {
-        top: 60px;
-        right: 20px;
-      }
-    }
-
-    @media only screen and (max-width: 600px) {
-
-      #locator {
-        height: 50px;
-      }
-
-
-      #logoWrapper img {
-        height: 25px;
-      }
-    }
-
-    @media only screen and (max-width: 500px) {
-
-      #logo {
-        width: 120px;
-      }
-
-      #locator {
-        height: 40px;
-        top: 50px;
-      }
-    }
-
-
-    input[type="radio"]:hover {
-      cursor: pointer;
-    }
-
-    .typeRadio {
-      height: 15px;
-      width: 15px;
-      margin-left: 30px;
-      margin-right: 10px;
-      vertical-align: top;
-      /* hiding browser el */
-      appearance: none;
-      /* Safari support */
-      -webkit-appearance: none;
-      border: 0.2rem solid #ddd2ca;
-      background-color: rgba(0, 0, 0, 0.5);
-      border-radius: 50%;
-    }
-
-    /* keyboard navigation focus appearance */
-    .typeRadio:focus-visible {
-      outline-offset: 0;
-    }
-
-    .typeRadio:checked {
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
-      background-color: rgba(0, 0, 0, 0.5);
-      border-width: 0.2rem;
-    }
-
-    .typeRadio:not(:checked) {
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
-      background-color: #ddd2ca;
-      border-width: 0.2rem;
-    }
-
-    .radioWrapper {
-      margin-bottom: 10px;
-    }
-  </style>
 </head>
 
 <body>
+  <div class="infopanel-overlay">
+    <div class="infopanel-wrapper">
+      <div class="infopanel">
+        <div class="infopanel-content">
+          <img id="landingLogo" src="./img/globe.svg" />
+          <p>Planetary thinking recognizes human affairs as inextricably linked with the biogeochemical processes of an
+            ever-changing planet. The Planetary Portal is a central database of thinkers and organizations working on
+            the Planetary. By bringing together diverse communities from the fields of science, social sciences,
+            humanities, arts, and politics, the Planetary Portal can be a facilitator for planetary discussions,
+            bridging the gap between the theoretical and the practical.
+          </p>
+          <span class="explore">Explore<img src="./img/chevron-right.svg"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-  <!-- <div id="logoWrapper">
-    <img src="./img/giessen.png" />
-    <img src="./img/berggruen.png" />
-  </div> -->
-  <img id="locator" src="./img/globe.svg" />
 
   <div class="tooltip"></div>
   <div class="wrapper">
+    <div id="individualsPanel">
+      <p class="panelTitle">Thinkers</p>
+      <span class="close">Close&nbsp;&nbsp;✕</span>
+      <hr>
+      <div id="thinkerTextWrapper">
+        <p>Here we highlight individuals who are unaffiliated with a single planetary-focused organization, but
+          nonetheless act as nodes of planetary thinking. As individuals are notably more mobile than fixed centers,
+          they are not included in the portal map. However, in our estimation, a comprehensive database of planetary
+          thinking hubs, such as this site endeavors to be, would not be complete without including such individual
+          contributors.
+          <br><br>This list is always growing and never complete. Submissions of additional individuals for
+          consideration to
+          include here are most welcome.
+        </p>
+      </div>
+      <hr>
+      <ul class="individualList">
+      </ul>
+    </div>
+    <div id="aboutPanel">
+      <p class="panelTitle">About</p>
+      <span class="close">Close&nbsp;&nbsp;✕</span>
+      <hr>
+      <p> The Planetary is an emerging concept in the sciences, social sciences, humanities, arts, and politics that
+        draws attention to the basic fact that human affairs take place on a planet — and the innumerous and complex
+        implications that flow from this realization. To think with and through the Planetary is to acknowledge that
+        human life is inextricably embedded within the biogeochemical ferment of an ever-changing planet — a planet that
+        expands spatially from the Earth’s core to interplanetary space, temporally from nanoseconds to cosmic time
+        scales, and materially from elementary particles to the dark matter of the universe.
 
+        <br><br>In contrast to concepts like “global,” “international,” and “transnational” — premised, as they are, on
+        human
+        perspectives and institutions — the concept of the Planetary does not privilege humans or any other particular
+        species. Rather, it makes plain that Earth is not humanity’s alone. We share it with other living beings,
+        nonliving matter, and forms of energy. In fact, these other-than-human agents, conditions and processes are what
+        make human existence possible – though the reverse is not true. The Earth affects humans and is affected by
+        humans, but it was here before humans evolved and will be here long after humans have gone. A planetary
+        perspective, then, requires grappling with the political consequences, necessities, and possibilities of
+        properly placing human experiences and sensibilities within the inhumanly vast frames of geological timescales,
+        and Earth-spanning biological, chemical, and physical phenomenon.
+        <br><br>
+        This website, the Planetary Portal, aims to serve as a hub for planetary thinking, connecting disparate
+        communities where theoretical and practical ideas on the Planetary are being developed. A collaboration between
+        the <a href="https://www.uni-giessen.de/en/faculties/planetarythinking/planetarythinking-en">Panel on Planetary
+          Thinking</a> at the University of Giessen and the <a
+          href="https://www.berggruen.org/work/the-planetary/">Planetary research program</a> at the Berggruen
+        Institute, the Planetary Portal maps institutions around the world that are working on or within a planetary
+        framework. They include university research centers, independent research institutes, NGOs, and other
+        organizations that approach policy, politics, and philosophy through a planetary lens. It is our hope that
+        representing the many diverse institutions that are working on the Planetary in one place will help visitors
+        visualize the contours of this emerging field, draw connections between the various intellectual ventures,
+        provide basic structure for the nascent category, and further the development of planetary thought, with the aim
+        of developing a viable planetary politics.
+
+        <br><br>
+        The list of institutions and individual forerunners included on this website was compiled by the Panel on
+        Planetary Thinking at the University of Giessen and the Planetary research program at the Berggruen Institute.
+        It is a work in progress: if you would like your institutions to be considered for inclusion (or to be removed
+        from the site), please contact us through the submission form.
+
+      </p>
+    </div>
+
+    <div id="tooltipPanel">
+      <p class="panelTitle" id="organization"></p>
+      <span class="close">✕</span>
+      <hr>
+      <div class="mapWrapper">
+        <div id="mapMobile"></div>
+      </div>
+      <div class="textWrapper">
+        <span class="website" id="website"><a href='' target='_blank'>Website&nbsp;&nbsp;<img
+              src="./img/website.svg" /></a></span>
+        <p id="address">address</p>
+        <span class="focusarea" id="focus"> focus</span>
+        <p class="mission" id="mission"> mission </p>
+      </div>
+    </div>
     <div class="main">
+      <div id="topBar">
+        <img id="logo_s" src="./img/logo_s.svg" />
+        <img id="menu" src="./img/menu.svg" />
+        <span id="mapButton">Back to map</span>
+      </div>
       <div id="sidebar">
-        <a href="index.html"><img id="logo" src="./img/logo.svg" /></a>
+        <div id="logoWrapper">
+          <a href="index.html"><img id="logo" src="./img/globe2.svg" /></a>
+        </div>
+        <!-- <hr> -->
+        <div id="about">
+          <p>About</p>
+        </div>
         <hr>
-        <p id="about">About</p>
+        <div id="thinkers">
+          <p>Thinkers</p>
+        </div>
         <hr>
         <form id="searchform">
-          <input type="text" id="search-bar" autocomplete="off" placeholder="Type something here" />
+          <input type="text" id="search-bar" autocomplete="off" placeholder="Search for organization or location" />
           <ul class="output">
           </ul>
-          <p id="reset" class="button">reset search</p>
+          <p id="reset" class="button">clear search</p>
         </form>
         <hr>
         <p class="titleText" id="zoomInstruction">Draw target area on map to zoom<span id="resetZoom"
             class="button">reset</span></p>
         <hr>
-        <p class="titleText">Filter by topic</p>
+        <div>
+          <p class="titleText item" id="toggleTitle">Filter by topic</p>
+          <img class="item" id="filterArrow" src="./img/chevron-right.svg">
+        </div>
         <div id="toggleWrapper">
           <div class="itemWrapper">
             <div class='toggle item filters' id="filter1">
@@ -557,26 +214,40 @@
           </div>
         </div>
         <hr>
-        <p class="titleText">View by type</p>
-        <div class="radioWrapper">
-          <input type="radio" id="toggleMap" name="toggleMode" value="Map" class="typeRadio" checked>
-          <label for="Organizations">Organizations</label>
+        <div>
+          <p class="titleText item" id="projectionTitle">Map projection</p>
+          <img class="item" id="projectionArrow" src="./img/chevron-right.svg">
         </div>
-        <div class="radioWrapper">
-          <input type="radio" id="toggleIndividual" name="toggleMode" value="Individual" class="typeRadio">
-          <label for="Individuals">Individuals</label>
+        <div id="projectionWrapper">
+          <div class="radioWrapper">
+            <input type="radio" id="PQ" name="setProjection" value="PQ" class="typeRadio" checked>
+            <label for="PQ">Peirce Quincuncial</label>
+          </div>
+          <div class="radioWrapper">
+            <input type="radio" id="NE" name="setProjection" value="NE" class="typeRadio">
+            <label for="NE">Natural Earth</label>
+          </div>
         </div>
         <hr>
+        <div class="itemWrapper contact">
+          <a href="mailto: info@planetaryportal.org">
+            <p class="item">Contact us</p>
+            <img src="./img/mail.svg" class="item" />
+          </a>
+        </div>
+        <hr>
+        <div id="logoWrapperBottom">
+          <img id="logo1" src="./img/berggruen.png" />
+          <img id="logo2" src="./img/giessen.png" />
+        </div>
       </div>
+
       <div id="mainMap">
         <div class="chartWrapper">
           <div id="chart1"></div>
         </div>
       </div>
-
     </div>
-
-
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
@@ -586,863 +257,7 @@
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
   <script src='https://api.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.js'></script>
   <script src="./js/tooltip.js"></script>
-  <script>
-
-    // PROBLEM: when searched, then brush zoom, then stroke width is super thick
-    // whenever I filter then reset, I cannot click anymore
-
-    // TODO: prevent brush / zoom on click
-
-    //PREVENT ZOOM ON CLICK>... now it's prevented initally but onoce the user zooms then they can click and zoom, and it goes back to the previous zoom level
-
-
-    mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
-
-
-    const windowWidth = $(window).width();
-    const windowHeight = $(window).height();
-
-    $(window).resize(function () {
-      if (
-        windowWidth != $(window).width() ||
-        windowHeight != $(window).height()
-      ) {
-        location.reload();
-        return;
-      }
-    });
-
-
-    let isSmallScreen = false;
-
-
-    if (windowWidth <= 600) {
-      isSmallScreen = true;
-    }
-
-    const searchformWidth = $("#searchform").width();
-    $(".output").css("width", searchformWidth);
-    // think about search + toggle, what do we want one a category is toggled off but someone searches for an org in that category?
-
-    // const figure = d3.selectAll(".chartWrapper");
-    let width = $(".chartWrapper").width();
-    let height = $(".chartWrapper").height();
-
-    let activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
-    let allCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge']
-
-    let tooltip = floatingTooltip('circleTooltip', 240, 10);
-    let clicked = false;
-    let isZoomed = false;
-    let brushing = false; // to make sure tooltip won't show up when brushing
-    let searched = false;
-    let reprojected = false;
-
-
-    // Prepare our physical space
-    const svg = d3
-      .select("#chart1")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-
-
-    const projection2 = d3.geoNaturalEarth1();
-    const path2 = d3.geoPath(projection2);
-
-    // +30 to show NZ
-    let projection = d3.geoPeirceQuincuncial()
-      .fitSize([width, height], {
-        type: "Sphere"
-      })
-      .precision(0.1)
-      .scale((width) / 2 / Math.PI * 0.85)
-    // .rotate([0, 0, 0])
-    let path = d3.geoPath().projection(projection);
-
-    const colorScale = d3.scaleOrdinal()
-      .range(["#d69a07", "#db311b", "#71918a", "#c9bc11", "#39603d", "#305d77"]);
-
-
-    let brush = d3.brush()
-      .on('brush', brushMove)
-      .on("end", brushEnd);
-
-    let brushExtent;
-    let brushedSufficient = true; //check if dragged area big enough
-
-    let transformed;
-    let transformedLevel = 1;
-
-    let ids;
-
-    function zoomEnd() {
-      d3.select(".selection").style("display", "none");
-      d3.selectAll(".handle").style("display", "none");
-    }
-
-
-    const zoom = d3.zoom()
-      .scaleExtent([1, Infinity])
-      .translateExtent([
-        [0, 0],
-        [width, height]
-      ])
-      .extent([
-        [0, 0],
-        [width, height]
-      ])
-      .on("zoom", zoomed)
-      .on("end", zoomEnd);
-
-
-    //brushMove functions
-
-    function brushMove(e) {
-
-      // console.log(e.type)
-      if (searched) {
-        // e.stopImmediatePropagation();
-        // if (e.type === "brush") return;
-        // svg.style("pointerEvents", "none")
-        // svg.on(".brush", null);
-        // brush.clear;
-
-        d3.selectAll(".brush").style("opacity", 0);
-        d3.selectAll(".selection").style("display", "none");
-        d3.selectAll(".handle").style("display", "none");
-
-      } else {
-        d3.selectAll(".brush").style("opacity", 1);
-        d3.selectAll(".selection").style("display", "inherit");
-        d3.selectAll(".handle").style("display", "inherit");
-
-        brushing = true;
-        tooltip.hideTooltip();
-
-        svg.selectAll(".selection").attr("stroke-width", 2 / transformedLevel).attr("stroke", "white").attr("stroke-dasharray", `${12 / transformedLevel},${6 / transformedLevel}`).attr("fill", "none")
-
-        //update brush extent
-        brushExtent = e.selection;
-        //update points style within the rect
-        svg.selectAll("circle.point")
-          .attr("fill", d => isInBrushExtent(d) ? 'white' : colorScale(d.Category))
-          .raise(); // in order to be able to hover
-
-        //check brush extent to see if it's big enough to brush
-        brushedSufficient = isSufficient();
-      }
-    }
-
-    function isSufficient() { // make sure user can't zoom by clicking
-      return brushExtent[1][0] - brushExtent[0][0] > 1 && brushExtent[1][1] - brushExtent[0][1] > 1;
-    }
-
-    function isInBrushExtent(d) {
-      if (reprojected) {
-        return brushExtent &&
-          projection2([d.Longitude, d.Latitude])[0] >= brushExtent[0][0] &&
-          projection2([d.Longitude, d.Latitude])[0] <= brushExtent[1][0] &&
-          projection2([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
-          projection2([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
-
-      } else {
-        return brushExtent &&
-          projection([d.Longitude, d.Latitude])[0] >= brushExtent[0][0] &&
-          projection([d.Longitude, d.Latitude])[0] <= brushExtent[1][0] &&
-          projection([d.Longitude, d.Latitude])[1] >= brushExtent[0][1] &&
-          projection([d.Longitude, d.Latitude])[1] <= brushExtent[1][1];
-      }
-    }
-
-    //brushEnd function
-    function brushEnd() {
-
-      brushing = false;
-
-      //get the four corner coordinates
-      const x0 = brushExtent[0][0];
-      const x1 = brushExtent[1][0];
-      const y0 = brushExtent[0][1];
-      const y1 = brushExtent[1][1];
-
-
-      if (brushedSufficient) {
-
-        const x = -(x0 + x1) / 2;
-        const y = -(y0 + y1) / 2;
-        let k = 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height);
-        if (k > 130) { k = 130 };
-        transformedLevel = k;
-
-        if (!searched) { //disable zoom after search
-          svg.transition().duration(750).call(
-            zoom.transform,
-            d3.zoomTransform(30, 30, 1)
-              .translate(width / 2, height / 2)
-              .scale(k)
-              .translate(x, y),
-          )
-        }
-      }
-    }
-
-    function zoomed(e) {
-
-      tooltip.hideTooltip();
-      clicked = false;
-
-      d3.selectAll(".selection").style("display", "none");
-      d3.selectAll(".handle").style("display", "none");
-      d3.select("#intro").style("display", "none");
-
-      // svg.selectAll(".selection").attr("fill", texture.url()).attr("opacity", 1).attr("fill-opacity", 1)
-
-      if (e.transform.k > 10) { //load more detailed geojson when more zoomed in
-        d3.selectAll(".land2").style("display", "block");
-        d3.selectAll(".land").style("display", "none");
-      } else {
-        d3.selectAll(".land2").style("display", "none");
-        d3.selectAll(".land").style("display", "block");
-      }
-
-      isZoomed = true;
-
-      const transform = e.transform; //k,x,y
-      transformed = transform;
-
-      svg.selectAll('path')
-        .attr('transform', transform)
-        .attr("stroke-width", 1 / transform.k)
-
-      svg.selectAll("circle")
-        .attr('transform', transform)
-        .attr('r', 5.5 / transform.k)
-        .attr("stroke-width", isZoomed ? 1 / transform.k : 1)
-        .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => function () {
-          if (ids.includes(d.Id)) {
-            if (activeCategories.includes(d.Category)) {
-              return 1
-            } else {
-              return 0
-            }
-          } else {
-            return 0
-          }
-        })
-
-      svg.select('.brush')
-        .attr('transform', transform)
-        .attr("stroke-width", isZoomed ? 1 / transform.k : 1);
-    }
-
-    function resetZoom() {
-      tooltip.hideTooltip();
-      clicked = false;
-      transformedLevel = 1;
-      isZoomed = false;
-      svg.transition()
-        .duration(750)
-        .call(zoom.transform, d3.zoomIdentity)
-    }
-
-    const worldmap = d3.json("./data/land3.geojson");
-    const worldmapDetailed = d3.json("./data/land7.geojson"); //0.055 simplify is the max
-    const points = d3.csv("./data/mapData3.csv");
-    const allPoints = d3.csv("./data/allData.csv");
-    //IPSA & Earth4All are drawn twice, why??
-
-    let data;
-    let dataMap;
-    let dataIndividual;
-    let toggleMode = "Map";
-
-    function filterByToggleCategory(d) {
-      if (activeCategories.includes(d.Category)) {
-        if (d.Visualization === toggleMode) {
-          return "inherit"
-        } else {
-          return "none"
-        }
-      } else {
-        return "none"
-      }
-    }
-
-
-    Promise.all([worldmap, points, worldmapDetailed, allPoints]).then(function (values) {
-
-
-      projection2.fitSize([width, height], values[0]);
-
-      data = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "");
-      dataMap = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "" && d.Visualization === "Map");
-      dataIndividual = values[3].filter(d => d.Latitude !== "-" && d.Latitude !== "" && d.Visualization === "Individual");
-
-
-      let $terms;
-      let $return = [];
-
-      populateSearchterms();
-
-      function populateSearchterms() {
-        if (toggleMode === "Map") {
-          let organization = dataMap.map(function (obj) {
-            return obj.Organization;
-          });
-
-          organization = organization.filter(function (v, i) {
-            return organization.indexOf(v) == i;
-          });
-
-          let location = dataMap.map(function (obj) {
-            return obj.Location;
-          });
-
-          location = location.filter(function (v, i) {
-            return location.indexOf(v) == i;
-          });
-          $terms = [...organization, ...location].sort();
-          console.log($terms);
-        } else {
-
-          let name = dataIndividual.map(function (obj) {
-            return obj.Name;
-          });
-
-          name = name.filter(function (v, i) {
-            return name.indexOf(v) == i;
-          });
-
-          let location = dataIndividual.map(function (obj) {
-            return obj.Location;
-          });
-
-          location = location.filter(function (v, i) {
-            return location.indexOf(v) == i;
-          });
-          $terms = [...name, ...location].sort();
-        }
-      }
-
-      let focus = data.map(function (obj) {
-        return obj.Focus;
-      });
-      focus = focus.filter(function (v, i) {
-        return focus.indexOf(v) == i;
-      });
-
-      let categories = data.map(function (obj) {
-        return obj.Category;
-      });
-      categories = categories.filter(function (v, i) {
-        return categories.indexOf(v) == i;
-      });
-
-      let type = data.map(function (obj) {
-        return obj.Type;
-      });
-      type = type.filter(function (v, i) {
-        return type.indexOf(v) == i;
-      });
-
-      colorScale.domain(categories);
-
-      //this part is to remove the weird artifacts (horizontal lines above and below the map)
-      // draw first map just to get the bbox of the land
-      svg.selectAll("path.land")
-        .data(values[0].features)
-        .join("path")
-        .attr("class", "land")
-        .attr("id", "land")
-        .attr("d", path);
-
-      const bbox = d3.select("#land").node().getBBox();
-
-      // add a clipping path the show the central part of the map (move 3 down from top and 3 up from bottom)
-      svg.append("defs")
-        .append("clipPath")
-        .attr("id", "clip")
-        .append("rect")
-        .attr("x", bbox.x)
-        .attr("y", bbox.y + 3)
-        .attr("width", bbox.width)
-        .attr("height", bbox.height - 6);
-
-      // now remove the land we drew
-      svg.selectAll("path.land").remove();
-
-      // and redraw it using the clipping mask
-      svg.selectAll("path.land")
-        .data(values[0].features)
-        .join("path")
-        .attr("class", "land")
-        .attr("fill", "#d9cdc2")
-        .attr("stroke", "#808080")
-        .attr("d", path)
-        .attr("clip-path", "url(#clip)");
-
-      // for more detailed areas on zoom
-      svg.selectAll("path.land2")
-        .data(values[2].features)
-        .join("path")
-        .attr("class", "land2")
-        .attr("fill", "#d9cdc2")
-        .attr("stroke", "#808080")
-        .attr("d", path)
-        .attr("clip-path", "url(#clip)")
-        .attr("display", "none")
-
-      //need to come before points
-      svg.append("g")
-        .attr("class", "brush")
-        .call(brush);
-
-      // draw points
-      svg.selectAll("circle.point")
-        .data(data)
-        .join("circle")
-        .attr("class", "point")
-        .attr("id", d => "id" + d.Id)
-        .attr("cx", d => reprojected ? projection2([+d.Longitude, +d.Latitude])[0] : projection([+d.Longitude, +d.Latitude])[0])
-        .attr("cy", d => reprojected ? projection2([+d.Longitude, +d.Latitude])[1] : projection([+d.Longitude, +d.Latitude])[1])
-        .attr("stroke-width", 1)
-        .attr("stroke", "#808080")
-        .attr("r", 5.5)
-        .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
-        .style("display", d => filterByToggleCategory(d))
-        .on("mouseover", function (e, d) {
-          if (!brushing && !isSmallScreen) {
-            d3.selectAll(".point").style("stroke", "#808080")
-            d3.select(this).style("stroke", "black")
-            showDetail(e, d);
-          }
-        })
-        .on("mouseout", function (e, d) {
-          if (clicked == false) {
-            d3.selectAll(".point").style("stroke", "#808080")
-          }
-          hideDetail(d)
-        })
-        .on("click", function (e, d) {
-          d3.selectAll(".point").style("stroke", "#808080")
-          d3.select(this).style("stroke", "black")
-          clicked = true;
-          if (isSmallScreen) {
-            showDetail(e, d);
-          }
-        }).on("touchend", function (e, d) {
-          d3.selectAll(".point").style("stroke", "#808080")
-          d3.select(this).style("stroke", "black")
-          clicked = true;
-          if (isSmallScreen) {
-            showDetail(e, d);
-          }
-        })
-
-      $("#resetZoom").click(resetZoom);
-
-      function strInArray(str, strArray) {
-        for (var j = 0; j < strArray.length; j++) {
-          if ((strArray[j].toLowerCase()).match(str.toLowerCase()) && $return.length < 5) {
-            var $h = strArray[j].replace(str, "<strong>" + str + "</strong>");
-            $return.push(
-              '<li class="prediction-item"><span class="prediction-text">' +
-              $h +
-              "</span></li>"
-            );
-          }
-        }
-      }
-
-      function nextItem(kp) {
-        if ($(".focus").length > 0) {
-          var $next = $(".focus").next(),
-            $prev = $(".focus").prev();
-        }
-
-        if (kp == 38) {
-          // Up
-
-          if ($(".focus").is(":first-child")) {
-            $prev = $(".prediction-item:last-child");
-          }
-
-          $(".prediction-item").removeClass("focus");
-          $prev.addClass("focus");
-        } else if (kp == 40) {
-          // Down
-
-          if ($(".focus").is(":last-child")) {
-            $next = $(".prediction-item:first-child");
-          }
-
-          $(".prediction-item").removeClass("focus");
-          $next.addClass("focus");
-        }
-      }
-
-      populateSearch();
-
-      function populateSearch() {
-
-        $(function () {
-          $("#search-bar").keydown(function (e) {
-            $key = e.keyCode;
-            if ($key == 38 || $key == 40) {
-              nextItem($key);
-              return;
-            }
-
-            setTimeout(function () {
-              var $search = $("#search-bar").val();
-              $return = [];
-
-              strInArray($search, $terms);
-
-              if ($search == "" || !$("input").val) {
-                $(".output").html("").slideUp();
-              } else {
-                $(".output").html($return).slideDown();
-              }
-
-              $(".prediction-item").on("click", function () {
-
-                searched = true;
-                d3.selectAll(".overlay").style("cursor", "inherit")
-
-                $text = $(this).find("span").text();
-                resetFilters();
-                filterPoints(values[1], $text)
-
-                $(".output").slideUp(function () {
-                  $(this).html("");
-                });
-                $("#search-bar").val($text);
-
-              });
-
-              $(".prediction-item:first-child").addClass("focus");
-            }, 50);
-          });
-        });
-
-      }
-
-
-
-      $("#search-bar").focus(function () {
-        if ($(".prediction-item").length > 0) {
-          $(".output").slideDown();
-        }
-
-        $("#searchform").submit(function (e) {
-          e.preventDefault();
-
-          $text = $(".focus").find("span").text();
-          $(".output").slideUp();
-          $("#search-bar").val($text);
-          $("input").blur();
-        });
-      });
-
-      $("#search-bar").blur(function () {
-        if ($(".prediction-item").length > 0) {
-          $(".output").slideUp();
-        }
-      });
-
-      $("#reset").on("click", function () {
-        resetZoom();
-        searched = false;
-        d3.selectAll(".overlay").style("cursor", "crosshair")
-        resetPoints(data);
-        $("#search-bar").val("");
-
-      })
-
-      $('input:radio[name="toggleMode"]').change(function () {
-        console.log($(this).val())
-        toggleMode = $(this).val();
-        d3.selectAll("circle.point").style("display", d => filterByToggleCategory(d))
-        populateSearchterms();
-        populateSearch();
-      });
-
-
-    });
-
-
-
-
-    $("#locator").click(updateProjection);
-
-
-    function createFilterStatus(filterName, layerOnName, statusString) {
-      document.getElementById(filterName).addEventListener('change', function (e) {
-        //remove popup
-        clicked = false;
-        d3.selectAll(".point").style("stroke", "#808080");
-        tooltip.hideTooltip();
-
-        if (e.target.value === layerOnName) {
-          if (activeCategories.indexOf(statusString) == -1) {
-            activeCategories.push(statusString)
-          }
-
-          // redraw using d3 here
-
-          d3.selectAll("circle.point")
-            .transition().duration(300)
-            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0).style("display", d => filterByToggleCategory(d))
-
-
-        } else {
-          if (activeCategories.indexOf(statusString) !== -1) {
-            var index = activeCategories.indexOf(statusString);
-            activeCategories.splice(index, 1);
-          }
-
-          // redraw using d3 here
-          d3.selectAll("circle.point")
-            .transition().duration(300)
-            .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
-            .style("display", d => filterByToggleCategory(d))
-        }
-      });
-
-    }
-
-    createFilterStatus('filter1', 'layer1On', 'Solutions & Politics')
-    createFilterStatus('filter2', 'layer2On', 'Habitability & Hospitability')
-    createFilterStatus('filter3', 'layer3On', 'Justice & Ethics')
-    createFilterStatus('filter4', 'layer4On', 'Earth System Science')
-    createFilterStatus('filter5', 'layer5On', 'Solutions & Economics')
-    createFilterStatus('filter6', 'layer6On', 'Indigenous Knowledge')
-
-
-
-
-    function filterPoints(data, term) {
-
-      tooltip.hideTooltip();
-      clicked = false;
-      let filteredData;
-
-      if (toggleMode === "Map") {
-        filteredData = dataMap.filter(d => d.Organization === term || d.Location === term);
-      } else {
-        filteredData = dataIndividual.filter(d => d.Name === term);
-      }
-
-      console.log(filteredData)
-
-
-      ids = filteredData.map(a => a.Id);
-
-      let lat = filteredData[0].Latitude;
-      let lon = filteredData[0].Longitude;
-
-      if (term === "Australia") {
-        lat = -26.463777;
-        lon = 134.347707;
-      } // create a mapping function for the locations
-
-      if (term === "USA") {
-        lat = 41.094497;
-        lon = -99.032502;
-      }
-
-      const x = reprojected ? projection2([lon, lat])[0] : projection([lon, lat])[0];
-      const y = reprojected ? projection2([lon, lat])[1] : projection([lon, lat])[1];
-      let k = 10;
-
-      if (term === "Australia" || term === "USA") {
-        k = 5;
-      }
-
-      svg.transition().duration(750).call(
-        zoom.transform,
-        d3.zoomTransform(30, 30, 1)
-          .translate(width / 2, height / 2)
-          .scale(k)
-          .translate(-x, -y),
-      )
-
-      // d3.selectAll(".selection").attr("stroke-width", 2 / transformedLevel)
-
-      d3.selectAll("circle.point")
-        .style("opacity", d => ids.includes(d.Id) ? 1 : 0)
-        .style("display", d => ids.includes(d.Id) ? "inherit" : "none")
-
-
-    }
-
-    function resetPoints(data) {
-      tooltip.hideTooltip();
-      clicked = false;
-      // resetFilters();
-      svg.selectAll("circle.point")
-        .data(data)
-        .join("circle")
-        .attr("class", "point")
-        .attr("cx", d => reprojected ? projection2([d.Longitude, d.Latitude])[0] : projection([d.Longitude, d.Latitude])[0])
-        .attr("cy", d => reprojected ? projection2([d.Longitude, d.Latitude])[1] : projection([d.Longitude, d.Latitude])[1])
-        .attr("r", 5.5)
-        .attr("stroke-width", isZoomed ? 1 / transformedLevel : 1)
-        .attr("stroke", "#808080")
-        .attr("fill", d => colorScale(d.Category))
-        .style("opacity", d => activeCategories.includes(d.Category) ? 1 : 0)
-        .style("display", d => filterByToggleCategory(d))
-        .on("mouseover", function (e, d) {
-          if (!brushing && !isSmallScreen) {
-            d3.selectAll(".point").style("stroke", "#808080")
-            d3.select(this).style("stroke", "black")
-            showDetail(e, d);
-          }
-        })
-        .on("mouseout", function (e, d) {
-          if (clicked == false) {
-            d3.selectAll(".point").style("stroke", "#808080")
-          }
-          hideDetail(d)
-        })
-        .on("click", function (e, d) {
-          d3.selectAll(".point").style("stroke", "#808080")
-          d3.select(this).style("stroke", "black")
-          clicked = true;
-
-          if (isSmallScreen) {
-            showDetail(e, d);
-          }
-        })
-
-    }
-
-
-    function resetFilters() {
-      activeCategories = ['Solutions & Politics', 'Habitability & Hospitability', 'Justice & Ethics', 'Earth System Science', 'Solutions & Economics', 'Indigenous Knowledge'];
-
-      $("#layer1On").prop("checked", true);
-      $("#layer1Off").prop("checked", false);
-      $("#layer2On").prop("checked", true);
-      $("#layer2Off").prop("checked", false);
-      $("#layer3On").prop("checked", true);
-      $("#layer3Off").prop("checked", false);
-      $("#layer4On").prop("checked", true);
-      $("#layer4Off").prop("checked", false);
-      $("#layer5On").prop("checked", true);
-      $("#layer5Off").prop("checked", false);
-      $("#layer6On").prop("checked", true);
-      $("#layer6Off").prop("checked", false);
-    }
-
-
-    function showDetail(e, d) {
-
-      let fill = colorScale(d.Category)
-
-      svg.select(`#id${d.Id}`).raise();
-      let content = `<div id="map"></div><h4> ${d.Organization}  </h4>
-      <p> ${d.Contact_address} </p>
-      <p> ${d.Contact_phone.replaceAll(`"`, ``)} </p>
-      <p>  <a href='${d.Contact_site}' target='_blank'>Website →</a></p>
-      <span class="close">✕</span>`;
-
-      tooltip.showTooltip(isSmallScreen, content, e);
-
-      let map = new mapboxgl.Map({
-        container: 'map', // container element id
-        style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
-        center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
-        zoom: 15
-      });
-
-      var marker = new mapboxgl.Marker()
-        .setLngLat([d.Longitude, d.Latitude])
-        .addTo(map);
-
-      d3.selectAll(".close").on("click", function () {
-        tooltip.hideTooltip();
-        clicked = false;
-        d3.selectAll(".point").style("stroke", "#808080")
-      })
-
-    }
-
-    function hideDetail(d) {
-      if (!clicked) {
-        tooltip.hideTooltip(); // remove if want tooltip to stay open
-        clicked = false;
-      }
-    }
-
-
-    function updateProjection() {
-
-      resetZoom();
-      resetPoints(data);
-
-      if (!reprojected) {
-        reprojected = true;
-
-        // and redraw it using the clipping mask
-        d3.selectAll("path.land")
-          .attr("fill", "transparent")
-          .attr("stroke", "transparent")
-          .transition().duration(700)
-          .attr("fill", "#d9cdc2")
-          .attr("stroke", "#808080")
-          .attr("d", path2)
-          .attr("clip-path", "none");
-
-        // for more detailed areas on zoom
-        d3.selectAll("path.land2")
-          .attr("d", path2)
-          .attr("clip-path", "none")
-          .attr("display", "none")
-
-        // draw points
-        d3.selectAll("circle.point")
-          .transition().duration(700)
-          .attr("cx", d => projection2([+d.Longitude, +d.Latitude])[0])
-          .attr("cy", d => projection2([+d.Longitude, +d.Latitude])[1])
-
-      } else {
-
-        reprojected = false;
-
-        // and redraw it using the clipping mask
-        d3.selectAll("path.land")
-          .attr("fill", "transparent")
-          .attr("stroke", "transparent")
-          .transition().duration(700)
-          .attr("d", path)
-          .attr("fill", "#d9cdc2")
-          .attr("stroke", "#808080")
-          .attr("clip-path", "url(#clip)")
-
-        // for more detailed areas on zoom
-        d3.selectAll("path.land2")
-          .attr("d", path)
-          .attr("clip-path", "url(#clip)")
-          .attr("display", "none")
-
-
-        // draw points
-        d3.selectAll("circle.point")
-          .transition().duration(700)
-          .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
-          .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
-      }
-
-    }
-
-
-
-  </script>
+  <script src="./main.js"></script>
 </body>
 
 </html>
