@@ -1,5 +1,4 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
-// 'pk.eyJ1IjoiYXJvc2VuYmx1bSIsImEiOiJjbGpxOGJ4NjcwM205M2ZyZnJ5bTZmbmZ4In0.rZ_yk2sHZUTx3t8LNEtdpw';
 
 
 // dimensions related
