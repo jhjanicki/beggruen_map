@@ -21,7 +21,11 @@ if (windowWidth <= 700) {
   isSmallScreen = true;
 }
 
-let is_iPad = navigator.userAgent.match(/iPad/i) != null;
+const userAgent = navigator.userAgent.toLowerCase();
+
+// let is_iPad = navigator.userAgent.match(/iPad/i) != null;
+const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+
 
 const searchformWidth = $("#search-bar").width();
 $(".output").css("width", searchformWidth + 20);
@@ -567,7 +571,7 @@ Promise.all([worldmap, points, worldmapDetailed, individuals]).then(function (va
       d3.selectAll(".point").style("stroke", "#808080")
       d3.select(this).style("stroke", "black")
       clicked = true;
-      if (isSmallScreen || is_iPad) {
+      if (isSmallScreen || isTablet) {
         showDetail(e, d);
       }
     })
