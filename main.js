@@ -26,11 +26,6 @@ const userAgent = navigator.userAgent.toLowerCase();
 // let is_iPad = navigator.userAgent.match(/iPad/i) != null;
 const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
 
-
-const searchformWidth = $("#search-bar").width();
-$(".output").css("width", searchformWidth + 20);
-
-
 let width = $(".chartWrapper").width();
 let height = $(".chartWrapper").height();
 

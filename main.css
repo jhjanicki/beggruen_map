@@ -655,9 +655,10 @@
     transition: min-height 0.2s;
     position: absolute;
     z-index: 5;
+    margin-left: 1px;
     padding-left: 0px;
     margin-top: 0px;
-
+    width: 230px;
   }
 
   .output,
