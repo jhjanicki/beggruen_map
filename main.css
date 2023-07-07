@@ -217,6 +217,10 @@
     padding: 5px 18px 5px 2px;
   }
 
+  .mapboxgl-control-container{
+    display: none;
+  }
+
   .point:hover {
     cursor: pointer !important;
   }
@@ -289,7 +293,7 @@
   }
 
   .tooltip .website {
-    margin-top: 10px;
+    margin-top: 14px;
     margin-right: 6px;
     float: right;
     font-size: 10px;
