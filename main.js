@@ -1,4 +1,5 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
+mapboxgl.accessToken = 'pk.eyJ1IjoiYXJvc2VuYmx1bSIsImEiOiJjbGpzN3FwNW8wbTRzM2Zxbm9zOGEzeW1xIn0.dL-P0gJKRwXKC721cBqEbA';
+//'pk.eyJ1IjoiamhqYW5pY2tpIiwiYSI6Il9vb1ZlWnMifQ.zJie3Sr8zh3h5rR8IBMB2A';
 
 
 // dimensions related
@@ -881,7 +882,7 @@ function showDetail(e, d) {
 
     let map = new mapboxgl.Map({
       container: 'mapMobile', // container element id
-      style:  'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj', //'mapbox://styles/arosenblum/cljq807b300y101ns47ao5akl'
+      style:  'mapbox://styles/arosenblum/cljsa3auw019701qyftm23etd',
       center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
       zoom: 15
     });
@@ -896,8 +897,8 @@ function showDetail(e, d) {
     let content = `<h4> ${d.Organization} </h4>
   <div class="mapWrapper">
     <div id="map"></div>
-    <span class="website"><a href='${d.Contact_site}' target='_blank'>Website&nbsp;&nbsp;<img src="./img/website.svg" /></a></span>
   </div>
+  <span class="website"><a href='${d.Contact_site}' target='_blank'>Website&nbsp;&nbsp;<img src="./img/website.svg" /></a></span>
   <p class="address">${d.Contact_address}</p>
   <span class="focusarea" style='background-color:${fill} '> ${d.Focus} </span>
   <p class="mission"> ${d.Mission} </p>
@@ -907,7 +908,7 @@ function showDetail(e, d) {
 
     let map = new mapboxgl.Map({
       container: 'map', // container element id
-      style: 'mapbox://styles/jhjanicki/clhit1ezw01ik01pgbs36b1gj',
+      style: 'mapbox://styles/arosenblum/cljsa3auw019701qyftm23etd',
       center: [d.Longitude, d.Latitude], // initial map center in [lon, lat]
       zoom: 15
     });
