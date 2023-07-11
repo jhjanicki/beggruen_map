@@ -542,28 +542,17 @@
 
   /* SIDEBAR */
 
-  #logoWrapper {
-    /* background-color: white; */
-  }
-
   #logoWrapperBottom {
-    padding: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    display: table;
+    padding: 20px;
+    position: fixed;
+    bottom:0;
+    background-color: #ddd2ca;
+    width:250px;
+
   }
 
   #logoWrapperBottom img {
-    height: 25px;
-  }
-
-  #logo1 {
-    padding-right: 8px;
-    border-right: 1px solid rgba(0, 0, 0, 0.15);
-  }
-
-  #logo2 {
-    padding-left: 6px;
+    width:100%;
   }
 
   #logo {
@@ -882,6 +871,9 @@
       }
 
   /* contact */
+  .contact{
+    margin-bottom: 80px;
+  }
 
   .contact p {
     font-size: 14px;
@@ -903,6 +895,10 @@
 
 
   @media only screen and (max-width:700px) {
+
+    .contact{
+      margin-bottom: 0px;
+    }
 
     .infopanel {
         width: 75%;
@@ -931,6 +927,8 @@
       height: auto;
       background-color: #ddd2ca;
       z-index: 1000;
+      min-height: 0px;
+
     }
 
     #logoWrapper {
@@ -938,7 +936,6 @@
     }
 
     #topBar {
-      display: inherit;
       position: fixed;
       top: 0;
       left: 0;

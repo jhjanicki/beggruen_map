@@ -26,6 +26,11 @@ const userAgent = navigator.userAgent.toLowerCase();
 // let is_iPad = navigator.userAgent.match(/iPad/i) != null;
 const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
 
+if(!isSmallScreen){
+    let sidebarHeight = $("#sidebar").height();
+    $(".chartWrapper").css("height",sidebarHeight)
+}
+
 let width = $(".chartWrapper").width();
 let height = $(".chartWrapper").height();
 
@@ -405,7 +410,7 @@ Promise.all([worldmap, points, worldmapDetailed, individuals]).then(function (va
       )
     })
 
-    $(".individualList li").click(function () {
+    $(".individualList li").click(function (event) {
       event.preventDefault();
 
       if ($(this).hasClass("active")) {
