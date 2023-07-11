@@ -548,7 +548,6 @@
     bottom:0;
     background-color: #ddd2ca;
     width:250px;
-
   }
 
   #logoWrapperBottom img {
@@ -895,6 +894,15 @@
 
 
   @media only screen and (max-width:700px) {
+
+    #logoWrapperBottom {
+      width:100%;
+      padding: 10px 20px;
+    }
+
+    #logoWrapperBottom img{
+      width:250px;
+    }
 
     #sidebar{
       border-bottom: none;
