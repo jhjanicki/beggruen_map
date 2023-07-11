@@ -896,17 +896,19 @@
 
   @media only screen and (max-width:700px) {
 
+    #sidebar{
+      border-bottom: none;
+
+    }
+
     .contact{
-      margin-bottom: 0px;
+      margin-bottom: 60px;
     }
 
     .infopanel {
         width: 75%;
       }
 
-    .chartWrapper {
-      height: 90vh;
-    }
 
     .main {
       width: 100vw;
@@ -998,6 +1000,7 @@
       height: 100vh;
       margin-left: auto;
       margin-right: auto;
+      margin-top: -100px;
     }
 
   }
