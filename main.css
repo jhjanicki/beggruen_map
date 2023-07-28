@@ -552,7 +552,17 @@
   }
 
   #logoWrapperBottom img {
-    width:100%;
+    height:26px;
+    margin-left:2px;
+    padding-right: 3px;
+  }
+
+  #logoWrapperBottom a:not(:last-child){
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  #logoWrapperBottom a{
+    vertical-align: middle;
   }
 
   #logo {
@@ -902,8 +912,11 @@
     }
 
     #logoWrapperBottom img{
-      width:250px;
+      width:auto;
+      height:30px;
     }
+
+
 
     #sidebar{
       border-bottom: none;
