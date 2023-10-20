@@ -391,7 +391,7 @@ Promise.all([worldmap, points, worldmapDetailed, individuals, individualsWork]).
 
 
   function addIndividuals() {
-    console.log(values[4])
+    // console.log(values[4])
     dataIndividuals.forEach((d) => {
       let individual = values[4].filter(ind => ind.Name === d.Name)
       let individualID = individual[0].Id;
